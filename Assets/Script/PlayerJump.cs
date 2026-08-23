@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 
+[RequireComponent(typeof(CharacterController))]
 public class PlayerJump : MonoBehaviour
 {
     [Header("GroundCheck")]
@@ -50,7 +51,7 @@ public class PlayerJump : MonoBehaviour
 
     private bool IsGround()
     {
-        Vector3 ray = transform.position + new Vector3(0f,characterController.center.y-(characterController.height*0.5f)+characterController.skinWidth,0f);
+        Vector3 ray = transform.position + new Vector3(0f, characterController.center.y-(characterController.height*0.5f)+ characterController.skinWidth,0f);
         return Physics.Raycast(ray, Vector3.down, rayDistance, groundLayer);
     }
     private void OnJumpPerformed(InputAction.CallbackContext context)
