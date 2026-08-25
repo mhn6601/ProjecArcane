@@ -10,70 +10,83 @@ public class PlayerJump : MonoBehaviour
     [SerializeField]
     private float rayDistance=0.2f;
     private float gravity =-9.81f;
-    private Vector3 jumpVleocity;
-
-    private Vector3 jumpInput;
+    private float groundedGravity =-8f;
+    private Vector3 jumpVelocity;
 
     [SerializeField]
     private float jumpHeight = 0f;
 
-    private CharacterController characterController;
+    private PlayerController cc;
 
     private PlayerInputAction inputActions;
     private void Awake()
     {
         inputActions = new PlayerInputAction();
-        characterController = GetComponent<CharacterController>();
+        cc = GetComponent<PlayerController>();
     }
     private void OnEnable()
     {
-        inputActions.PlayerAction.Enable();
-        inputActions.PlayerAction.Jump.performed += OnJumpPerformed;
     }
     private void OnDisable()
     {
-
-        inputActions.PlayerAction.Jump.performed -= OnJumpPerformed;
-        inputActions.PlayerAction.Disable();
     }
 
     private void FixedUpdate()
     {
-
-        if (IsGround() && jumpVleocity.y < 0)
-        {
-            jumpVleocity.y = -8f;
-        }
-
-        jumpVleocity.y += gravity * Time.deltaTime;
-        characterController.Move(jumpVleocity* Time.deltaTime);
+        ApplyGravity();
     }
 
-    private bool IsGround()
-    {
-        Vector3 ray = transform.position + new Vector3(0f, characterController.center.y-(characterController.height*0.5f)+ characterController.skinWidth,0f);
-        return Physics.Raycast(ray, Vector3.down, rayDistance, groundLayer);
-    }
-    private void OnJumpPerformed(InputAction.CallbackContext context)
+    public void Jump()
     {
         if (IsGround())
         {
-            jumpVleocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity);
-            
+            SetJumpVelocityY();
         }
     }
-
-    private void OnDrawGizmosSelected()
+    public bool IsGround()
     {
-        if (characterController == null) characterController = GetComponent<CharacterController>();
-        if (characterController == null) return;
+        Vector3 ray = GetRayOrigin();
+        return Physics.Raycast(ray, Vector3.down, rayDistance, groundLayer);
+    }
+    public void SetJumpVelocityY()
+    {
+        jumpVelocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity);
+    }
+    public Vector3 GetJumpVelocity()
+    {
+        return jumpVelocity;
+    }
+    private void ApplyGravity()
+    {
+        if (IsGround() && jumpVelocity.y < 0)
+        {
+            jumpVelocity.y = groundedGravity;
+        }
+        else{
+            jumpVelocity.y += gravity * Time.fixedDeltaTime;
+        }
+    }
+    private Vector3 GetRayOrigin()
+    {
+        if (cc != null && cc.CC != null)
+        {
+            return transform.position + new Vector3(0f, cc.CC.center.y - (cc.CC.height * 0.5f) + cc.CC.skinWidth, 0f);
+        }
 
-        float feetOffsetY = characterController.center.y - (characterController.height * 0.5f);
-        float skinOffset = characterController.skinWidth;
-        Vector3 rayOrigin = transform.position + new Vector3(0f, feetOffsetY + skinOffset, 0f);
-        float totalRayDistance = skinOffset + 0.15f;
+        // 에디터 실행 전 참조 연산용 기본 위치
+        return transform.position;
+    }
+    private void OnDrawGizmos()
+    {
+        Vector3 rayOrigin = GetRayOrigin();
 
+        // 지면에 닿았을 때는 초록색, 공중에 있을 때는 빨간색 표시
         Gizmos.color = IsGround() ? Color.green : Color.red;
-        Gizmos.DrawRay(rayOrigin, Vector3.down * totalRayDistance);
+
+        // 시작점에서 아래 방향으로 rayDistance만큼 선 그리기
+        Gizmos.DrawRay(rayOrigin, Vector3.down * rayDistance);
+
+        // Ray의 끝 지점에 작은 구체 표시
+        Gizmos.DrawSphere(rayOrigin + (Vector3.down * rayDistance), 0.02f);
     }
 }

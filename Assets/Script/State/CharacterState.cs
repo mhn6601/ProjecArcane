@@ -1,17 +1,9 @@
 using UnityEngine;
 using UnityEngine.Events;
 
-public interface  CharacterState 
-{
-    //protected CharacterControllerBase characterControllerBase;
-    //protected CharacterStateMachine characterStateMachine;
-    //public CharacterState(CharacterControllerBase characterControllerBase, CharacterStateMachine characterStateMachine)
-    //{
-    //    this.characterControllerBase = characterControllerBase;
-    //    this.characterStateMachine = characterStateMachine;
-    //}
+public interface  ICharacterState 
 
+{
     void OnEnter() { }
     void OnExit() { }
-    void FixedUpdate() { } // FixedUpdate/Move Ã³¸®
 }

@@ -53,13 +53,13 @@ public class PlayerMove : MonoBehaviour
     private void FixedUpdate()
     {
         // 입력이 있을 때만 실시간 카메라 정면 기준 계산 (카메라 회전에 따른 이동 방향 반영)
-        if (Player.Instance.isWalking)
+        if (cc.moveInput != Vector3.zero)
         {
             cachedMoveDirection = CalculateDirection(cc.moveInput);
         }
 
         // 락온 여부에 따른 회전 분기
-        if (Player.Instance.isLockOn)
+        if (false)
         {
             // Step 1: 락온 구현 시 대상 조준 회전 로직 연동[cite: 1]
         }
@@ -67,10 +67,12 @@ public class PlayerMove : MonoBehaviour
         {
             RotateTowardsDirection(cachedMoveDirection);
         }
-
         // 이동 처리
         moveVelocity = cachedMoveDirection * moveSpeed;
-        cc.CC.Move(moveVelocity * Time.deltaTime);
+        moveVelocity.y = cc.GetJumpVelocity().y; // 점프 속도 적용
+
+
+        cc.CC.Move(moveVelocity * Time.fixedDeltaTime);
     }
 
     public void ResetCache()

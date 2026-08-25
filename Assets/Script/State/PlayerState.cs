@@ -1,15 +1,17 @@
 using UnityEngine;
+using UnityEngine.TextCore.Text;
 
-//public abstract class PlayerState: CharacterState
-//{
-    //protected CharacterControllerBase characterControllerBase;
-    //protected CharacterStateMachine characterStateMachine;
-    //public PlayerState(CharacterControllerBase characterControllerBase, CharacterStateMachine characterStateMachine)
-    //{
-    //    this.characterControllerBase = characterControllerBase;
-    //    this.characterStateMachine = characterStateMachine;
-    //}
 
-    //public virtual void LogicUpdate() { }   // Update 贸府
-    //public virtual void PhysicsUpdate() { } // FixedUpdate/Move 贸府
-//}
+public abstract class PlayerState : State
+{
+    protected PlayerController controller;
+    protected Player player;
+
+
+
+    public override void Initialization()
+    {
+        player = GetComponentInParent<Player>();
+        controller = GetComponentInParent<PlayerController>();
+    }
+}
