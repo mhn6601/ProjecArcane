@@ -5,5 +5,7 @@ public enum AnimatorControllerParameterName
     isIdle,
     isGrounded,
     isJump,
-    isWalk
+    isWalk,
+    isRun
+
 }

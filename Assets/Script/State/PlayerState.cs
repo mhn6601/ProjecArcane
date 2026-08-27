@@ -7,11 +7,9 @@ public abstract class PlayerState : State
     protected PlayerController controller;
     protected Player player;
 
-
-
-    public override void Initialization()
-    {
-        player = GetComponentInParent<Player>();
-        controller = GetComponentInParent<PlayerController>();
+    public PlayerState(PlayerController controller, Player player)
+        {
+        this.controller = controller;
+        this.player = player;
     }
 }

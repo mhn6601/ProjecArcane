@@ -16,7 +16,6 @@ public class CharacterControllerBase : MonoBehaviour
         
     }
 
-    [SerializeField]
     protected CharacterStateMachine stateMachine;
 
     [SerializeField]
@@ -35,9 +34,5 @@ public class CharacterControllerBase : MonoBehaviour
     public virtual void ChangeState<T>(T state) where T : State
     {
         stateMachine?.ChangeState<T>(state);
-    }
-    public virtual void ChangeState(string stateName)
-    {
-        stateMachine?.ChangeState(stateName);
     }
 }

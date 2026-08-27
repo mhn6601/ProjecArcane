@@ -1,8 +1,5 @@
 using UnityEngine;
-public class Player:Singleton<Player>
+public class Player:Entity
 {
-    protected override void Awake()
-    {
-        base.Awake();
-    }
+    
 }
