@@ -11,7 +11,7 @@ public class PlayerJump : MonoBehaviour
     private float rayDistance=0.2f;
     private float gravity =-9.81f;
     private float groundedGravity =-8f;
-    private Vector3 jumpVelocity;
+    [SerializeField]private Vector3 jumpVelocity;
 
     [SerializeField]
     private float jumpHeight = 0f;
@@ -19,10 +19,35 @@ public class PlayerJump : MonoBehaviour
     private PlayerController cc;
 
     private PlayerInputAction inputActions;
+    [SerializeField] private Transform playerFollowCamera;
     private void Awake()
     {
         inputActions = new PlayerInputAction();
         cc = GetComponent<PlayerController>();
+        if (playerFollowCamera == null || playerFollowCamera != FollowPlayerCamera.Instance.transform)
+        {
+            if (FollowPlayerCamera.Instance != null)
+            {
+                playerFollowCamera = FollowPlayerCamera.Instance.transform;
+            }
+            else
+            {
+                if (Camera.main != null && FollowPlayerCamera.Instance == null)
+                {
+                    Debug.LogError("플레이어 팔로우 카메라 설정 오류 팔로우카메라 없음\nplayerFollowCamera=" + playerFollowCamera + "\nFollowPlayerCamera.Instance=" + FollowPlayerCamera.Instance);
+                    playerFollowCamera = Camera.main.transform;
+                }
+                else
+                {
+                    playerFollowCamera = FindAnyObjectByType<Camera>().transform;
+                    Debug.LogError("플레이어 팔로우 카메라 설정 오류- 팔로우카메라, 메인카메라 없음");
+                }
+            }
+        }
+    }
+    private void Start()
+    {
+        IsGroundedInitialize();
     }
     private void OnEnable()
     {
@@ -30,41 +55,66 @@ public class PlayerJump : MonoBehaviour
     private void OnDisable()
     {
     }
-
-    private void FixedUpdate()
+     void FixedUpdate()
     {
         ApplyGravity();
+        //Debug.Log(jumpVelocity.y);
     }
-
-    public void Jump()
+    public void ExecuteJump(Vector3 rawInput, bool isRun)
     {
-        if (IsGround())
-        {
-            SetJumpVelocityY();
-        }
+        // 1. 수평 이동 벡터 계산 (X, Z) - 속도 적용
+        float currentSpeed = isRun ? Player.Instance.RunSpeed : Player.Instance.MoveSpeed;
+        Vector3 horizontalMove = rawInput * currentSpeed;
+
+        // 2. 수직 이동 벡터 계산 (Y) - 중력/점프 속도 적용
+        Vector3 verticalMove = new Vector3(0f, GetJumpVelocity(), 0f);
+
+        // 3. 최종 통합 이동 벡터 전달
+        Vector3 finalVelocity = horizontalMove + verticalMove;
+        cc.CC.Move(finalVelocity * Time.fixedDeltaTime);
     }
     public bool IsGround()
     {
-        Vector3 ray = GetRayOrigin();
+        Vector3 ray = GetRayOrigin();        
         return Physics.Raycast(ray, Vector3.down, rayDistance, groundLayer);
     }
-    public void SetJumpVelocityY()
+    private void IsGroundedInitialize()
+    {
+        Vector3 ray = GetRayOrigin();
+        Player.Instance.isGrounded = Physics.Raycast(ray, Vector3.down, rayDistance, groundLayer);
+    }
+    public void SetJumpVelocity()
     {
         jumpVelocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity);
     }
-    public Vector3 GetJumpVelocity()
+    public float GetJumpVelocity()
     {
-        return jumpVelocity;
+        return jumpVelocity.y;
     }
-    private void ApplyGravity()
+    public void ApplyGravity()
     {
-        if (IsGround() && jumpVelocity.y < 0)
+        if (IsGround() && jumpVelocity.y <= 0)
         {
             jumpVelocity.y = groundedGravity;
         }
         else{
             jumpVelocity.y += gravity * Time.fixedDeltaTime;
         }
+    }
+    public Vector3 CalculateDirection(Vector3 input)
+    {
+        if (playerFollowCamera == null) return Vector3.zero;
+
+        var camForward = playerFollowCamera.forward;
+        var camRight = playerFollowCamera.right;
+
+        camForward.y = 0f;
+        camRight.y = 0f;
+
+        camForward.Normalize();
+        camRight.Normalize();
+
+        return (camForward * input.z) + (camRight * input.x);
     }
     private Vector3 GetRayOrigin()
     {

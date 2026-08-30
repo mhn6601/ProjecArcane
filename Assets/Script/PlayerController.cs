@@ -6,28 +6,45 @@ using UnityEngine.InputSystem;
 
 public class PlayerController : CharacterControllerBase
 {
-    [SerializeField] private PlayerMove playerMove;
-    [SerializeField] private PlayerJump playerJump;
 
-    private CharacterStateMachine movementFSM { get;  set; }
-    private CharacterStateMachine jumpFSM { get;  set; }
-    private CharacterStateMachine actionFSM { get;  set; }
+    #region Component
+    private PlayerMove playerMove;
+    public PlayerMove PlayerMove => playerMove;
+    private PlayerJump playerJump;
+    public PlayerJump PlayerJump => playerJump;
+    #endregion
 
+    #region StateMachine
+    private CharacterStateMachine movementFSM;
+    public CharacterStateMachine MovementFSM => movementFSM;
+    private CharacterStateMachine actionFSM;
+    public CharacterStateMachine ActionFSM => actionFSM;
+    #endregion
+
+    #region InputActions
     private PlayerInputAction inputActions;
     public PlayerInputAction InputActions => inputActions;
+    #endregion
+    #region ControlDeviceType
+    public enum ControlDeviceType
+    {
+        KeyboardMouse,
+        Gamepad
+    }
+    // 현재 사용 중인 입력 장치 타입 (UI 프롬프트 교체 등에 활용)
+    public ControlDeviceType CurrentDevice { get; private set; }
+    #endregion
 
     private Player player;
     public Vector3 moveInput { get; private set; }
 
-    private bool IsRunPressed=false;
+    public bool IsRunPressed { get; private set; }
 
 
     #region State
     [Header("State")]
-    public PlayerIdleState IdleState { get;private set; }
-    public PlayerWalkState WalkState { get;private set; }
-    public PlayerRunState RunState { get;private set; }
-    public PlayerJumpState JumpState { get;private set; }
+    public PlayerLocomotionState locomotionState {  get;private set; }
+    public PlayerAirborneState AirborneState { get;private set; }
     #endregion
 
     protected override void Awake()
@@ -53,6 +70,7 @@ public class PlayerController : CharacterControllerBase
         inputActions.PlayerAction.Move.canceled += OnMoveCanceled;
 
         inputActions.PlayerAction.Run.performed += OnRunPerformed;
+        inputActions.PlayerAction.Run.canceled += OnRunCanceled;
 
         inputActions.PlayerAction.Jump.performed += OnJumpPerformed;
     }
@@ -62,74 +80,96 @@ public class PlayerController : CharacterControllerBase
         inputActions.PlayerAction.Move.canceled -= OnMoveCanceled;
 
         inputActions.PlayerAction.Run.performed -= OnRunPerformed;
+        inputActions.PlayerAction.Run.canceled -= OnRunCanceled;
 
         inputActions.PlayerAction.Jump.performed -= OnJumpPerformed;
 
         inputActions.PlayerAction.Disable();
     }
+    private void Start()
+    {
+        movementFSM.Initialize(locomotionState);
+    }
+    private void FixedUpdate()
+    {
+        FSMUpdate();
+    }
+    // 어떤 장치로 입력했는지 감지하는 메서드
+    private void DetectControlDevice(InputDevice device)
+    {
+        if (device is Gamepad)
+        {
+            if (CurrentDevice != ControlDeviceType.Gamepad)
+            {
+                CurrentDevice = ControlDeviceType.Gamepad;
+                // Gamepad 전용 UI 버튼 프롬프트 변경 이벤트 실행 가능
+            }
+        }
+        else if (device is Keyboard || device is Mouse)
+        {
+            if (CurrentDevice != ControlDeviceType.KeyboardMouse)
+            {
+                CurrentDevice = ControlDeviceType.KeyboardMouse;
+                // 키보드/마우스 전용 UI 버튼 프롬프트 변경 이벤트 실행 가능
+            }
+        }
+    }
+
     private void PlayerStateMachineInitialize()
     {
         movementFSM = new CharacterStateMachine();
-        jumpFSM = new CharacterStateMachine();
         actionFSM = new CharacterStateMachine();
 
     }
     private void PlayerStateInitialize()
     {
-        IdleState = new PlayerIdleState(this, player);
-        WalkState = new PlayerWalkState(this, player);
-        RunState = new PlayerRunState(this, player);
-        JumpState = new PlayerJumpState(this, player);
+        locomotionState = new PlayerLocomotionState(this);
+        AirborneState = new PlayerAirborneState(this);
+    }
+    private void FSMUpdate()
+    {
+        movementFSM.Update();
+        actionFSM.Update();
     }
     private void OnMovePerformed(InputAction.CallbackContext context)
     {
-
-        moveInput = context.ReadValue<Vector3>();
-        movementFSM.ChangeState(WalkState);
+            moveInput = context.ReadValue<Vector3>();
+        if(movementFSM.CurrentState== locomotionState)
+            movementFSM.ChangeState(locomotionState);
     }
-
     private void OnMoveCanceled(InputAction.CallbackContext context)
     {
         moveInput = Vector3.zero;
-        playerMove.ResetCache();// 입력 취소 시 캐시 방향 초기화
-
-        movementFSM.ChangeState(IdleState);
+        //IsRunPressed= false;
+        //playerMove.ResetCache();// 입력 취소 시 캐시 방향 초기화
+        if (movementFSM.CurrentState == locomotionState)
+            movementFSM.ChangeState(locomotionState);
     }
     private void OnRunPerformed(InputAction.CallbackContext context)
     {
-        if (context.performed)
-        {
             IsRunPressed = true;
 
             // 이동 입력이 들어와 있는 상태에서 Shift를 누르면 즉시 RunState로 전환
-            if (movementFSM.CurrentState == WalkState && moveInput.sqrMagnitude > 0.001f)
+            if (movementFSM.CurrentState == locomotionState && moveInput.sqrMagnitude > 0.001f)
             {
-                movementFSM.ChangeState(RunState);
+                movementFSM.ChangeState(locomotionState);
             }
-        }
-        else if (context.canceled)
+        
+    }
+    private void OnRunCanceled(InputAction.CallbackContext context)
+    {
+        IsRunPressed = false; 
+        if (movementFSM.CurrentState == locomotionState)
         {
-            IsRunPressed = false;   
-
-            // 달리던 중 Shift를 떼면 WalkState로 전환
-            if (movementFSM.CurrentState == RunState)
-            {
-                movementFSM.ChangeState(WalkState);
-            }
+            movementFSM.ChangeState(locomotionState);
         }
     }
     private void OnJumpPerformed(InputAction.CallbackContext context)
     {
-        //Debug.Log(playerJump.IsGround());
-        if (playerJump.IsGround())
+        if(Player.Instance.isGrounded)
         {
-            playerJump.Jump();
-            jumpFSM.ChangeState(JumpState);
+            movementFSM.ChangeState(AirborneState);
         }
-    }
-    public Vector3 GetJumpVelocity()
-    {
-        return playerJump.GetJumpVelocity();
     }
 
 }

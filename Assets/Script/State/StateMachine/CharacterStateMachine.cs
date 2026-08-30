@@ -18,13 +18,14 @@ public class CharacterStateMachine
     //[SerializeField] protected List<GameObject> statesObjects;
     public UnityAction onChangeState;
 
-    //public void Initialize(State startingState)
-    //{   
-    //    CurrentState = startingState;
-    //    CurrentState.OnEnter();
-    //}
+    public void Initialize(State startingState)
+    {
+        CurrentState = startingState;
+        CurrentState.OnEnter();
+    }
     public void ChangeState(State state)
     {
+        if (CurrentState == state) return;
         PreviousState = CurrentState;
         CurrentState?.OnExit();
         newState = state;
@@ -34,8 +35,7 @@ public class CharacterStateMachine
     }
     public void ChangeState<T>(T state) where T : State
     {
-        
-
+        if (CurrentState == state) return;
         PreviousState = CurrentState;
         CurrentState?.OnExit();
         newState = state;

@@ -154,186 +154,6 @@ Transform:
   - {fileID: 690695680}
   m_Father: {fileID: 1411314134}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &142989009
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 142989010}
-  - component: {fileID: 142989011}
-  m_Layer: 0
-  m_Name: PlayerActionStateMachine
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &142989010
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 142989009}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.41187, y: -1.38, z: -1.45785}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 550950956}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &142989011
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 142989009}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 269f203140cc04e4cb4e8b1ca4dbdc48, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::PlayerActionStateMachine
-  states: []
---- !u!1 &215033424
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 215033425}
-  - component: {fileID: 215033426}
-  m_Layer: 0
-  m_Name: PlayerMovementStateMachine
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &215033425
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 215033424}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.41187, y: -1.38, z: -1.45785}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 550950956}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &215033426
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 215033424}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cc136c569b450c14fb58f7c380e2bc94, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::PlayerMovementStateMachine
-  states: []
---- !u!1 &550950955
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 550950956}
-  - component: {fileID: 550950958}
-  - component: {fileID: 550950959}
-  - component: {fileID: 550950957}
-  - component: {fileID: 550950961}
-  m_Layer: 0
-  m_Name: StateMachine
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &550950956
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 550950955}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 142989010}
-  - {fileID: 1715400869}
-  - {fileID: 215033425}
-  m_Father: {fileID: 1089770774}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &550950957
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 550950955}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d48bfb171c6e69441a6571df051aeb0e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::WalkState
-  stateName: Walk
---- !u!114 &550950958
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 550950955}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3ad0b15de1300b7499e567084479d1d0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::PlayerIdleState
-  stateName: Idle
---- !u!114 &550950959
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 550950955}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 32d4b636f7e98144da58633085559a4f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::GroundedState
-  stateName: Grounded
---- !u!114 &550950961
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 550950955}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e1a186c3a30139d4e9fff4a6465a59b2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::PlayerJumpState
-  stateName: Jump
 --- !u!1 &690695679
 GameObject:
   m_ObjectHideFlags: 0
@@ -630,7 +450,7 @@ Transform:
   m_GameObject: {fileID: 963194225}
   serializedVersion: 2
   m_LocalRotation: {x: 0.06288527, y: 0, z: 0, w: 0.99802077}
-  m_LocalPosition: {x: 0, y: 3.5338821, z: -3.7454433}
+  m_LocalPosition: {x: 0, y: 2.153882, z: -3.7454433}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -685,7 +505,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b15936ce70571504b95a09f2ac0c755d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerMove
-  moveSpeed: 2.5
   rotateSpeed: 15
   playerFollowCamera: {fileID: 1098880353}
 --- !u!114 &1089770768
@@ -700,6 +519,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c46354872474d7445b9eb318122fd434, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Player
+  isGrounded: 0
+  isLockOn: 0
+  moveSpeed: 2.5
+  runSpeed: 5
+  lockOnTarget: {fileID: 0}
 --- !u!143 &1089770771
 CharacterController:
   m_ObjectHideFlags: 0
@@ -741,7 +565,9 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 8
   rayDistance: 0.2
+  jumpVelocity: {x: 0, y: 0, z: 0}
   jumpHeight: 1.5
+  playerFollowCamera: {fileID: 0}
 --- !u!4 &1089770774 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2706478470639612565, guid: 168712f6723106f4da0cbea0d1af48d4, type: 3}
@@ -759,14 +585,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7ca783873f9d2504c89c56e235dabfd3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerController
-  stateMachine: {fileID: 0}
   animator: {fileID: 1089770780}
-  playerMove: {fileID: 0}
-  playerJump: {fileID: 0}
-  walkStateName: Walk
-  idleStateName: Idle
-  JumpStateName: Jump
-  RunStateName: Run
 --- !u!114 &1089770778
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -891,7 +710,7 @@ Transform:
   m_GameObject: {fileID: 1098880349}
   serializedVersion: 2
   m_LocalRotation: {x: 0.06288527, y: 0, z: 0, w: 0.99802077}
-  m_LocalPosition: {x: 0, y: 3.5338821, z: -3.7454433}
+  m_LocalPosition: {x: 0, y: 2.153882, z: -3.7454433}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1339,51 +1158,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1706221388}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!1 &1715400868
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1715400869}
-  - component: {fileID: 1715400870}
-  m_Layer: 0
-  m_Name: PlayerJumpStateMachine
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1715400869
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1715400868}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.41187, y: -1.38, z: -1.45785}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 550950956}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1715400870
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1715400868}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d7e178f5e3c8a474d86aaf3573695b83, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::PlayerJumpStateMachine
-  states: []
 --- !u!1 &1976251489
 GameObject:
   m_ObjectHideFlags: 0
@@ -1627,7 +1401,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2706478470639612565, guid: 168712f6723106f4da0cbea0d1af48d4, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.38
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2706478470639612565, guid: 168712f6723106f4da0cbea0d1af48d4, type: 3}
       propertyPath: m_LocalPosition.z
@@ -1669,12 +1443,13 @@ PrefabInstance:
       propertyPath: m_Controller
       value: 
       objectReference: {fileID: 9100000, guid: 3bfbaccca82539b48b17b8fe198a4a79, type: 2}
+    - target: {fileID: 8318002280461412591, guid: 168712f6723106f4da0cbea0d1af48d4, type: 3}
+      propertyPath: m_ApplyRootMotion
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
-    m_AddedGameObjects:
-    - targetCorrespondingSourceObject: {fileID: 2706478470639612565, guid: 168712f6723106f4da0cbea0d1af48d4, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 550950956}
+    m_AddedGameObjects: []
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 3369967373867493423, guid: 168712f6723106f4da0cbea0d1af48d4, type: 3}
       insertIndex: -1

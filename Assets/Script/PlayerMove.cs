@@ -4,8 +4,7 @@ using UnityEngine.InputSystem;
 [RequireComponent(typeof(CharacterController))]
 public class PlayerMove : MonoBehaviour
 {
-    [SerializeField] private float moveSpeed = 5f;
-    [SerializeField] private float rotateSpeed = 10f;
+    [SerializeField] private float rotateSpeed = 15f;
 
     private Vector3 moveVelocity;
     
@@ -49,30 +48,27 @@ public class PlayerMove : MonoBehaviour
     {
         
     }
-
-    private void FixedUpdate()
+    public void ExecuteMove(Vector3 rawInput, bool isRun)
     {
-        // 입력이 있을 때만 실시간 카메라 정면 기준 계산 (카메라 회전에 따른 이동 방향 반영)
-        if (cc.moveInput != Vector3.zero)
-        {
-            cachedMoveDirection = CalculateDirection(cc.moveInput);
-        }
+        if (rawInput.sqrMagnitude <= 0.001f && !Player.Instance.isLockOn) return;
 
-        // 락온 여부에 따른 회전 분기
-        if (false)
+        Vector3 moveDir = CalculateDirection(rawInput);
+        // [회전 분기]
+        if (Player.Instance != null && Player.Instance.isLockOn)
         {
-            // Step 1: 락온 구현 시 대상 조준 회전 로직 연동[cite: 1]
+            // 락온 상태: 이동 방향이 아니라 '타겟(적)'을 바라보도록 회전
+            RotateTowardsTarget(Player.Instance.lockOnTarget.position);
         }
         else
         {
-            RotateTowardsDirection(cachedMoveDirection);
+            // 논락온 상태: 자신이 이동하는 방향을 바라보도록 회전
+            RotateTowardsDirection(moveDir);
+            //Debug.Log("논락온 상태 회전 처리");
         }
+
         // 이동 처리
-        moveVelocity = cachedMoveDirection * moveSpeed;
-        moveVelocity.y = cc.GetJumpVelocity().y; // 점프 속도 적용
-
-
-        cc.CC.Move(moveVelocity * Time.fixedDeltaTime);
+        float currentSpeed = isRun ? Player.Instance.RunSpeed : Player.Instance.MoveSpeed;
+        cc.CC.Move(moveDir * currentSpeed * Time.deltaTime);
     }
 
     public void ResetCache()
@@ -105,6 +101,16 @@ public class PlayerMove : MonoBehaviour
             transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotateSpeed * Time.deltaTime);
         }
     }
+    private void RotateTowardsTarget(Vector3 targetPos)
+    {
+        Vector3 dirToTarget = targetPos - transform.position;
+        dirToTarget.y = 0f; // Y축 고정
 
-    
+        if (dirToTarget.sqrMagnitude > 0.001f)
+        {
+            Quaternion targetRotation = Quaternion.LookRotation(dirToTarget);
+            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotateSpeed * Time.deltaTime);
+        }
+    }
+
 }

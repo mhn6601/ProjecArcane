@@ -2,10 +2,9 @@ using UnityEngine;
 
 public class PlayerGroundedState : PlayerState
 {
-    public PlayerGroundedState(PlayerController controller, Player player) : base(controller, player)
+    public PlayerGroundedState(PlayerController controller) : base(controller)
     {
         this.controller = controller;
-        this.player = player;
     }
     public override void OnEnter()
     {
