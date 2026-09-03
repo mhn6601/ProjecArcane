@@ -10,13 +10,13 @@ public class PlayerMove : MonoBehaviour
     
     private Vector3 cachedMoveDirection; // 계산된 최종 방향 벡터 저장용
 
-    private PlayerController cc;
+    private PlayerController controller;
 
     [SerializeField] private Transform playerFollowCamera;
 
     private void Awake()
     {
-        cc = GetComponent<PlayerController>();
+        controller = GetComponent<PlayerController>();
 
         if (playerFollowCamera == null || playerFollowCamera != FollowPlayerCamera.Instance.transform)
         {
@@ -50,11 +50,11 @@ public class PlayerMove : MonoBehaviour
     }
     public void ExecuteMove(Vector3 rawInput, bool isRun)
     {
-        if (rawInput.sqrMagnitude <= 0.001f && !Player.Instance.isLockOn) return;
+        if (rawInput.sqrMagnitude <= 0.001f && !controller.Status.isLockOn) return;
 
         Vector3 moveDir = CalculateDirection(rawInput);
         // [회전 분기]
-        if (Player.Instance != null && Player.Instance.isLockOn)
+        if (Player.Instance != null && controller.Status.isLockOn)
         {
             // 락온 상태: 이동 방향이 아니라 '타겟(적)'을 바라보도록 회전
             RotateTowardsTarget(Player.Instance.lockOnTarget.position);
@@ -68,7 +68,7 @@ public class PlayerMove : MonoBehaviour
 
         // 이동 처리
         float currentSpeed = isRun ? Player.Instance.RunSpeed : Player.Instance.MoveSpeed;
-        cc.CC.Move(moveDir * currentSpeed * Time.deltaTime);
+        controller.CC.Move(moveDir * currentSpeed * Time.deltaTime);
     }
 
     public void ResetCache()
@@ -89,7 +89,6 @@ public class PlayerMove : MonoBehaviour
 
         camForward.Normalize();
         camRight.Normalize();
-
         return (camForward * input.z) + (camRight * input.x);
     }
 

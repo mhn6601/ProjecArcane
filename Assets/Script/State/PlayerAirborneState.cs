@@ -20,12 +20,12 @@ public class PlayerAirborneState : PlayerState
     public override void OnEnter()
     {
         controller.PlayerJump.SetJumpVelocity();
-        Player.Instance.isGrounded= false;
+        controller.Status.RemoveFlag(CharacterActionFlags.CanJump);
         controller.Animator.SetBool(GroundedBoolHash, false);
         // 점프 상태 진입 시 실행될 코드 추가
         // 1. 점프 직전(지상)의 이동 입력 및 상태 캐싱 (공중 관성 고정)
-        Vector3 lastInput = controller.moveInput;
-        initialIsRun = controller.IsRunPressed;
+        Vector3 lastInput = controller.Input.MoveInput;
+        initialIsRun = controller.Input.IsRunPressed;
 
         if (lastInput.sqrMagnitude > 0.001f)
         {
@@ -75,7 +75,7 @@ public class PlayerAirborneState : PlayerState
     public override void OnExit()
     {
         //Debug.Log("PlayerAirborneState OnExit");
-        Player.Instance.isGrounded = true;
+        controller.Status.AddFlag(CharacterActionFlags.CanJump);
         controller.Animator.SetBool(GroundedBoolHash, true);
         // 점프 상태 종료 시 실행될 코드 추가
         // 상태 탈출 시 애니메이션 축 초기화

@@ -473,8 +473,8 @@ MonoBehaviour:
   IgnoreTimeScale: 0
   WorldUpOverride: {fileID: 0}
   ChannelMask: -1
-  UpdateMethod: 0
-  BlendUpdateMethod: 0
+  UpdateMethod: 1
+  BlendUpdateMethod: 1
   LensModeOverride:
     Enabled: 0
     DefaultMode: 2
@@ -519,8 +519,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c46354872474d7445b9eb318122fd434, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Player
-  isGrounded: 0
-  isLockOn: 0
   moveSpeed: 2.5
   runSpeed: 5
   lockOnTarget: {fileID: 0}
@@ -586,6 +584,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerController
   animator: {fileID: 1089770780}
+  attackData: {fileID: 11400000, guid: 983cf4868ace8a84dae4221121e7e7f8, type: 2}
 --- !u!114 &1089770778
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -637,6 +636,18 @@ Animator:
   m_CorrespondingSourceObject: {fileID: 8318002280461412591, guid: 168712f6723106f4da0cbea0d1af48d4, type: 3}
   m_PrefabInstance: {fileID: 4264424922323607535}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1089770781
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1089770764}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 69577d97be0e07141859a8d61238cf81, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerInputHandler
 --- !u!1 &1098880349
 GameObject:
   m_ObjectHideFlags: 0
@@ -1456,16 +1467,19 @@ PrefabInstance:
       addedObject: {fileID: 1089770768}
     - targetCorrespondingSourceObject: {fileID: 3369967373867493423, guid: 168712f6723106f4da0cbea0d1af48d4, type: 3}
       insertIndex: -1
+      addedObject: {fileID: 1089770781}
+    - targetCorrespondingSourceObject: {fileID: 3369967373867493423, guid: 168712f6723106f4da0cbea0d1af48d4, type: 3}
+      insertIndex: -1
       addedObject: {fileID: 1089770767}
     - targetCorrespondingSourceObject: {fileID: 3369967373867493423, guid: 168712f6723106f4da0cbea0d1af48d4, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1089770772}
     - targetCorrespondingSourceObject: {fileID: 3369967373867493423, guid: 168712f6723106f4da0cbea0d1af48d4, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 1089770771}
+      addedObject: {fileID: 1089770775}
     - targetCorrespondingSourceObject: {fileID: 3369967373867493423, guid: 168712f6723106f4da0cbea0d1af48d4, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 1089770775}
+      addedObject: {fileID: 1089770771}
     - targetCorrespondingSourceObject: {fileID: 3369967373867493423, guid: 168712f6723106f4da0cbea0d1af48d4, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1089770779}

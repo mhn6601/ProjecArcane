@@ -1,10 +1,9 @@
 using UnityEngine;
 
-public class PlayerGroundedState : PlayerState
+public class PlayerEmptyActionState : PlayerState   
 {
-    public PlayerGroundedState(PlayerController controller) : base(controller)
+    public PlayerEmptyActionState(PlayerController controller) : base(controller)
     {
-        this.controller = controller;
     }
     public override void OnEnter()
     {
@@ -12,6 +11,7 @@ public class PlayerGroundedState : PlayerState
     public override void Update()
     {
     }
+
     public override void OnExit()
     {
     }

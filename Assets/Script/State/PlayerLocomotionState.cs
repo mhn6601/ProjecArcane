@@ -13,8 +13,9 @@ public class PlayerLocomotionState : PlayerState
     private static readonly int WalkBoolHash = Animator.StringToHash("isWalk");
     private static readonly int RunBoolHash = Animator.StringToHash("isRun");
 
-    public PlayerLocomotionState(PlayerController controller)
-        : base(controller) { }
+    public PlayerLocomotionState(PlayerController controller): base(controller) 
+    {
+    }
 
     public override void OnEnter()
     {
@@ -25,20 +26,25 @@ public class PlayerLocomotionState : PlayerState
 
     public override void Update()
     {
-        
+        if (controller.Input.JumpTriggered)
+        {
+            controller.MovementFSM.ChangeState(controller.AirborneState);
+            return;
+        }
         if (!controller.PlayerJump.IsGround())
         {
             controller.MovementFSM.ChangeState(controller.AirborneState);
             return;
         }
-        Vector3 moveInput = controller.moveInput;
+        Vector3 moveInput = controller.Input.MoveInput;
+        bool isRunPressed = controller.Input.IsRunPressed;
 
         // 1. 단순 0 체크 optimization (.sqrMagnitude 활용)
         if (moveInput.sqrMagnitude <= 0.001f)
         {
             // 입력이 없으면 애니메이션 파라미터를 0으로 보간 후 이동 중단
             SetAnimatorParametersMoveHash(0, 0.1f);
-            controller.PlayerMove.ExecuteMove(Vector2.zero, controller.IsRunPressed);
+            controller.PlayerMove.ExecuteMove(Vector2.zero, isRunPressed);
             UpdateAnimatorParameters(moveInput, 0f);
             return;
         }
@@ -50,15 +56,15 @@ public class PlayerLocomotionState : PlayerState
 
         if (controller.CurrentDevice == PlayerController.ControlDeviceType.Gamepad)
         {
-            float maxCap = controller.IsRunPressed ? 1.0f : 0.5f;
+            float maxCap = isRunPressed ? 1.0f : 0.5f;
             targetSpeedMultiplier = Mathf.Clamp(inputMagnitude, 0f, maxCap);
         }
         else
         {
-            targetSpeedMultiplier = controller.IsRunPressed ? 1.0f : 0.5f;
+            targetSpeedMultiplier = isRunPressed ? 1.0f : 0.5f;
         }
         UpdateAnimatorParameters(moveInput, targetSpeedMultiplier);
-        if (Player.Instance != null && Player.Instance.isLockOn)
+        if (controller.Status.isLockOn)
         {
             var animInput=Vector2.zero;
             SetAnimatorParametersMoveHash(animInput,0.1f);
@@ -70,7 +76,7 @@ public class PlayerLocomotionState : PlayerState
             SetAnimatorParametersMoveHash(targetSpeedMultiplier, 0.1f);
         }
         // 4. 이동 로직 위임
-        controller.PlayerMove.ExecuteMove(moveInput, controller.IsRunPressed);
+        controller.PlayerMove.ExecuteMove(moveInput, isRunPressed);
         // 5. 2D Blend Tree 파라미터 업데이트 (MoveX, MoveZ)
     }
 

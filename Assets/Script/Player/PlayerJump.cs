@@ -16,14 +16,14 @@ public class PlayerJump : MonoBehaviour
     [SerializeField]
     private float jumpHeight = 0f;
 
-    private PlayerController cc;
+    private PlayerController controller;
 
     private PlayerInputAction inputActions;
     [SerializeField] private Transform playerFollowCamera;
     private void Awake()
     {
         inputActions = new PlayerInputAction();
-        cc = GetComponent<PlayerController>();
+        controller = GetComponent<PlayerController>();
         if (playerFollowCamera == null || playerFollowCamera != FollowPlayerCamera.Instance.transform)
         {
             if (FollowPlayerCamera.Instance != null)
@@ -71,7 +71,7 @@ public class PlayerJump : MonoBehaviour
 
         // 3. 최종 통합 이동 벡터 전달
         Vector3 finalVelocity = horizontalMove + verticalMove;
-        cc.CC.Move(finalVelocity * Time.fixedDeltaTime);
+        controller.CC.Move(finalVelocity * Time.deltaTime);
     }
     public bool IsGround()
     {
@@ -81,7 +81,14 @@ public class PlayerJump : MonoBehaviour
     private void IsGroundedInitialize()
     {
         Vector3 ray = GetRayOrigin();
-        Player.Instance.isGrounded = Physics.Raycast(ray, Vector3.down, rayDistance, groundLayer);
+        if(Physics.Raycast(ray, Vector3.down, rayDistance, groundLayer))
+        {
+            controller.Status.RemoveFlag(CharacterActionFlags.CanJump);
+        }
+        else
+        {
+            controller.Status.AddFlag(CharacterActionFlags.CanJump);
+        }
     }
     public void SetJumpVelocity()
     {
@@ -118,9 +125,9 @@ public class PlayerJump : MonoBehaviour
     }
     private Vector3 GetRayOrigin()
     {
-        if (cc != null && cc.CC != null)
+        if (controller != null && controller.CC != null)
         {
-            return transform.position + new Vector3(0f, cc.CC.center.y - (cc.CC.height * 0.5f) + cc.CC.skinWidth, 0f);
+            return transform.position + new Vector3(0f, controller.CC.center.y - (controller.CC.height * 0.5f) + controller.CC.skinWidth, 0f);
         }
 
         // 에디터 실행 전 참조 연산용 기본 위치

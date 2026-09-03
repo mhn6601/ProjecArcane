@@ -1,10 +1,7 @@
 using UnityEngine;
 public class Player:Singleton<Player>
 {
-    #region playerStatus
-    [Header("Player Status")]
-    public bool isGrounded = false;
-    public bool isLockOn=false;
+    #region playerStat
 
     [SerializeField] private float moveSpeed= 2.5f;
     public float MoveSpeed {get {return moveSpeed;}}

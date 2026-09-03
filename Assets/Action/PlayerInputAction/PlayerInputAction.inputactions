@@ -17,7 +17,7 @@
                     "priority": 0
                 },
                 {
-                    "name": "NormalAttack",
+                    "name": "Attack",
                     "type": "Button",
                     "id": "4af3bfd7-7290-452b-814d-0ed952e506a1",
                     "expectedControlType": "",
@@ -27,7 +27,7 @@
                     "priority": 0
                 },
                 {
-                    "name": "StrongAttack",
+                    "name": "HeavyAttack",
                     "type": "Button",
                     "id": "2ffb02ae-55d3-483a-adef-3acb54db6fad",
                     "expectedControlType": "",
@@ -47,7 +47,7 @@
                     "priority": 0
                 },
                 {
-                    "name": "Shield",
+                    "name": "Guard",
                     "type": "Button",
                     "id": "69ddd975-6afd-44de-b1bc-d1d1364d1d48",
                     "expectedControlType": "",
@@ -172,7 +172,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "NormalAttack",
+                    "action": "Attack",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -183,7 +183,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "StrongAttack",
+                    "action": "HeavyAttack",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -205,7 +205,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Shield",
+                    "action": "Guard",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
