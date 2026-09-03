@@ -26,6 +26,10 @@ public class PlayerLocomotionState : PlayerState
 
     public override void Update()
     {
+        if (!controller.Status.CanMove)
+        {
+            return;
+        }
         if (controller.Input.JumpTriggered)
         {
             controller.MovementFSM.ChangeState(controller.AirborneState);
@@ -64,7 +68,7 @@ public class PlayerLocomotionState : PlayerState
             targetSpeedMultiplier = isRunPressed ? 1.0f : 0.5f;
         }
         UpdateAnimatorParameters(moveInput, targetSpeedMultiplier);
-        if (controller.Status.isLockOn)
+        if (controller.Status.IsLockOn)
         {
             var animInput=Vector2.zero;
             SetAnimatorParametersMoveHash(animInput,0.1f);

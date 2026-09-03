@@ -50,11 +50,11 @@ public class PlayerMove : MonoBehaviour
     }
     public void ExecuteMove(Vector3 rawInput, bool isRun)
     {
-        if (rawInput.sqrMagnitude <= 0.001f && !controller.Status.isLockOn) return;
+        if (rawInput.sqrMagnitude <= 0.001f && !controller.Status.IsLockOn) return;
 
         Vector3 moveDir = CalculateDirection(rawInput);
         // [회전 분기]
-        if (Player.Instance != null && controller.Status.isLockOn)
+        if (Player.Instance != null && controller.Status.IsLockOn)
         {
             // 락온 상태: 이동 방향이 아니라 '타겟(적)'을 바라보도록 회전
             RotateTowardsTarget(Player.Instance.lockOnTarget.position);

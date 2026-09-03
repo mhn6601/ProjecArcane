@@ -648,6 +648,41 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 69577d97be0e07141859a8d61238cf81, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerInputHandler
+--- !u!114 &1089770782
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1089770764}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 36c1d633679fce64e9856cfd09a010c3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerAttack
+--- !u!114 &1089770783
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1089770764}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 73050d40cb23aec4c8c40d3392bc1878, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerStatus
+  maxHealth: 100
+  maxStamina: 100
+  reduceDamagePercent: 0.2
+  canMove: 0
+  canRotate: 0
+  canAttack: 0
+  canJump: 0
+  canParry: 0
+  isLockOn: 0
+  isInvincible: 0
+  isGuarding: 0
 --- !u!1 &1098880349
 GameObject:
   m_ObjectHideFlags: 0
@@ -1454,10 +1489,6 @@ PrefabInstance:
       propertyPath: m_Controller
       value: 
       objectReference: {fileID: 9100000, guid: 3bfbaccca82539b48b17b8fe198a4a79, type: 2}
-    - target: {fileID: 8318002280461412591, guid: 168712f6723106f4da0cbea0d1af48d4, type: 3}
-      propertyPath: m_ApplyRootMotion
-      value: 0
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1476,6 +1507,9 @@ PrefabInstance:
       addedObject: {fileID: 1089770772}
     - targetCorrespondingSourceObject: {fileID: 3369967373867493423, guid: 168712f6723106f4da0cbea0d1af48d4, type: 3}
       insertIndex: -1
+      addedObject: {fileID: 1089770782}
+    - targetCorrespondingSourceObject: {fileID: 3369967373867493423, guid: 168712f6723106f4da0cbea0d1af48d4, type: 3}
+      insertIndex: -1
       addedObject: {fileID: 1089770775}
     - targetCorrespondingSourceObject: {fileID: 3369967373867493423, guid: 168712f6723106f4da0cbea0d1af48d4, type: 3}
       insertIndex: -1
@@ -1486,6 +1520,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 3369967373867493423, guid: 168712f6723106f4da0cbea0d1af48d4, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1089770778}
+    - targetCorrespondingSourceObject: {fileID: 3369967373867493423, guid: 168712f6723106f4da0cbea0d1af48d4, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1089770783}
   m_SourcePrefab: {fileID: 100100000, guid: 168712f6723106f4da0cbea0d1af48d4, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:

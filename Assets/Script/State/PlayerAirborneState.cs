@@ -2,13 +2,11 @@ using UnityEngine;
 
 public class PlayerAirborneState : PlayerState
 {
-    private static readonly int AirborneSubStateHash = Animator.StringToHash("AirborneState");
+    private static readonly int JumpHash = Animator.StringToHash("Jump");
     private static readonly int JumpSpeedHash = Animator.StringToHash("JumpSpeed");
-    private static readonly int JumpTriggerHash = Animator.StringToHash("isJump");  
-    private static readonly int GroundedBoolHash = Animator.StringToHash("isGrounded");  
-    private static readonly int IdleJumpBoolHash = Animator.StringToHash("isIdleJump");  
-    private static readonly int WalkJumpBoolHash = Animator.StringToHash("isWalkJump");  
-    private static readonly int RunJumpBoolHash = Animator.StringToHash("isRunJump");  
+    private static readonly int IdleJumpHash = Animator.StringToHash("IdleJump");  
+    private static readonly int WalkJumpHash = Animator.StringToHash("WalkJump");  
+    private static readonly int RunJumpHash = Animator.StringToHash("RunJump");  
     // 공중 상태 동안 유지할 관성 캐시 데이터
     private Vector3 initialJumpDirection;
     private bool initialIsRun;
@@ -21,7 +19,7 @@ public class PlayerAirborneState : PlayerState
     {
         controller.PlayerJump.SetJumpVelocity();
         controller.Status.RemoveFlag(CharacterActionFlags.CanJump);
-        controller.Animator.SetBool(GroundedBoolHash, false);
+        //controller.Animator.SetBool(GroundedBoolHash, false);
         // 점프 상태 진입 시 실행될 코드 추가
         // 1. 점프 직전(지상)의 이동 입력 및 상태 캐싱 (공중 관성 고정)
         Vector3 lastInput = controller.Input.MoveInput;
@@ -54,8 +52,8 @@ public class PlayerAirborneState : PlayerState
         controller.Animator.SetFloat(JumpSpeedHash, initialSpeedMultiplier);
 
         // 3. Sub-State Machine으로 CrossFade 진입
-        //controller.Animator.CrossFade(AirborneSubStateHash, 0.1f);
-        controller.Animator.SetTrigger(JumpTriggerHash);
+        controller.Animator.CrossFade(initialSpeedMultiplier==0 ? IdleJumpHash : (initialSpeedMultiplier >= 0.5f ? WalkJumpHash : RunJumpHash), 0.1f);
+        //controller.Animator.SetTrigger(JumpTriggerHash);
     }
     public override void Update()
     {
@@ -76,7 +74,7 @@ public class PlayerAirborneState : PlayerState
     {
         //Debug.Log("PlayerAirborneState OnExit");
         controller.Status.AddFlag(CharacterActionFlags.CanJump);
-        controller.Animator.SetBool(GroundedBoolHash, true);
+        //controller.Animator.SetBool(GroundedBoolHash, true);
         // 점프 상태 종료 시 실행될 코드 추가
         // 상태 탈출 시 애니메이션 축 초기화
     }

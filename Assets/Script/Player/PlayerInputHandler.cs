@@ -9,7 +9,7 @@ public class PlayerInputHandler : MonoBehaviour
 
     // 지속 유지 입력 Hold
     public Vector3 MoveInput { get; private set; }
-    public bool IsGuardHeld { get; private set; }
+    public bool IsGuardHold { get; private set; }
 
 
 
@@ -36,6 +36,13 @@ public class PlayerInputHandler : MonoBehaviour
         inputActions.PlayerAction.Run.canceled += OnRunCanceled;
 
         inputActions.PlayerAction.Jump.performed += OnJumpPerformed;
+
+        inputActions.PlayerAction.Attack.performed += OnAttackPerformed;
+        inputActions.PlayerAction.HeavyAttack.performed += OnHeavyAttackPerformed;
+        inputActions.PlayerAction.Parry.performed += OnParryPerformed;
+        inputActions.PlayerAction.Guard.performed += OnGuardHoldPerformed;
+        inputActions.PlayerAction.Guard.canceled += OnGuardHoldCanceled;
+
     }
 
     private void OnDisable()
@@ -48,12 +55,14 @@ public class PlayerInputHandler : MonoBehaviour
 
         inputActions.PlayerAction.Jump.performed -= OnJumpPerformed;
 
+        inputActions.PlayerAction.Attack.performed -= OnAttackPerformed;
+        inputActions.PlayerAction.HeavyAttack.performed -= OnHeavyAttackPerformed;
+        inputActions.PlayerAction.Parry.performed -= OnParryPerformed;
+        inputActions.PlayerAction.Guard.performed -= OnGuardHoldPerformed;
+        inputActions.PlayerAction.Guard.canceled -= OnGuardHoldCanceled;
+
         inputActions.PlayerAction.Disable();
     }
-
-    // ========================================================================
-    // [기존 Controller에 있던 콜백 함수들이 이동한 위치]
-    // ========================================================================
 
     private void OnMovePerformed(InputAction.CallbackContext context)
     {
@@ -79,10 +88,34 @@ public class PlayerInputHandler : MonoBehaviour
     {
         JumpTriggered = true;
     }
+    private void OnAttackPerformed(InputAction.CallbackContext context)
+    {
+        AttackTriggered = true;
+    }
+    private void OnHeavyAttackPerformed(InputAction.CallbackContext context)
+    {
+        HeavyAttackTriggered = true;
+    }
+    private void OnParryPerformed(InputAction.CallbackContext context)
+    {
+        ParryTriggered = true;
+    }
+    private void OnGuardHoldPerformed(InputAction.CallbackContext context)
+    {
+        IsGuardHold = true;
+    }
+    private void OnGuardHoldCanceled(InputAction.CallbackContext context)
+    {
+        IsGuardHold = false;
+    }
+
 
     // 단발성 트리거(Jump 등)는 프레임 종료 시 리셋
     private void LateUpdate()
     {
         JumpTriggered = false;
+        AttackTriggered = false;
+        HeavyAttackTriggered = false;
+        ParryTriggered = false;
     }
 }

@@ -287,7 +287,7 @@ public partial class @PlayerInputAction: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""b0d40945-d0a7-419d-b695-1ac855bc05f1"",
-                    ""path"": ""<Keyboard>/shift"",
+                    ""path"": ""<Mouse>/rightButton"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
