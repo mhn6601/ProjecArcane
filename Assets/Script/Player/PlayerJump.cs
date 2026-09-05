@@ -11,6 +11,7 @@ public class PlayerJump : MonoBehaviour
     private float rayDistance=0.2f;
     private float gravity =-9.81f;
     private float groundedGravity =-8f;
+    public float GroundedGravity => groundedGravity;
     [SerializeField]private Vector3 jumpVelocity;
 
     [SerializeField]

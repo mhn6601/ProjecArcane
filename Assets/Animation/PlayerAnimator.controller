@@ -496,6 +496,12 @@ AnimatorController:
     m_DefaultInt: 0
     m_DefaultBool: 0
     m_Controller: {fileID: 9100000}
+  - m_Name: EndParry
+    m_Type: 9
+    m_DefaultFloat: 0
+    m_DefaultInt: 0
+    m_DefaultBool: 0
+    m_Controller: {fileID: 9100000}
   m_AnimatorLayers:
   - serializedVersion: 5
     m_Name: Base Layer
@@ -634,7 +640,7 @@ AnimatorState:
   m_SpeedParameter: 
   m_MirrorParameter: 
   m_CycleOffsetParameter: 
-  m_TimeParameter: 
+  m_TimeParameter: ParryTime
 --- !u!1101 &2470877962627061052
 AnimatorStateTransition:
   m_ObjectHideFlags: 1
@@ -718,19 +724,21 @@ AnimatorStateMachine:
     m_Position: {x: 270, y: 80, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 2146644614757474485}
-    m_Position: {x: 710, y: 350, z: 0}
+    m_Position: {x: 700, y: 350, z: 0}
   m_ChildStateMachines:
   - serializedVersion: 1
     m_StateMachine: {fileID: -5993737166046818818}
     m_Position: {x: 590, y: 160, z: 0}
   - serializedVersion: 1
     m_StateMachine: {fileID: -6615922472585516928}
-    m_Position: {x: 430, y: 420, z: 0}
+    m_Position: {x: 420, y: 420, z: 0}
   m_AnyStateTransitions:
   - {fileID: 3715887241822748370}
   m_EntryTransitions: []
   m_StateMachineTransitions:
   - first: {fileID: -5993737166046818818}
+    second: []
+  - first: {fileID: -6615922472585516928}
     second: []
   m_StateMachineBehaviours: []
   m_AnyStatePosition: {x: 290, y: -50, z: 0}

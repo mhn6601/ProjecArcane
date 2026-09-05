@@ -7,7 +7,7 @@ public class PlayerGuardState : PlayerState
     }
     public override void OnEnter()
     {
-        controller.Animator.CrossFade("GuardUp", 0.1f);
+        controller.Animator.CrossFade("GuardUp", 0f);
         controller.Status.IsGuarding = true; // Guard 상태 플래그 설정[cite: 2]
     }
 

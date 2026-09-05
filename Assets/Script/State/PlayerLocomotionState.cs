@@ -32,7 +32,7 @@ public class PlayerLocomotionState : PlayerState
         }
         if (controller.Input.JumpTriggered)
         {
-            controller.MovementFSM.ChangeState(controller.AirborneState);
+            controller.MovementFSM.ChangeState(controller.JumpState);
             return;
         }
         if (!controller.PlayerJump.IsGround())
@@ -42,13 +42,15 @@ public class PlayerLocomotionState : PlayerState
         }
         Vector3 moveInput = controller.Input.MoveInput;
         bool isRunPressed = controller.Input.IsRunPressed;
-
+        float gravity= controller.PlayerJump.GroundedGravity;
+        Vector3 gravityVector = new Vector3(0, gravity, 0);
         // 1. 단순 0 체크 optimization (.sqrMagnitude 활용)
         if (moveInput.sqrMagnitude <= 0.001f)
         {
             // 입력이 없으면 애니메이션 파라미터를 0으로 보간 후 이동 중단
             SetAnimatorParametersMoveHash(0, 0.1f);
-            controller.PlayerMove.ExecuteMove(Vector2.zero, isRunPressed);
+            
+            controller.PlayerMove.ExecuteMove(gravityVector, isRunPressed);
             UpdateAnimatorParameters(moveInput, 0f);
             return;
         }
@@ -80,7 +82,7 @@ public class PlayerLocomotionState : PlayerState
             SetAnimatorParametersMoveHash(targetSpeedMultiplier, 0.1f);
         }
         // 4. 이동 로직 위임
-        controller.PlayerMove.ExecuteMove(moveInput, isRunPressed);
+        controller.PlayerMove.ExecuteMove(moveInput+ gravityVector, isRunPressed);
         // 5. 2D Blend Tree 파라미터 업데이트 (MoveX, MoveZ)
     }
 

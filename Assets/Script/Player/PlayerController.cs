@@ -40,6 +40,7 @@ public class PlayerController : CharacterControllerBase
     [Header("State")]
     public PlayerLocomotionState locomotionState {  get;private set; }
     public PlayerAirborneState AirborneState { get;private set; }
+    public PlayerJumpState JumpState { get; private set; }
     public PlayerAttackComboState AttackComboState { get;private set; }
     public PlayerHeavyAttackState HeavyAttackState { get;private set; }
     public PlayerParryState ParryState { get;private set; }
@@ -114,6 +115,7 @@ public class PlayerController : CharacterControllerBase
         #endregion
 
         #region ActionState
+        JumpState = new PlayerJumpState(this);
         AttackComboState = new PlayerAttackComboState(this, attackData.lightAttackSteps);
         HeavyAttackState = new PlayerHeavyAttackState(this, attackData.heavyAttackSteps);
         ParryState = new PlayerParryState(this);

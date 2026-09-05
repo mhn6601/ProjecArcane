@@ -50,6 +50,7 @@ public class PlayerMove : MonoBehaviour
     }
     public void ExecuteMove(Vector3 rawInput, bool isRun)
     {
+        Debug.Log("excutemove");
         if (rawInput.sqrMagnitude <= 0.001f && !controller.Status.IsLockOn) return;
 
         Vector3 moveDir = CalculateDirection(rawInput);
@@ -68,6 +69,7 @@ public class PlayerMove : MonoBehaviour
 
         // 이동 처리
         float currentSpeed = isRun ? Player.Instance.RunSpeed : Player.Instance.MoveSpeed;
+        moveDir.y = -8f;
         controller.CC.Move(moveDir * currentSpeed * Time.deltaTime);
     }
 

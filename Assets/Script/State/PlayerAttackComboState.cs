@@ -6,6 +6,8 @@ public class PlayerAttackComboState : PlayerState
     private int currentComboIndex= 0;
     private bool isHeavyAttackInputBuffered = false;
     private bool isComboInputBuffered = false;
+    private float comboInputBufferTimeMin = 0.3f; // 콤보 입력 버퍼 최소시간
+    private float stateNormalizedTimeMax = 0.85f; // 콤보 입력 버퍼 최대시간
     private readonly LightAttackStepData[] comboSteps;
     public PlayerAttackComboState(PlayerController controller, LightAttackStepData[] steps):base(controller)
     {
@@ -15,6 +17,7 @@ public class PlayerAttackComboState : PlayerState
     {
 
         controller.Status.RemoveFlag(CharacterActionFlags.CanMove);
+        controller.Status.RemoveFlag(CharacterActionFlags.CanJump);
         PlayComboAnimation();
     }
     override public void Update()
@@ -23,8 +26,8 @@ public class PlayerAttackComboState : PlayerState
         AnimatorStateInfo stateInfo = controller.Animator.GetCurrentAnimatorStateInfo(0);
         //패리 입력 처리 일반 공격 중 패리 연계
         if (controller.Input.ParryTriggered)
-        {Debug.Log($"ParryTriggered: {controller.Input.ParryTriggered}");
-            controller.ParryState.SetNextComboIndex(currentComboIndex + 1);
+        {
+            controller.ParryState.SetNextComboIndex(currentComboIndex + 1 < comboSteps.Length ? currentComboIndex + 1 : currentComboIndex);
             controller.ActionFSM.ChangeState(controller.ParryState);
             return;
         }
@@ -34,18 +37,17 @@ public class PlayerAttackComboState : PlayerState
         }
         
         //일반 공격 연타 입력 버퍼링
-        if (controller.Input.AttackTriggered)
+        if (stateInfo.normalizedTime >= comboInputBufferTimeMin && controller.Input.AttackTriggered)
         {
             isComboInputBuffered = true;
         }
 
         //애니메이션 종료 시점에 다음 콤보 or 종료처리
-        if (stateInfo.normalizedTime>=0.85)
+        if (stateInfo.normalizedTime>= stateNormalizedTimeMax)
         {
             //강공격 입력 처리 콤보 종료 이후 강공격 전환
             if (isHeavyAttackInputBuffered)
             {
-                Debug.Log($"HeavyAttackTriggered: {controller.Input.HeavyAttackTriggered}");
                 controller.HeavyAttackState.SetStepIndex(currentComboIndex);
                 controller.ActionFSM.ChangeState(controller.HeavyAttackState);
                 return;
@@ -72,6 +74,7 @@ public class PlayerAttackComboState : PlayerState
     public override void OnExit()
     {
         controller.Status.AddFlag(CharacterActionFlags.CanMove);
+        controller.Status.AddFlag(CharacterActionFlags.CanJump);
         currentComboIndex = 0;
     }
     private void PlayComboAnimation()

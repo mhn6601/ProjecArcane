@@ -9,12 +9,12 @@ public class PlayerInputHandler : MonoBehaviour
 
     // 지속 유지 입력 Hold
     public Vector3 MoveInput { get; private set; }
+    public bool IsRunPressed { get; private set; }
     public bool IsGuardHold { get; private set; }
 
 
 
     // 단발성 트리거 입력Triggered
-    public bool IsRunPressed { get; private set; }
     public bool JumpTriggered { get; private set; }
     public bool AttackTriggered { get; private set; }
     public bool HeavyAttackTriggered { get; private set; }

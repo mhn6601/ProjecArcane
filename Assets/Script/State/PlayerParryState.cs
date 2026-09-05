@@ -14,10 +14,13 @@ public class PlayerParryState : PlayerState
     }
     public override void OnEnter()
     {
+        Debug.Log( "Entering Parry State");
         stateTimer = 0f;
         isParrysuccess = false;
         controller.Status.RemoveFlag(CharacterActionFlags.CanMove);
-        controller.Animator.CrossFade(ParryHash, 0.1f);
+        controller.Status.RemoveFlag(CharacterActionFlags.CanJump);
+        controller.PlayerMove.ResetCache();
+        controller.Animator.CrossFade(ParryHash, 0f);
     }
     public override void Update()
     {
@@ -25,16 +28,21 @@ public class PlayerParryState : PlayerState
         if (isParrysuccess)
         {
             controller.AttackComboState.SetComboIndex(nextComboIndex);
-            controller.ActionFSM.ChangeState(controller.AttackComboState);
-            return;
+            if(controller.Input.AttackTriggered)
+            {
+                controller.ActionFSM.ChangeState(controller.AttackComboState);
+                return;
+            }
         }
         if(stateTimer>parryWindowDuration)
         {
             //패리 실패 시 회복 지연 시간 후 대기 상태 복귀
-            controller.Animator.CrossFade(LocomotionTreeHash, 0.1f);
             if (stateTimer > parryWindowDuration + recoveryDelayOnFail)
             {
                 controller.ActionFSM.ChangeState(controller.EmptyActionState);
+
+                controller.Animator.CrossFade(LocomotionTreeHash, 0f);
+
             }
         }
     }
@@ -42,6 +50,7 @@ public class PlayerParryState : PlayerState
     public override void OnExit()
     {
         controller.Status.AddFlag(CharacterActionFlags.CanMove);
+        controller.Status.AddFlag(CharacterActionFlags.CanJump);
     }
     public void OnParrySuccess()
     {
