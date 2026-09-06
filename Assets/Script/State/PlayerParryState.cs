@@ -14,7 +14,6 @@ public class PlayerParryState : PlayerState
     }
     public override void OnEnter()
     {
-        Debug.Log( "Entering Parry State");
         stateTimer = 0f;
         isParrysuccess = false;
         controller.Status.RemoveFlag(CharacterActionFlags.CanMove);

@@ -20,6 +20,8 @@ public class PlayerHeavyAttackState : PlayerState
     {
         controller.Status.RemoveFlag(CharacterActionFlags.CanMove);
         controller.Status.RemoveFlag(CharacterActionFlags.CanJump);
+        controller.Status.RemoveFlag(CharacterActionFlags.CanGuard);
+        controller.Status.RemoveFlag(CharacterActionFlags.CanParry);
 
         // 현재 콤보 단계에 일치하는 강공격 데이터 가져오기
         HeavyAttackStepData currentData = heavySteps[stepIndex];
@@ -43,6 +45,8 @@ public class PlayerHeavyAttackState : PlayerState
     {
         controller.Status.AddFlag(CharacterActionFlags.CanMove);
         controller.Status.AddFlag(CharacterActionFlags.CanJump);
+        controller.Status.AddFlag(CharacterActionFlags.CanGuard);
+        controller.Status.AddFlag(CharacterActionFlags.CanParry);
     }
 }
 
