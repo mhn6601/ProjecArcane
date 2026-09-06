@@ -27,6 +27,7 @@ public class PlayerStatus : MonoBehaviour
     public bool CanRotate => HasFlag(CharacterActionFlags.CanRotate);
     public bool CanAttack => HasFlag(CharacterActionFlags.CanAttack);
     public bool CanJump => HasFlag(CharacterActionFlags.CanJump);
+    public bool CanGuard => HasFlag(CharacterActionFlags.CanGuard);
     public bool CanParry => HasFlag(CharacterActionFlags.CanParry);
     public bool IsLockOn => HasFlag(CharacterActionFlags.isLockOn);
     public bool IsInvincible => HasFlag(CharacterActionFlags.IsInvincible);

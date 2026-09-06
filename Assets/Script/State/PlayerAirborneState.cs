@@ -22,6 +22,8 @@ public class PlayerAirborneState : PlayerState
     {
         controller.Status.RemoveFlag(CharacterActionFlags.CanMove);
         controller.Status.RemoveFlag(CharacterActionFlags.CanJump);
+        controller.Status.RemoveFlag(CharacterActionFlags.CanParry);
+        controller.Status.RemoveFlag(CharacterActionFlags.CanGuard);
     }
 
     public override void Update()
@@ -41,6 +43,8 @@ public class PlayerAirborneState : PlayerState
         // 착지 시 상태 및 플래그 복구
         controller.Status.AddFlag(CharacterActionFlags.CanMove);
         controller.Status.AddFlag(CharacterActionFlags.CanJump);
+        controller.Status.AddFlag(CharacterActionFlags.CanGuard);
+        controller.Status.AddFlag(CharacterActionFlags.CanParry);
 
         // 관성 데이터 초기화
         initialJumpDirection = Vector3.zero;
