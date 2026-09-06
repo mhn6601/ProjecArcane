@@ -10,17 +10,17 @@ public class PlayerEmptyActionState : PlayerState
     }
     public override void Update()
     {
-        if (controller.Input.AttackTriggered)
+        if (controller.Status.CanAttack && controller.Input.AttackTriggered)
         {
             controller.ActionFSM.ChangeState(controller.AttackComboState);
             return;
         }
-        else if (controller.Input.IsGuardHold)
+        else if (controller.Status.CanGuard && controller.Input.IsGuardHold)
         {
             controller.ActionFSM.ChangeState(controller.GuardState);
             return;
         }
-        else if (controller.Input.ParryTriggered)
+        else if (controller.Status.CanParry && controller.Input.ParryTriggered)
         {
             controller.ActionFSM.ChangeState(controller.ParryState);
             return;
