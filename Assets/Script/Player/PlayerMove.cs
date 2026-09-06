@@ -50,7 +50,6 @@ public class PlayerMove : MonoBehaviour
     }
     public void ExecuteMove(Vector3 rawInput, bool isRun)
     {
-        Debug.Log("excutemove");
         if (rawInput.sqrMagnitude <= 0.001f && !controller.Status.IsLockOn) return;
 
         Vector3 moveDir = CalculateDirection(rawInput);
