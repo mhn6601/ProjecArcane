@@ -67,7 +67,7 @@ public class PlayerMove : MonoBehaviour
         }
 
         // 이동 처리
-        float currentSpeed = isRun ? Player.Instance.RunSpeed : Player.Instance.MoveSpeed;
+        float currentSpeed = isRun ? Player.Instance.PlayerStats.RunSpeed : Player.Instance.PlayerStats.MoveSpeed;
         moveDir.y = -8f;
         controller.CC.Move(moveDir * currentSpeed * Time.deltaTime);
     }

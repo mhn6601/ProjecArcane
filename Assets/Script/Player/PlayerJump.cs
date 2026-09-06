@@ -64,7 +64,7 @@ public class PlayerJump : MonoBehaviour
     public void ExecuteJump(Vector3 rawInput, bool isRun)
     {
         // 1. 수평 이동 벡터 계산 (X, Z) - 속도 적용
-        float currentSpeed = isRun ? Player.Instance.RunSpeed : Player.Instance.MoveSpeed;
+        float currentSpeed = isRun ? Player.Instance.PlayerStats.RunSpeed : Player.Instance.PlayerStats.MoveSpeed;
         Vector3 horizontalMove = rawInput * currentSpeed;
 
         // 2. 수직 이동 벡터 계산 (Y) - 중력/점프 속도 적용
