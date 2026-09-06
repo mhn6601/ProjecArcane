@@ -638,8 +638,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c46354872474d7445b9eb318122fd434, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Player
-  moveSpeed: 2.5
-  runSpeed: 5
+  controller: {fileID: 0}
+  move: {fileID: 0}
+  status: {fileID: 0}
+  input: {fileID: 0}
+  playerStats: {fileID: 0}
+  animator: {fileID: 0}
   lockOnTarget: {fileID: 0}
 --- !u!143 &1089770771
 CharacterController:
@@ -798,10 +802,24 @@ MonoBehaviour:
   canRotate: 0
   canAttack: 0
   canJump: 0
+  canGuard: 0
   canParry: 0
   isLockOn: 0
   isInvincible: 0
   isGuarding: 0
+--- !u!114 &1089770784
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1089770764}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0ed354218728b2941bebd9b1cb0c087e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerStats
+  statData: {fileID: 11400000, guid: 267bf9bd0aa2e4c4aad7462c733ea3ec, type: 2}
 --- !u!1 &1098880349
 GameObject:
   m_ObjectHideFlags: 0
@@ -1656,6 +1674,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 3369967373867493423, guid: 168712f6723106f4da0cbea0d1af48d4, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1089770768}
+    - targetCorrespondingSourceObject: {fileID: 3369967373867493423, guid: 168712f6723106f4da0cbea0d1af48d4, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1089770784}
     - targetCorrespondingSourceObject: {fileID: 3369967373867493423, guid: 168712f6723106f4da0cbea0d1af48d4, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1089770781}
