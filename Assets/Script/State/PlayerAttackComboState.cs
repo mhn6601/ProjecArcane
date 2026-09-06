@@ -18,7 +18,6 @@ public class PlayerAttackComboState : PlayerState
 
         controller.Status.RemoveFlag(CharacterActionFlags.CanMove);
         controller.Status.RemoveFlag(CharacterActionFlags.CanJump);
-        controller.Status.RemoveFlag(CharacterActionFlags.CanGuard);
         PlayComboAnimation();
     }
     override public void Update()
@@ -76,7 +75,6 @@ public class PlayerAttackComboState : PlayerState
     {
         controller.Status.AddFlag(CharacterActionFlags.CanMove);
         controller.Status.AddFlag(CharacterActionFlags.CanJump);
-        controller.Status.AddFlag(CharacterActionFlags.CanGuard);
         currentComboIndex = 0;
     }
     private void PlayComboAnimation()

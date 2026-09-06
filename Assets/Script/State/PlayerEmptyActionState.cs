@@ -15,12 +15,12 @@ public class PlayerEmptyActionState : PlayerState
             controller.ActionFSM.ChangeState(controller.AttackComboState);
             return;
         }
-        else if (controller.Status.CanGuard&&controller.Input.IsGuardHold)
+        else if (controller.Input.IsGuardHold)
         {
             controller.ActionFSM.ChangeState(controller.GuardState);
             return;
         }
-        else if (controller.Status.CanParry&&controller.Input.ParryTriggered)
+        else if (controller.Input.ParryTriggered)
         {
             controller.ActionFSM.ChangeState(controller.ParryState);
             return;
