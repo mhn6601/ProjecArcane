@@ -8,12 +8,7 @@ using UnityEngine.InputSystem;
 public class PlayerController : CharacterControllerBase
 {
 
-    #region Component
-    private PlayerMove playerMove;
-    public PlayerMove PlayerMove => playerMove;
-    private PlayerJump playerJump;
-    public PlayerJump PlayerJump => playerJump;
-    #endregion
+   
 
     #region StateMachine
     private CharacterStateMachine movementFSM;
@@ -31,10 +26,6 @@ public class PlayerController : CharacterControllerBase
     // 현재 사용 중인 입력 장치 타입 (UI 프롬프트 교체 등에 활용)
     public ControlDeviceType CurrentDevice { get; private set; }
     #endregion
-    
-
-    public PlayerStatus Status {  get; private set; }
-    public PlayerInputHandler Input { get; private set; }
 
     #region State
     [Header("State")]
@@ -54,18 +45,7 @@ public class PlayerController : CharacterControllerBase
 
     protected override void Awake()
     {
-        animator = GetComponent<Animator>();
-
-        if (playerMove == null) playerMove = GetComponent<PlayerMove>();
-        if (playerJump == null) playerJump = GetComponent<PlayerJump>();
-
-        
-        Status=GetComponent<PlayerStatus>();
-        if (Status == null) Status=gameObject.AddComponent<PlayerStatus>();
-                 
-        Input=GetComponent<PlayerInputHandler>();
-        if (Input == null) Input = gameObject.AddComponent<PlayerInputHandler>();
-
+        animator = Player.Instance.Animator;
 
         PlayerStateMachineInitialize();
         PlayerStateInitialize();
@@ -110,17 +90,17 @@ public class PlayerController : CharacterControllerBase
     private void PlayerStateInitialize()
     {
         #region MovementState
-        locomotionState = new PlayerLocomotionState(this);
-        AirborneState = new PlayerAirborneState(this);
+        locomotionState = new PlayerLocomotionState(Player.Instance);
+        AirborneState = new PlayerAirborneState(Player.Instance);
         #endregion
 
         #region ActionState
-        JumpState = new PlayerJumpState(this);
-        AttackComboState = new PlayerAttackComboState(this, attackData.lightAttackSteps);
-        HeavyAttackState = new PlayerHeavyAttackState(this, attackData.heavyAttackSteps);
-        ParryState = new PlayerParryState(this);
-        EmptyActionState = new PlayerEmptyActionState(this);
-        GuardState = new PlayerGuardState(this);
+        JumpState = new PlayerJumpState(Player.Instance);
+        AttackComboState = new PlayerAttackComboState(Player.Instance, attackData.lightAttackSteps);
+        HeavyAttackState = new PlayerHeavyAttackState(Player.Instance, attackData.heavyAttackSteps);
+        ParryState = new PlayerParryState(Player.Instance);
+        EmptyActionState = new PlayerEmptyActionState(Player.Instance);
+        GuardState = new PlayerGuardState(Player.Instance);
         #endregion 
     }
     private void FSMUpdate()

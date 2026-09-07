@@ -1,3 +1,4 @@
+using System.Reflection.Metadata.Ecma335;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -9,35 +10,36 @@ public class PlayerAttackComboState : PlayerState
     private float comboInputBufferTimeMin = 0.3f; // 콤보 입력 버퍼 최소시간
     private float stateNormalizedTimeMax = 0.85f; // 콤보 입력 버퍼 최대시간
     private readonly LightAttackStepData[] comboSteps;
-    public PlayerAttackComboState(PlayerController controller, LightAttackStepData[] steps):base(controller)
+    public PlayerAttackComboState(Player player, LightAttackStepData[] steps):base(player)
     {
         this.comboSteps = steps;
     }
     override public void OnEnter()
     {
-
-        controller.Status.RemoveFlag(CharacterActionFlags.CanMove);
-        controller.Status.RemoveFlag(CharacterActionFlags.CanJump);
+        
+        
+        player.Status.RemoveFlag(CharacterActionFlags.CanMove);
+        player.Status.RemoveFlag(CharacterActionFlags.CanJump);
         PlayComboAnimation();
     }
     override public void Update()
     {
         
-        AnimatorStateInfo stateInfo = controller.Animator.GetCurrentAnimatorStateInfo(0);
+        AnimatorStateInfo stateInfo = player.Animator.GetCurrentAnimatorStateInfo(0);
         //패리 입력 처리 일반 공격 중 패리 연계
-        if (controller.Input.ParryTriggered)
+        if (player.Input.ParryTriggered)
         {
-            controller.ParryState.SetNextComboIndex(currentComboIndex + 1 < comboSteps.Length ? currentComboIndex + 1 : currentComboIndex);
-            controller.ActionFSM.ChangeState(controller.ParryState);
+            player.Controller.ParryState.SetNextComboIndex(currentComboIndex + 1 < comboSteps.Length ? currentComboIndex + 1 : currentComboIndex);
+            player.Controller.ActionFSM.ChangeState(player.Controller.ParryState);
             return;
         }
-        if (controller.Input.HeavyAttackTriggered)
+        if (player.Input.HeavyAttackTriggered)
         {
             isHeavyAttackInputBuffered = true;
         }
         
         //일반 공격 연타 입력 버퍼링
-        if (stateInfo.normalizedTime >= comboInputBufferTimeMin && controller.Input.AttackTriggered)
+        if (stateInfo.normalizedTime >= comboInputBufferTimeMin && player.Input.AttackTriggered)
         {
             isComboInputBuffered = true;
         }
@@ -48,8 +50,8 @@ public class PlayerAttackComboState : PlayerState
             //강공격 입력 처리 콤보 종료 이후 강공격 전환
             if (isHeavyAttackInputBuffered)
             {
-                controller.HeavyAttackState.SetStepIndex(currentComboIndex);
-                controller.ActionFSM.ChangeState(controller.HeavyAttackState);
+                player.Controller.HeavyAttackState.SetStepIndex(currentComboIndex);
+                player.Controller.ActionFSM.ChangeState(player.Controller.HeavyAttackState);
                 return;
             }
             if (isComboInputBuffered&&currentComboIndex<comboSteps.Length-1)
@@ -61,28 +63,41 @@ public class PlayerAttackComboState : PlayerState
             else if(isComboInputBuffered)
             {   
                 //콤보 종료 이후 대기 상태 복귀
-                controller.ActionFSM.ChangeState(controller.EmptyActionState);
+                player.Controller.ActionFSM.ChangeState(player.Controller.EmptyActionState);
                 return;
             }
             else
             {
-                controller.ActionFSM.ChangeState(controller.EmptyActionState);
+                player.Controller.ActionFSM.ChangeState(player.Controller.EmptyActionState);
                 return;
             }
         }
     }
     public override void OnExit()
     {
-        controller.Status.AddFlag(CharacterActionFlags.CanMove);
-        controller.Status.AddFlag(CharacterActionFlags.CanJump);
+        player.Status.AddFlag(CharacterActionFlags.CanMove);
+        player.Status.AddFlag(CharacterActionFlags.CanJump);
         currentComboIndex = 0;
     }
     private void PlayComboAnimation()
     {
-        isComboInputBuffered= false;
+        // 스태미너 소모 시도 (0번 콤보는 Easy, 나머지는 일반 소모)
+        bool hasEnoughStamina = (currentComboIndex == 0)
+            ? player.PlayerResourceSystem.UseStaminaEasy(comboSteps[currentComboIndex].staminaCost)
+            : player.PlayerResourceSystem.UseStamina(comboSteps[currentComboIndex].staminaCost);
+
+        // 스태미너 소모에 실패한 경우 상태 취소 및 탈출
+        if (!hasEnoughStamina)
+        {
+            player.Controller.ActionFSM.ChangeState(player.Controller.EmptyActionState);
+            return;
+        }
+        isComboInputBuffered = false;
         isHeavyAttackInputBuffered = false;
-        string anim = comboSteps[currentComboIndex].animName;
-        controller.Animator.CrossFade(anim, 0f);
+        LightAttackStepData stepData = comboSteps[currentComboIndex];
+        string anim = stepData.animName;
+
+        player.Animator.CrossFade(anim, 0f);
     }
     public void SetComboIndex(int index)
     {

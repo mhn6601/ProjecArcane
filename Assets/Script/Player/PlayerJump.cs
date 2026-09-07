@@ -4,6 +4,7 @@ using UnityEngine.InputSystem;
 [RequireComponent(typeof(CharacterController))]
 public class PlayerJump : MonoBehaviour
 {
+    Player player;
     [Header("GroundCheck")]
     [SerializeField]
     private LayerMask groundLayer;
@@ -23,8 +24,9 @@ public class PlayerJump : MonoBehaviour
     [SerializeField] private Transform playerFollowCamera;
     private void Awake()
     {
+        player = Player.Instance;
         inputActions = new PlayerInputAction();
-        controller = GetComponent<PlayerController>();
+        controller = player.Controller;
         if (playerFollowCamera == null || playerFollowCamera != FollowPlayerCamera.Instance.transform)
         {
             if (FollowPlayerCamera.Instance != null)
@@ -84,11 +86,11 @@ public class PlayerJump : MonoBehaviour
         Vector3 ray = GetRayOrigin();
         if(Physics.Raycast(ray, Vector3.down, rayDistance, groundLayer))
         {
-            controller.Status.RemoveFlag(CharacterActionFlags.CanJump);
+            player.Status.RemoveFlag(CharacterActionFlags.CanJump);
         }
         else
         {
-            controller.Status.AddFlag(CharacterActionFlags.CanJump);
+            player.Status.AddFlag(CharacterActionFlags.CanJump);
         }
     }
     public void SetJumpVelocity()

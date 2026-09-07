@@ -6,9 +6,8 @@ public class PlayerAirborneState : PlayerState
     private Vector3 initialJumpDirection;
     private bool initialIsRun;
 
-    public PlayerAirborneState(PlayerController controller) : base(controller)
+    public PlayerAirborneState(Player player) : base(player)
     {
-        this.controller = controller;
     }
 
     // JumpState 등 외부에서 관성 데이터를 주입받는 메서드
@@ -20,33 +19,33 @@ public class PlayerAirborneState : PlayerState
 
     public override void OnEnter()
     {
-        controller.Status.RemoveFlag(CharacterActionFlags.CanMove);
-        controller.Status.RemoveFlag(CharacterActionFlags.CanJump);
-        controller.Status.RemoveFlag(CharacterActionFlags.CanGuard);
-        controller.Status.RemoveFlag(CharacterActionFlags.CanParry);
-        controller.Status.RemoveFlag(CharacterActionFlags.CanAttack);
+        player.Status.RemoveFlag(CharacterActionFlags.CanMove);
+        player.Status.RemoveFlag(CharacterActionFlags.CanJump);
+        player.Status.RemoveFlag(CharacterActionFlags.CanGuard);
+        player.Status.RemoveFlag(CharacterActionFlags.CanParry);
+        player.Status.RemoveFlag(CharacterActionFlags.CanAttack);
     }
 
     public override void Update()
     {
         // 1. 공중 이동 처리 (캐싱된 관성으로 유지 이동)
-        controller.PlayerJump.ExecuteJump(initialJumpDirection, initialIsRun);
+        player.Jump.ExecuteJump(initialJumpDirection, initialIsRun);
 
         // 2. 착지 판정 (하강 중이고 지면에 닿았을 때 Locomotion으로 전환)
-        if (controller.PlayerJump.GetJumpVelocity() <= 0f && controller.PlayerJump.IsGround())
+        if (player.Jump.GetJumpVelocity() <= 0f && player.Jump.IsGround())
         {
-            controller.MovementFSM.ChangeState(controller.locomotionState);
+            player.Controller.MovementFSM.ChangeState(player.Controller.locomotionState);
         }
     }
 
     public override void OnExit()
     {
         // 착지 시 상태 및 플래그 복구
-        controller.Status.AddFlag(CharacterActionFlags.CanMove);
-        controller.Status.AddFlag(CharacterActionFlags.CanJump);
-        controller.Status.AddFlag(CharacterActionFlags.CanGuard);   
-        controller.Status.AddFlag(CharacterActionFlags.CanParry);   
-        controller.Status.AddFlag(CharacterActionFlags.CanAttack);   
+        player.Status.AddFlag(CharacterActionFlags.CanMove);
+        player.Status.AddFlag(CharacterActionFlags.CanJump);
+        player.Status.AddFlag(CharacterActionFlags.CanGuard);   
+        player.Status.AddFlag(CharacterActionFlags.CanParry);   
+        player.Status.AddFlag(CharacterActionFlags.CanAttack);   
 
 
         // 관성 데이터 초기화

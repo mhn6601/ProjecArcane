@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class PlayerEmptyActionState : PlayerState   
 {
-    public PlayerEmptyActionState(PlayerController controller) : base(controller)
+    public PlayerEmptyActionState(Player player) : base(player)
     {
     }
     public override void OnEnter()
@@ -10,19 +10,19 @@ public class PlayerEmptyActionState : PlayerState
     }
     public override void Update()
     {
-        if (controller.Status.CanAttack && controller.Input.AttackTriggered)
+        if (player.Status.CanAttack && player.Input.AttackTriggered)
         {
-            controller.ActionFSM.ChangeState(controller.AttackComboState);
+            player.Controller.ActionFSM.ChangeState(player.Controller.AttackComboState);
             return;
         }
-        else if (controller.Status.CanGuard && controller.Input.IsGuardHold)
+        else if (player.Status.CanGuard && player.Input.IsGuardHold)
         {
-            controller.ActionFSM.ChangeState(controller.GuardState);
+            player.Controller.ActionFSM.ChangeState(player.Controller.GuardState);
             return;
         }
-        else if (controller.Status.CanParry && controller.Input.ParryTriggered)
+        else if (player.Status.CanParry && player.Input.ParryTriggered)
         {
-            controller.ActionFSM.ChangeState(controller.ParryState);
+            player.Controller.ActionFSM.ChangeState(player.Controller.ParryState);
             return;
         }
         

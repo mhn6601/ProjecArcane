@@ -13,36 +13,36 @@ public class PlayerLocomotionState : PlayerState
     private static readonly int WalkBoolHash = Animator.StringToHash("isWalk");
     private static readonly int RunBoolHash = Animator.StringToHash("isRun");
 
-    public PlayerLocomotionState(PlayerController controller): base(controller) 
+    public PlayerLocomotionState(Player player): base(player) 
     {
     }
 
     public override void OnEnter()
     {
-       // Debug.Log("PlayerLocomotionState OnEnter");
-        controller.Animator.CrossFade(LocomotionHash, 0.1f);
-        controller.Animator.SetBool(GroundedBoolHash, true);
+        // Debug.Log("PlayerLocomotionState OnEnter");
+        player.Animator.CrossFade(LocomotionHash, 0.1f);
+        player.Animator.SetBool(GroundedBoolHash, true);
     }
 
     public override void Update()
     {
-        if (!controller.Status.CanMove)
+        if (!player.Status.CanMove)
         {
             return;
         }
-        if (controller.Input.JumpTriggered)
+        if (player.Input.JumpTriggered)
         {
-            controller.MovementFSM.ChangeState(controller.JumpState);
+            player.Controller.MovementFSM.ChangeState(player.Controller.JumpState);
             return;
         }
-        if (!controller.PlayerJump.IsGround())
+        if (!player.Jump.IsGround())
         {
-            controller.MovementFSM.ChangeState(controller.AirborneState);
+            player.Controller.MovementFSM.ChangeState(player.Controller.AirborneState);
             return;
         }
-        Vector3 moveInput = controller.Input.MoveInput;
-        bool isRunPressed = controller.Input.IsRunPressed;
-        float gravity= controller.PlayerJump.GroundedGravity;
+        Vector3 moveInput = player.Input.MoveInput;
+        bool isRunPressed = player.Input.IsRunPressed;
+        float gravity= player.Jump.GroundedGravity;
         Vector3 gravityVector = new Vector3(0, gravity, 0);
         // 1. 단순 0 체크 optimization (.sqrMagnitude 활용)
         if (moveInput.sqrMagnitude <= 0.001f)
@@ -50,7 +50,7 @@ public class PlayerLocomotionState : PlayerState
             // 입력이 없으면 애니메이션 파라미터를 0으로 보간 후 이동 중단
             SetAnimatorParametersMoveHash(0, 0.1f);
             
-            controller.PlayerMove.ExecuteMove(gravityVector, isRunPressed);
+            player.Move.ExecuteMove(gravityVector, isRunPressed);
             UpdateAnimatorParameters(moveInput, 0f);
             return;
         }
@@ -60,7 +60,7 @@ public class PlayerLocomotionState : PlayerState
         float inputMagnitude = moveInput.magnitude;
         float targetSpeedMultiplier = 0f;
 
-        if (controller.CurrentDevice == PlayerController.ControlDeviceType.Gamepad)
+        if (player.Controller.CurrentDevice == PlayerController.ControlDeviceType.Gamepad)
         {
             float maxCap = isRunPressed ? 1.0f : 0.5f;
             targetSpeedMultiplier = Mathf.Clamp(inputMagnitude, 0f, maxCap);
@@ -70,7 +70,7 @@ public class PlayerLocomotionState : PlayerState
             targetSpeedMultiplier = isRunPressed ? 1.0f : 0.5f;
         }
         UpdateAnimatorParameters(moveInput, targetSpeedMultiplier);
-        if (controller.Status.IsLockOn)
+        if (player.Status.IsLockOn)
         {
             var animInput=Vector2.zero;
             SetAnimatorParametersMoveHash(animInput,0.1f);
@@ -82,7 +82,7 @@ public class PlayerLocomotionState : PlayerState
             SetAnimatorParametersMoveHash(targetSpeedMultiplier, 0.1f);
         }
         // 4. 이동 로직 위임
-        controller.PlayerMove.ExecuteMove(moveInput+ gravityVector, isRunPressed);
+        player.Move.ExecuteMove(moveInput+ gravityVector, isRunPressed);
         // 5. 2D Blend Tree 파라미터 업데이트 (MoveX, MoveZ)
     }
 
@@ -91,24 +91,23 @@ public class PlayerLocomotionState : PlayerState
        // Debug.Log("PlayerLocomotionState OnExit");
         // 상태 탈출 시 애니메이션 축 초기화
 
-        controller.PlayerMove.ResetCache();
     }
     private void UpdateAnimatorParameters(Vector3 moveInput, float speedMultiplier)
     {
         // 걷기/뛰기 상태에 따라 Bool 파라미터 설정
-        controller.Animator.SetBool(IdleBoolHash, speedMultiplier == 0f);
-        controller.Animator.SetBool(WalkBoolHash, speedMultiplier > 0f && speedMultiplier < 1f);
-        controller.Animator.SetBool(RunBoolHash, speedMultiplier >= 1f);
+        player.Animator.SetBool(IdleBoolHash, speedMultiplier == 0f);
+        player.Animator.SetBool(WalkBoolHash, speedMultiplier > 0f && speedMultiplier < 1f);
+        player.Animator.SetBool(RunBoolHash, speedMultiplier >= 1f);
     }
     private void SetAnimatorParametersMoveHash(Vector2 animInput, float dampTime)
     {
-        controller.Animator.SetFloat(MoveXHash, animInput.x, dampTime, Time.fixedDeltaTime);
-        controller.Animator.SetFloat(MoveZHash, animInput.y, dampTime, Time.fixedDeltaTime); 
+        player.Animator.SetFloat(MoveXHash, animInput.x, dampTime, Time.fixedDeltaTime);
+        player.Animator.SetFloat(MoveZHash, animInput.y, dampTime, Time.fixedDeltaTime); 
     }
      private void SetAnimatorParametersMoveHash(float value, float dampTime)
     {
-        controller.Animator.SetFloat(MoveXHash, value, dampTime, Time.fixedDeltaTime);
-        controller.Animator.SetFloat(MoveZHash, value, dampTime, Time.fixedDeltaTime);
+        player.Animator.SetFloat(MoveXHash, value, dampTime, Time.fixedDeltaTime);
+        player.Animator.SetFloat(MoveZHash, value, dampTime, Time.fixedDeltaTime);
     }
 
 }

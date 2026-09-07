@@ -9,27 +9,26 @@ public class PlayerParryState : PlayerState
     private float stateTimer = 0f;
     private float parryWindowDuration = 0.5f; // 패리 성공 판정 시간
     private float recoveryDelayOnFail = 0.8f;// 패리 실패 시 회복 지연 시간
-    public PlayerParryState(PlayerController controller) : base(controller)
+    public PlayerParryState(Player player) : base(player)
     {
     }
     public override void OnEnter()
     {
         stateTimer = 0f;
         isParrysuccess = false;
-        controller.Status.RemoveFlag(CharacterActionFlags.CanMove);
-        controller.Status.RemoveFlag(CharacterActionFlags.CanJump);
-        controller.PlayerMove.ResetCache();
-        controller.Animator.CrossFade(ParryHash, 0f);
+        player.Status.RemoveFlag(CharacterActionFlags.CanMove);
+        player.Status.RemoveFlag(CharacterActionFlags.CanJump);
+        player.Controller.Animator.CrossFade(ParryHash, 0f);
     }
     public override void Update()
     {
         stateTimer += Time.deltaTime;
         if (isParrysuccess)
         {
-            controller.AttackComboState.SetComboIndex(nextComboIndex);
-            if(controller.Input.AttackTriggered)
+            player.Controller.AttackComboState.SetComboIndex(nextComboIndex);
+            if(player.Input.AttackTriggered)
             {
-                controller.ActionFSM.ChangeState(controller.AttackComboState);
+                player.Controller.ActionFSM.ChangeState(player.Controller.AttackComboState);
                 return;
             }
         }
@@ -38,9 +37,9 @@ public class PlayerParryState : PlayerState
             //패리 실패 시 회복 지연 시간 후 대기 상태 복귀
             if (stateTimer > parryWindowDuration + recoveryDelayOnFail)
             {
-                controller.ActionFSM.ChangeState(controller.EmptyActionState);
+                player.Controller.ActionFSM.ChangeState(player.Controller.EmptyActionState);
 
-                controller.Animator.CrossFade(LocomotionTreeHash, 0f);
+                player.Controller.Animator.CrossFade(LocomotionTreeHash, 0f);
 
             }
         }
@@ -48,8 +47,8 @@ public class PlayerParryState : PlayerState
 
     public override void OnExit()
     {
-        controller.Status.AddFlag(CharacterActionFlags.CanMove);
-        controller.Status.AddFlag(CharacterActionFlags.CanJump);
+        player.Status.AddFlag(CharacterActionFlags.CanMove);
+        player.Status.AddFlag(CharacterActionFlags.CanJump);
     }
     public void OnParrySuccess()
     {

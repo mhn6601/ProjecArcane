@@ -4,19 +4,19 @@ using UnityEngine.InputSystem;
 [RequireComponent(typeof(CharacterController))]
 public class PlayerMove : MonoBehaviour
 {
+    Player player;
     [SerializeField] private float rotateSpeed = 15f;
-
-    private Vector3 moveVelocity;
-    
-    private Vector3 cachedMoveDirection; // 계산된 최종 방향 벡터 저장용
 
     private PlayerController controller;
 
     [SerializeField] private Transform playerFollowCamera;
 
+    public float requiredRunStaminaPerSecond = 3f;
+
     private void Awake()
     {
-        controller = GetComponent<PlayerController>();
+        player = Player.Instance;
+        controller = player.Controller;
 
         if (playerFollowCamera == null || playerFollowCamera != FollowPlayerCamera.Instance.transform)
         {
@@ -50,14 +50,14 @@ public class PlayerMove : MonoBehaviour
     }
     public void ExecuteMove(Vector3 rawInput, bool isRun)
     {
-        if (rawInput.sqrMagnitude <= 0.001f && !controller.Status.IsLockOn) return;
+        if (rawInput.sqrMagnitude <= 0.001f && !player.Status.IsLockOn) return;
 
         Vector3 moveDir = CalculateDirection(rawInput);
         // [회전 분기]
-        if (Player.Instance != null && controller.Status.IsLockOn)
+        if ( player.Status.IsLockOn)
         {
             // 락온 상태: 이동 방향이 아니라 '타겟(적)'을 바라보도록 회전
-            RotateTowardsTarget(Player.Instance.lockOnTarget.position);
+            RotateTowardsTarget(player.lockOnTarget.position);
         }
         else
         {
@@ -72,10 +72,6 @@ public class PlayerMove : MonoBehaviour
         controller.CC.Move(moveDir * currentSpeed * Time.deltaTime);
     }
 
-    public void ResetCache()
-    {
-        cachedMoveDirection = Vector3.zero;
-    }
 
     // 카메라 회전을 고려하여 입력 방향을 월드 좌표계 방향으로 변환하는 연산 함수
     private Vector3 CalculateDirection(Vector3 input)

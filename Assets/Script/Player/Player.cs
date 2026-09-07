@@ -1,23 +1,30 @@
 using UnityEngine;
 public class Player:Singleton<Player>
 {
+    
     [Header("Sub Systems / Components")]
     [SerializeField] private PlayerController controller;
     [SerializeField] private PlayerMove move;
+    [SerializeField] private PlayerJump jump;
     [SerializeField] private PlayerStatus status;
     [SerializeField] private PlayerInputHandler input;
     [SerializeField] private PlayerStats playerStats;
+    [SerializeField] private PlayerResourceSystem playerResourceSystem;
 
     [SerializeField] private Animator animator;
 
     // 외부 공개용 프로퍼티 (Get)
     public PlayerController Controller => controller;
     public PlayerMove Move => move;
+    public PlayerJump Jump => jump;
     public PlayerStatus Status => status;
     public PlayerInputHandler Input => input;
     public PlayerStats PlayerStats => playerStats;
+    public PlayerResourceSystem PlayerResourceSystem => playerResourceSystem;
+    public Animator Animator => animator;
 
-    
+
+
     public Transform lockOnTarget;
 
     [Header("Global Player State Flags")]
@@ -38,11 +45,15 @@ public class Player:Singleton<Player>
 
     private void InitComponents()
     {
+        if (animator == null) animator = GetComponent<Animator>();
         if (controller == null) controller = GetComponent<PlayerController>();
         if (move == null) move = GetComponent<PlayerMove>();
+        if (jump == null) jump = GetComponent<PlayerJump>();
         if (status == null) status = GetComponent<PlayerStatus>();
         if (input == null) input = GetComponent<PlayerInputHandler>();
         if (playerStats == null) playerStats = GetComponent<PlayerStats>();
+        if (playerResourceSystem == null) playerResourceSystem = GetComponent<PlayerResourceSystem>();
+        if (status == null) status = GetComponent<PlayerStatus>();
     }
     // --- 라이프사이클 및 전체 시스템 제어 ---
 
@@ -54,7 +65,6 @@ public class Player:Singleton<Player>
 
         // 사망 시 컨트롤러 및 이동 연산 비활성화
         controller.enabled = false;
-        move.ResetCache();
         
         // 사망 애니메이션 실행
         if (animator != null)
