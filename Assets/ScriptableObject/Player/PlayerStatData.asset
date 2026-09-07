@@ -14,9 +14,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PlayerStatData
   baseRequireExp: 100
   expGrowthFactor: 1.2
-  baseMaxHealth: 100
-  baseMaxStamina: 100
+  baseMaxHealth: 50
+  baseMaxMana: 30
+  baseMaxStamina: 60
   baseAttackPower: 10
   healthPerLevel: 10
+  manaPerLevel: 10
   staminaPerLevel: 5
   attackPerLevel: 2
+  moveSpeed: 2.5
+  runSpeed: 5
