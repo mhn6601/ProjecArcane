@@ -19,6 +19,11 @@ public class PlayerAirborneState : PlayerState
 
     public override void OnEnter()
     {
+        if (player.Controller.ActionFSM.CurrentState == player.Controller.GuardState)
+        {
+            player.Controller.ActionFSM.ChangeState(player.Controller.EmptyActionState);
+        }
+
         player.Status.RemoveFlag(CharacterActionFlags.CanMove);
         player.Status.RemoveFlag(CharacterActionFlags.CanJump);
         player.Status.RemoveFlag(CharacterActionFlags.CanGuard);

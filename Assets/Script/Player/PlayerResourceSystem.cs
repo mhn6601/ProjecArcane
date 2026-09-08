@@ -15,7 +15,7 @@ public class PlayerResourceSystem : MonoBehaviour
     public float CurrentStamina { get; private set; }
     [Header("Stamina Settings")]
     [SerializeField] private float staminaRegenRate = 5f; // 초당 회복량
-    [SerializeField] private float staminaRegenDelay = 3f; // 사용후 회복 시작 대기시간
+    [SerializeField] private float staminaRegenDelay = 4f; // 사용후 회복 시작 대기시간
     private float lastStaminaUseTime;
     public event Action<float, float> OnHealthChanged;
     public event Action<float, float> OnManaChanged;

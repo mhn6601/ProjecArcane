@@ -18,7 +18,7 @@ public class PlayerGuardState : PlayerState
     public override void Update()
     {
         // 방패 버튼을 떼면 대기 상태로 복귀
-        if (!player.Input.IsGuardHold)
+        if (!player.Input.IsGuardHold&&player.Status.CanGuard)
         {
             player.Animator.CrossFade(GuardDownHash, 0f, GuardLayerIndex);
             player.Controller.ActionFSM.ChangeState(player.Controller.EmptyActionState);

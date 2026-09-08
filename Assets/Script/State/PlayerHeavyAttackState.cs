@@ -48,5 +48,9 @@ public class PlayerHeavyAttackState : PlayerState
         player.Status.AddFlag(CharacterActionFlags.CanGuard);
         player.Status.AddFlag(CharacterActionFlags.CanParry);
     }
+    public float StaminaCost(int comboIndex)
+    {
+        return heavySteps[comboIndex].staminaCost;
+    }
 }
 

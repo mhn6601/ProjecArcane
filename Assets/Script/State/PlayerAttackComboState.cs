@@ -48,7 +48,7 @@ public class PlayerAttackComboState : PlayerState
         if (stateInfo.normalizedTime>= stateNormalizedTimeMax)
         {
             //강공격 입력 처리 콤보 종료 이후 강공격 전환
-            if (isHeavyAttackInputBuffered)
+            if (isHeavyAttackInputBuffered&&player.PlayerResourceSystem.UseStamina(player.Controller.HeavyAttackState.StaminaCost(currentComboIndex)))
             {
                 player.Controller.HeavyAttackState.SetStepIndex(currentComboIndex);
                 player.Controller.ActionFSM.ChangeState(player.Controller.HeavyAttackState);

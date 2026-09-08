@@ -11,9 +11,16 @@ public class PlayerJumpState : PlayerState
 
     public override void OnEnter()
     {
+        if (player.Controller.ActionFSM.CurrentState == player.Controller.GuardState)
+        {
+            player.Controller.ActionFSM.ChangeState(player.Controller.EmptyActionState);
+        }
+
         // 1. 점프 물리 속도 부여 및 점프 가능 플래그 제거
         player.Jump.SetJumpVelocity();
         player.Status.RemoveFlag(CharacterActionFlags.CanJump);
+        player.Status.RemoveFlag(CharacterActionFlags.CanParry);
+        player.Status.RemoveFlag(CharacterActionFlags.CanGuard);
 
         // 2. 점프 직전 지상 관성 데이터 계산 및 캐싱
         Vector3 lastInput = player.Input.MoveInput;
