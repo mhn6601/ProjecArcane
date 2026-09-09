@@ -47,7 +47,7 @@ public class PlayerAttackComboState : PlayerState
         if (stateInfo.normalizedTime>= stateNormalizedTimeMax)
         {
             //강공격 입력 처리 콤보 종료 이후 강공격 전환
-            if (isHeavyAttackInputBuffered&&player.PlayerResourceSystem.UseStamina(player.Controller.HeavyAttackState.StaminaCost(currentComboIndex)))
+            if (isHeavyAttackInputBuffered&&player.ResourceSystem.UseStamina(player.Controller.HeavyAttackState.StaminaCost(currentComboIndex)))
             {
                 player.Controller.HeavyAttackState.SetStepIndex(currentComboIndex);
                 player.Controller.ActionFSM.ChangeState(player.Controller.HeavyAttackState);
@@ -83,8 +83,8 @@ public class PlayerAttackComboState : PlayerState
     {
         // 스태미너 소모 시도 (0번 콤보는 Easy, 나머지는 일반 소모)
         bool hasEnoughStamina = (currentComboIndex == 0)
-            ? player.PlayerResourceSystem.UseStaminaEasy(comboSteps[currentComboIndex].staminaCost)
-            : player.PlayerResourceSystem.UseStamina(comboSteps[currentComboIndex].staminaCost);
+            ? player.ResourceSystem.UseStaminaEasy(comboSteps[currentComboIndex].staminaCost)
+            : player.ResourceSystem.UseStamina(comboSteps[currentComboIndex].staminaCost);
 
         // 스태미너 소모에 실패한 경우 상태 취소 및 탈출
         if (!hasEnoughStamina)

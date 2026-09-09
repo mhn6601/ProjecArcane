@@ -28,9 +28,9 @@ public class PlayerUI : MonoBehaviour
 
     public void Init(Player player)
     {
-        if (player.PlayerStats != null)
+        if (player.Stats != null)
         {
-            targetplayerResourceSystem = player.PlayerResourceSystem;
+            targetplayerResourceSystem = player.ResourceSystem;
 
             // 이벤트 구독
             targetplayerResourceSystem.OnHealthChanged += HandleHealthChanged;

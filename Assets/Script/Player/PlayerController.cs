@@ -5,7 +5,7 @@ using UnityEngine.InputSystem;
 public class PlayerController : CharacterControllerBase
 {
 
-   
+    Player player;
 
     #region StateMachine
     private CharacterStateMachine movementFSM;
@@ -37,12 +37,11 @@ public class PlayerController : CharacterControllerBase
     public PlayerHitStunState HitStunState { get;private set; }
     #endregion
 
-    [Header("Attack Data Settings")]
-    [SerializeField] private PlayerAttackData attackData;
 
 
     protected override void Awake()
     {
+        player = Player.Instance;
         animator = Player.Instance.Animator;
 
         PlayerStateMachineInitialize();
@@ -88,18 +87,18 @@ public class PlayerController : CharacterControllerBase
     private void PlayerStateInitialize()
     {
         #region MovementState
-        locomotionState = new PlayerLocomotionState(Player.Instance);
-        AirborneState = new PlayerAirborneState(Player.Instance);
+        locomotionState = new PlayerLocomotionState(player);
+        AirborneState = new PlayerAirborneState(player);
         #endregion
 
         #region ActionState
-        JumpState = new PlayerJumpState(Player.Instance);
-        AttackComboState = new PlayerAttackComboState(Player.Instance, attackData.lightAttackSteps);
-        HeavyAttackState = new PlayerHeavyAttackState(Player.Instance, attackData.heavyAttackSteps);
-        ParryState = new PlayerParryState(Player.Instance);
-        EmptyActionState = new PlayerEmptyActionState(Player.Instance);
-        GuardState = new PlayerGuardState(Player.Instance);
-        HitStunState = new PlayerHitStunState(Player.Instance);
+        JumpState = new PlayerJumpState(player);
+        AttackComboState = new PlayerAttackComboState(player, player.Attack.GetLightAttackStepData());
+        HeavyAttackState = new PlayerHeavyAttackState(player, player.Attack.GetHeavyAttackStepData());
+        ParryState = new PlayerParryState(player);
+        EmptyActionState = new PlayerEmptyActionState(player);
+        GuardState = new PlayerGuardState(player);
+        HitStunState = new PlayerHitStunState(player);
         #endregion 
     }
     private void FSMUpdate()

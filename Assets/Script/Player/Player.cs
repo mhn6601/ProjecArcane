@@ -6,10 +6,12 @@ public class Player:Singleton<Player>
     [SerializeField] private PlayerController controller;
     [SerializeField] private PlayerMove move;
     [SerializeField] private PlayerJump jump;
+    [SerializeField] private PlayerAttack attack;
     [SerializeField] private PlayerStatus status;
     [SerializeField] private PlayerInputHandler input;
-    [SerializeField] private PlayerStats playerStats;
-    [SerializeField] private PlayerResourceSystem playerResourceSystem;
+    [SerializeField] private PlayerStats stats;
+    [SerializeField] private PlayerResourceSystem resourceSystem;
+    [SerializeField] private PlayerEquipment equipment;
 
     [SerializeField] private Animator animator;
 
@@ -17,10 +19,12 @@ public class Player:Singleton<Player>
     public PlayerController Controller => controller;
     public PlayerMove Move => move;
     public PlayerJump Jump => jump;
+    public PlayerAttack Attack => attack;
     public PlayerStatus Status => status;
     public PlayerInputHandler Input => input;
-    public PlayerStats PlayerStats => playerStats;
-    public PlayerResourceSystem PlayerResourceSystem => playerResourceSystem;
+    public PlayerStats Stats => stats;
+    public PlayerResourceSystem ResourceSystem => resourceSystem;
+    public PlayerEquipment Equipment => equipment;
     public Animator Animator => animator;
 
 
@@ -37,7 +41,7 @@ public class Player:Singleton<Player>
     }
     private void OnDestroy()
     {
-        if (playerStats != null)
+        if (stats != null)
         {
             //playerStats.OnDeath -= HandleDeath;
         }
@@ -49,11 +53,13 @@ public class Player:Singleton<Player>
         if (controller == null) controller = GetComponent<PlayerController>();
         if (move == null) move = GetComponent<PlayerMove>();
         if (jump == null) jump = GetComponent<PlayerJump>();
+        if (attack == null) attack = GetComponent<PlayerAttack>();
         if (status == null) status = GetComponent<PlayerStatus>();
         if (input == null) input = GetComponent<PlayerInputHandler>();
-        if (playerStats == null) playerStats = GetComponent<PlayerStats>();
-        if (playerResourceSystem == null) playerResourceSystem = GetComponent<PlayerResourceSystem>();
+        if (stats == null) stats = GetComponent<PlayerStats>();
+        if (resourceSystem == null) resourceSystem = GetComponent<PlayerResourceSystem>();
         if (status == null) status = GetComponent<PlayerStatus>();
+        if (equipment == null) equipment = GetComponent<PlayerEquipment>();
     }
     // --- 라이프사이클 및 전체 시스템 제어 ---
 

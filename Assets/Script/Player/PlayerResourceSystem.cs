@@ -24,7 +24,7 @@ public class PlayerResourceSystem : MonoBehaviour
 
     private void Awake()
     {
-        playerStats = Player.Instance.PlayerStats;
+        playerStats = Player.Instance.Stats;
     }
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -96,7 +96,7 @@ public class PlayerResourceSystem : MonoBehaviour
     }
     public bool UseStaminaEasy(float amount)
     {
-        if(CurrentStamina ==0) return false;
+        if(CurrentStamina <1) return false;
         CurrentStamina = Mathf.Max(0f, CurrentStamina - amount);
         lastStaminaUseTime = Time.time;
         OnStaminaChanged?.Invoke(CurrentStamina, playerStats.MaxStamina);
