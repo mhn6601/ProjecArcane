@@ -2089,10 +2089,12 @@ MonoBehaviour:
   controller: {fileID: 0}
   move: {fileID: 0}
   jump: {fileID: 0}
+  attack: {fileID: 0}
   status: {fileID: 0}
   input: {fileID: 0}
-  playerStats: {fileID: 0}
-  playerResourceSystem: {fileID: 0}
+  stats: {fileID: 0}
+  resourceSystem: {fileID: 0}
+  equipment: {fileID: 0}
   animator: {fileID: 0}
   lockOnTarget: {fileID: 0}
 --- !u!143 &1089770771
@@ -2157,7 +2159,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerController
   animator: {fileID: 1089770780}
-  attackData: {fileID: 11400000, guid: 983cf4868ace8a84dae4221121e7e7f8, type: 2}
 --- !u!114 &1089770778
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2283,6 +2284,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PlayerCombat
   player: {fileID: 0}
   playerResourceSystem: {fileID: 0}
+--- !u!114 &1089770787
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1089770764}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1004396de2834bc4c85a8d0c1ef0116c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerAttack
+  attackData: {fileID: 11400000, guid: 983cf4868ace8a84dae4221121e7e7f8, type: 2}
 --- !u!1 &1098880349
 GameObject:
   m_ObjectHideFlags: 0
@@ -4654,6 +4668,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 3369967373867493423, guid: 168712f6723106f4da0cbea0d1af48d4, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1089770772}
+    - targetCorrespondingSourceObject: {fileID: 3369967373867493423, guid: 168712f6723106f4da0cbea0d1af48d4, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1089770787}
     - targetCorrespondingSourceObject: {fileID: 3369967373867493423, guid: 168712f6723106f4da0cbea0d1af48d4, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1089770775}
