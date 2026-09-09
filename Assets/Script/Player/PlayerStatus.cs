@@ -2,11 +2,9 @@ using UnityEngine;
 
 public class PlayerStatus : MonoBehaviour
 {
-    [Header("Base Stats")]
-    [SerializeField] private float maxHealth = 100f;
-    [SerializeField] private float maxStamina = 100f;
-    [Range(-5f, 1f)]
-    [SerializeField] private float reduceDamagePercent = 0.2f;
+    //[Header("Base Stats")]
+    //[SerializeField] private float maxHealth = 100f;
+    //[SerializeField] private float maxStamina = 100f;
 
     // 비트마스크 원본 데이터 (내부 연산용)
     public CharacterActionFlags CurrentFlags { get; private set; } =

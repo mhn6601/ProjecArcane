@@ -13,9 +13,6 @@ public class CharacterStateMachine
 
     protected State newState;
 
-    [SerializeField]
-    protected List<State> states;
-    //[SerializeField] protected List<GameObject> statesObjects;
     public UnityAction onChangeState;
 
     public void Initialize(State startingState)

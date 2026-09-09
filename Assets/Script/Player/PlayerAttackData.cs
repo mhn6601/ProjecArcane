@@ -1,7 +1,6 @@
 using UnityEngine;
 
-[CreateAssetMenu(fileName ="PlayerAttackData",menuName ="Combat/Player Attack Data")]
-public class PlayerAttackData : ScriptableObject
+public class PlayerAttackData : AttackData
 {
     [Header("Light Attack Combo (1 ~ 4 Step)")]
     public LightAttackStepData[] lightAttackSteps = new LightAttackStepData[4];

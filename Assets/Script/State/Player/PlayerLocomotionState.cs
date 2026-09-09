@@ -26,6 +26,7 @@ public class PlayerLocomotionState : PlayerState
 
     public override void Update()
     {
+        Vector3 moveInput = player.Input.MoveInput;
         if (!player.Status.CanMove)
         {
             return;
@@ -40,8 +41,17 @@ public class PlayerLocomotionState : PlayerState
             player.Controller.MovementFSM.ChangeState(player.Controller.AirborneState);
             return;
         }
-        Vector3 moveInput = player.Input.MoveInput;
+        
         bool isRunPressed = player.Input.IsRunPressed;
+        if (isRunPressed)
+        {
+            player.Status.RemoveFlag(CharacterActionFlags.CanGuard);
+        }
+        else
+        {
+            player.Status.AddFlag(CharacterActionFlags.CanGuard);
+
+        }
         float gravity= player.Jump.GroundedGravity;
         Vector3 gravityVector = new Vector3(0, gravity, 0);
         // 1. 단순 0 체크 optimization (.sqrMagnitude 활용)

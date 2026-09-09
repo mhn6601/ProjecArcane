@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -6,8 +7,10 @@ public class PlayerMove : MonoBehaviour
 {
     Player player;
     [SerializeField] private float rotateSpeed = 15f;
+    [SerializeField] private float attackRotateDuration = 0.15f;
 
     private PlayerController controller;
+    private Coroutine attackRotateCoroutine;
 
     [SerializeField] private Transform playerFollowCamera;
 
@@ -67,7 +70,7 @@ public class PlayerMove : MonoBehaviour
         }
 
         // 이동 처리
-        float currentSpeed = isRun ? Player.Instance.PlayerStats.RunSpeed : Player.Instance.PlayerStats.MoveSpeed;
+        float currentSpeed = isRun ? player.PlayerStats.RunSpeed : player.PlayerStats.MoveSpeed;
         moveDir.y = -8f;
         controller.CC.Move(moveDir * currentSpeed * Time.deltaTime);
     }
@@ -89,13 +92,60 @@ public class PlayerMove : MonoBehaviour
         return (camForward * input.z) + (camRight * input.x);
     }
 
-    private void RotateTowardsDirection(Vector3 dir)
+    public void RotateTowardsDirection(Vector3 dir)
     {
         if (dir.sqrMagnitude > 0.001f)
         {
             Quaternion targetRotation = Quaternion.LookRotation(dir);
             transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotateSpeed * Time.deltaTime);
         }
+    }
+    public Vector3 GetWorldDirection(Vector3 rawInput)
+    {
+        return CalculateDirection(rawInput);
+    }
+    // 공격 시작 시 한 번만 호출되는 1회성 보간 회전 (Slerp)
+    public void RotateSnap(Vector3 worldDir)
+    {
+        if (worldDir.sqrMagnitude <= 0.001f) return;
+
+        Quaternion targetRotation = Quaternion.LookRotation(worldDir);
+        StartRotateCoroutine(targetRotation);
+    }
+
+    public void RotateSnapTowardsTarget(Vector3 targetPos)
+    {
+        Vector3 dir = targetPos - transform.position;
+        dir.y = 0f;
+        if (dir.sqrMagnitude <= 0.001f) return;
+
+        Quaternion targetRotation = Quaternion.LookRotation(dir);
+        StartRotateCoroutine(targetRotation);
+    }
+
+    private void StartRotateCoroutine(Quaternion targetRotation)
+    {
+        if (attackRotateCoroutine != null)
+        {
+            StopCoroutine(attackRotateCoroutine);
+        }
+        attackRotateCoroutine = StartCoroutine(RotateSnapCoroutine(targetRotation));
+    }
+    private IEnumerator RotateSnapCoroutine(Quaternion targetRotation)
+    {
+        Quaternion startRotation = transform.rotation;
+        float elapsed = 0f;
+
+        while (elapsed < attackRotateDuration)
+        {
+            elapsed += Time.deltaTime;
+            float t = Mathf.Clamp01(elapsed / attackRotateDuration);
+            transform.rotation = Quaternion.Slerp(startRotation, targetRotation, t);
+            yield return null;
+        }
+
+        transform.rotation = targetRotation;
+        attackRotateCoroutine = null;
     }
     private void RotateTowardsTarget(Vector3 targetPos)
     {

@@ -1,5 +1,3 @@
-using System.Reflection.Metadata.Ecma335;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class PlayerAttackComboState : PlayerState
@@ -19,6 +17,7 @@ public class PlayerAttackComboState : PlayerState
         
         
         player.Status.RemoveFlag(CharacterActionFlags.CanMove);
+        player.Status.RemoveFlag(CharacterActionFlags.CanRotate);
         player.Status.RemoveFlag(CharacterActionFlags.CanJump);
         PlayComboAnimation();
     }
@@ -76,6 +75,7 @@ public class PlayerAttackComboState : PlayerState
     public override void OnExit()
     {
         player.Status.AddFlag(CharacterActionFlags.CanMove);
+        player.Status.AddFlag(CharacterActionFlags.CanRotate);
         player.Status.AddFlag(CharacterActionFlags.CanJump);
         currentComboIndex = 0;
     }
@@ -94,6 +94,10 @@ public class PlayerAttackComboState : PlayerState
         }
         isComboInputBuffered = false;
         isHeavyAttackInputBuffered = false;
+
+        // 공격(콤보 스텝) 시작 직전 입력 방향으로 1회성 회전
+        ApplyAttackDirectionSnap();
+
         LightAttackStepData stepData = comboSteps[currentComboIndex];
         string anim = stepData.animName;
 
@@ -102,5 +106,19 @@ public class PlayerAttackComboState : PlayerState
     public void SetComboIndex(int index)
     {
         currentComboIndex = index;
+    }
+    private void ApplyAttackDirectionSnap()
+    {
+        if (player.Status.IsLockOn)
+        {
+            player.Move.RotateSnapTowardsTarget(player.lockOnTarget.position);
+            return;
+        }
+
+        Vector3 rawInput = player.Input.MoveInput;
+        if (rawInput.sqrMagnitude <= 0.001f) return;
+
+        Vector3 worldDir = player.Move.GetWorldDirection(rawInput);
+        player.Move.RotateSnap(worldDir);
     }
 }

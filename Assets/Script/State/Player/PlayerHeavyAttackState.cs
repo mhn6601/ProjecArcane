@@ -19,16 +19,19 @@ public class PlayerHeavyAttackState : PlayerState
     public override void OnEnter()
     {
         player.Status.RemoveFlag(CharacterActionFlags.CanMove);
+        player.Status.RemoveFlag(CharacterActionFlags.CanRotate);
         player.Status.RemoveFlag(CharacterActionFlags.CanJump);
         player.Status.RemoveFlag(CharacterActionFlags.CanGuard);
         player.Status.RemoveFlag(CharacterActionFlags.CanParry);
+
+        // 강공격 시작 직전 입력 방향으로 1회성 회전
+        ApplyAttackDirectionSnap();
 
         // 현재 콤보 단계에 일치하는 강공격 데이터 가져오기
         HeavyAttackStepData currentData = heavySteps[stepIndex];
 
         // 애니메이션 재생 및 스태미너 소모 등의 로직 실행
         player.Animator.CrossFade(currentData.animName, 0f);
-        // player.Status.UseStamina(currentData.staminaCost);
     }
 
     public override void Update()
@@ -44,6 +47,7 @@ public class PlayerHeavyAttackState : PlayerState
     public override void OnExit()
     {
         player.Status.AddFlag(CharacterActionFlags.CanMove);
+        player.Status.AddFlag(CharacterActionFlags.CanRotate);
         player.Status.AddFlag(CharacterActionFlags.CanJump);
         player.Status.AddFlag(CharacterActionFlags.CanGuard);
         player.Status.AddFlag(CharacterActionFlags.CanParry);
@@ -52,5 +56,19 @@ public class PlayerHeavyAttackState : PlayerState
     {
         return heavySteps[comboIndex].staminaCost;
     }
-}
 
+    private void ApplyAttackDirectionSnap()
+    {
+        if (player.Status.IsLockOn)
+        {
+            player.Move.RotateSnapTowardsTarget(player.lockOnTarget.position);
+            return;
+        }
+
+        Vector3 rawInput = player.Input.MoveInput;
+        if (rawInput.sqrMagnitude <= 0.001f) return;
+
+        Vector3 worldDir = player.Move.GetWorldDirection(rawInput);
+        player.Move.RotateSnap(worldDir);
+    }
+}

@@ -17,8 +17,12 @@ public class PlayerGuardState : PlayerState
 
     public override void Update()
     {
-        // 방패 버튼을 떼면 대기 상태로 복귀
-        if (!player.Input.IsGuardHold&&player.Status.CanGuard)
+        // 방패 버튼을 떼거나, 달리기 입력이 들어오면 대기 상태로 복귀
+        bool releasedGuardButton = !player.Input.IsGuardHold && player.Status.CanGuard;
+        bool runInterrupt = player.Input.IsRunPressed;
+        bool jumpInterrupt = player.Input.JumpTriggered;
+
+        if (releasedGuardButton || runInterrupt|| jumpInterrupt)
         {
             player.Animator.CrossFade(GuardDownHash, 0f, GuardLayerIndex);
             player.Controller.ActionFSM.ChangeState(player.Controller.EmptyActionState);

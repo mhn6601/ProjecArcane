@@ -1,6 +1,3 @@
-using NUnit.Framework.Interfaces;
-using System;
-using Unity.IO.LowLevel.Unsafe;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -37,6 +34,7 @@ public class PlayerController : CharacterControllerBase
     public PlayerParryState ParryState { get;private set; }
     public PlayerEmptyActionState EmptyActionState { get;private set; }
     public PlayerGuardState GuardState { get;private set; }
+    public PlayerHitStunState HitStunState { get;private set; }
     #endregion
 
     [Header("Attack Data Settings")]
@@ -101,6 +99,7 @@ public class PlayerController : CharacterControllerBase
         ParryState = new PlayerParryState(Player.Instance);
         EmptyActionState = new PlayerEmptyActionState(Player.Instance);
         GuardState = new PlayerGuardState(Player.Instance);
+        HitStunState = new PlayerHitStunState(Player.Instance);
         #endregion 
     }
     private void FSMUpdate()
@@ -108,45 +107,4 @@ public class PlayerController : CharacterControllerBase
         movementFSM.Update();
         actionFSM.Update();
     }
-
-    //private void OnMovePerformed(InputAction.CallbackContext context)
-    //{
-    //    moveInput = context.ReadValue<Vector3>();
-    //    if (movementFSM.CurrentState == locomotionState)
-    //        movementFSM.ChangeState(locomotionState);
-    //}
-    //private void OnMoveCanceled(InputAction.CallbackContext context)
-    //{
-    //    moveInput = Vector3.zero;
-    //    //IsRunPressed= false;
-    //    //playerMove.ResetCache();// 입력 취소 시 캐시 방향 초기화
-    //    if (movementFSM.CurrentState == locomotionState)
-    //        movementFSM.ChangeState(locomotionState);
-    //}
-    //private void OnRunPerformed(InputAction.CallbackContext context)
-    //{
-    //    IsRunPressed = true;
-
-    //    // 이동 입력이 들어와 있는 상태에서 Shift를 누르면 즉시 RunState로 전환
-    //    if (movementFSM.CurrentState == locomotionState && moveInput.sqrMagnitude > 0.001f)
-    //    {
-    //        movementFSM.ChangeState(locomotionState);
-    //    }
-
-    //}
-    //private void OnRunCanceled(InputAction.CallbackContext context)
-    //{
-    //    IsRunPressed = false;
-    //    if (movementFSM.CurrentState == locomotionState)
-    //    {
-    //        movementFSM.ChangeState(locomotionState);
-    //    }
-    //}
-    //private void OnJumpPerformed(InputAction.CallbackContext context)
-    //{
-    //    if (Status.CanJump)
-    //    {
-    //        movementFSM.ChangeState(AirborneState);
-    //    }
-    //}
 }
