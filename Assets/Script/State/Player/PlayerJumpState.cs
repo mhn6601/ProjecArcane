@@ -19,6 +19,7 @@ public class PlayerJumpState : PlayerState
         // 1. 점프 물리 속도 부여 및 점프 가능 플래그 제거
         player.Jump.SetJumpVelocity();
         player.Status.RemoveFlag(CharacterActionFlags.CanRotate);
+        player.Status.RemoveFlag(CharacterActionFlags.CanRoll);
         player.Status.RemoveFlag(CharacterActionFlags.CanJump);
         player.Status.RemoveFlag(CharacterActionFlags.CanParry);
         player.Status.RemoveFlag(CharacterActionFlags.CanGuard);

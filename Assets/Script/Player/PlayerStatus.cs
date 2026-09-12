@@ -17,6 +17,7 @@ public class PlayerStatus : MonoBehaviour
     [SerializeField] private bool canJump;
     [SerializeField] private bool canGuard;
     [SerializeField] private bool canParry;
+    [SerializeField] private bool isRunning;
     [SerializeField] private bool isLockOn;
     [SerializeField] private bool isInvincible;
     [SerializeField] private bool isGuarding;
@@ -28,6 +29,7 @@ public class PlayerStatus : MonoBehaviour
     public bool CanJump => HasFlag(CharacterActionFlags.CanJump);
     public bool CanGuard => HasFlag(CharacterActionFlags.CanGuard);
     public bool CanParry => HasFlag(CharacterActionFlags.CanParry);
+    public bool IsRunning => HasFlag(CharacterActionFlags.isRunning);
     public bool IsLockOn => HasFlag(CharacterActionFlags.isLockOn);
     public bool IsInvincible => HasFlag(CharacterActionFlags.IsInvincible);
 
@@ -41,6 +43,7 @@ public class PlayerStatus : MonoBehaviour
         canAttack = CanAttack;
         canJump = CanJump;
         canParry = CanParry;
+        isRunning = IsRunning;
         isLockOn = IsLockOn;
         isInvincible = IsInvincible;
         isGuarding = IsGuarding;

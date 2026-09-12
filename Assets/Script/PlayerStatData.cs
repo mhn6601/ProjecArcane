@@ -22,7 +22,10 @@ public class PlayerStatData : ScriptableObject
 
     [Header("BaseSpeed")]
     public float moveSpeed = 2.5f;
-    public float runSpeed = 5f;
+    public float runSpeedMultiply = 1.5f;
+    [Header("Jump")]
+    public float jumphight =1.5f;
+    public float jumpStaminaCost =10f;
 
     [Header("Stamina Settings")]
     public float staminaRegenRate = 5f; // 초당 회복량
@@ -31,7 +34,8 @@ public class PlayerStatData : ScriptableObject
     [Header("RunStaminaCostPerSec")]
     public float runStaminaCostPerSec = 3f;
     public float staminaRecoveryThreshold = 10f;
-    [Header("구르기 무적시간")]
+    [Header("구르기 ")]
+    public float rollStaminaCost = 10f;
     public float rollImmunetime = 0.2f;
 
     // 특정 레벨의 필요 경험치 계산

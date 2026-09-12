@@ -26,6 +26,7 @@ public class PlayerAirborneState : PlayerState
 
         player.Status.RemoveFlag(CharacterActionFlags.CanMove);
         player.Status.RemoveFlag(CharacterActionFlags.CanRotate);
+        player.Status.RemoveFlag(CharacterActionFlags.CanRoll);
         player.Status.RemoveFlag(CharacterActionFlags.CanJump);
         player.Status.RemoveFlag(CharacterActionFlags.CanGuard);
         player.Status.RemoveFlag(CharacterActionFlags.CanParry);
@@ -49,6 +50,7 @@ public class PlayerAirborneState : PlayerState
         // 착지 시 상태 및 플래그 복구
         player.Status.AddFlag(CharacterActionFlags.CanMove);
         player.Status.AddFlag(CharacterActionFlags.CanRotate);
+        player.Status.AddFlag(CharacterActionFlags.CanRoll);
         player.Status.AddFlag(CharacterActionFlags.CanJump);
         player.Status.AddFlag(CharacterActionFlags.CanGuard);   
         player.Status.AddFlag(CharacterActionFlags.CanParry);   

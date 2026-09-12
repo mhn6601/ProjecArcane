@@ -17,6 +17,7 @@ public class PlayerAttackComboState : PlayerState
         
         
         player.Status.RemoveFlag(CharacterActionFlags.CanMove);
+        player.Status.RemoveFlag(CharacterActionFlags.CanRoll);
         player.Status.RemoveFlag(CharacterActionFlags.CanRotate);
         player.Status.RemoveFlag(CharacterActionFlags.CanJump);
         PlayComboAnimation();
@@ -75,6 +76,7 @@ public class PlayerAttackComboState : PlayerState
     public override void OnExit()
     {
         player.Status.AddFlag(CharacterActionFlags.CanMove);
+        player.Status.AddFlag(CharacterActionFlags.CanRoll);
         player.Status.AddFlag(CharacterActionFlags.CanRotate);
         player.Status.AddFlag(CharacterActionFlags.CanJump);
         currentComboIndex = 0;

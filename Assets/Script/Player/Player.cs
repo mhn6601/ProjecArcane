@@ -6,6 +6,7 @@ public class Player:Singleton<Player>
     [SerializeField] private PlayerController controller;
     [SerializeField] private PlayerMove move;
     [SerializeField] private PlayerJump jump;
+    [SerializeField] private PlayerRoll roll;
     [SerializeField] private PlayerAttack attack;
     [SerializeField] private PlayerStatus status;
     [SerializeField] private PlayerInputHandler input;
@@ -19,6 +20,7 @@ public class Player:Singleton<Player>
     public PlayerController Controller => controller;
     public PlayerMove Move => move;
     public PlayerJump Jump => jump;
+    public PlayerRoll Roll => roll;
     public PlayerAttack Attack => attack;
     public PlayerStatus Status => status;
     public PlayerInputHandler Input => input;
@@ -53,6 +55,7 @@ public class Player:Singleton<Player>
         if (controller == null) controller = GetComponent<PlayerController>();
         if (move == null) move = GetComponent<PlayerMove>();
         if (jump == null) jump = GetComponent<PlayerJump>();
+        if (roll == null) roll = GetComponent<PlayerRoll>();
         if (attack == null) attack = GetComponent<PlayerAttack>();
         if (status == null) status = GetComponent<PlayerStatus>();
         if (input == null) input = GetComponent<PlayerInputHandler>();

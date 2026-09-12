@@ -29,6 +29,7 @@ public class PlayerController : CharacterControllerBase
     public PlayerLocomotionState locomotionState {  get;private set; }
     public PlayerAirborneState AirborneState { get;private set; }
     public PlayerJumpState JumpState { get; private set; }
+    public PlayerRollState RollState { get; private set; }
     public PlayerAttackComboState AttackComboState { get;private set; }
     public PlayerHeavyAttackState HeavyAttackState { get;private set; }
     public PlayerParryState ParryState { get;private set; }
@@ -89,6 +90,7 @@ public class PlayerController : CharacterControllerBase
         #region MovementState
         locomotionState = new PlayerLocomotionState(player);
         AirborneState = new PlayerAirborneState(player);
+        RollState = new PlayerRollState(player);
         #endregion
 
         #region ActionState

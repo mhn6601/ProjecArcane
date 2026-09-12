@@ -15,8 +15,6 @@ public class PlayerJump : MonoBehaviour
     public float GroundedGravity => groundedGravity;
     [SerializeField]private Vector3 jumpVelocity;
 
-    [SerializeField]
-    private float jumpHeight = 0f;
 
     private PlayerController controller;
 
@@ -47,6 +45,7 @@ public class PlayerJump : MonoBehaviour
                 }
             }
         }
+        
     }
     private void Start()
     {
@@ -65,8 +64,9 @@ public class PlayerJump : MonoBehaviour
     }
     public void ExecuteJump(Vector3 rawInput, bool isRun)
     {
+        player.ResourceSystem.UseStaminaEasy(player.Stats.JumpStaminaCost);
         // 1. 수평 이동 벡터 계산 (X, Z) - 속도 적용
-        float currentSpeed = isRun ? player.Stats.RunSpeed : player.Stats.MoveSpeed;
+        float currentSpeed = isRun ? player.Stats.MoveSpeed*player.Stats.RunSpeedMultiply : player.Stats.MoveSpeed;
         Vector3 horizontalMove = rawInput * currentSpeed;
 
         // 2. 수직 이동 벡터 계산 (Y) - 중력/점프 속도 적용
@@ -87,15 +87,17 @@ public class PlayerJump : MonoBehaviour
         if(Physics.Raycast(ray, Vector3.down, rayDistance, groundLayer))
         {
             player.Status.RemoveFlag(CharacterActionFlags.CanJump);
+            player.Status.RemoveFlag(CharacterActionFlags.CanRoll);
         }
         else
         {
+            player.Status.AddFlag(CharacterActionFlags.CanRoll);
             player.Status.AddFlag(CharacterActionFlags.CanJump);
         }
     }
     public void SetJumpVelocity()
     {
-        jumpVelocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity);
+        jumpVelocity.y = Mathf.Sqrt(player.Stats.Jumphight * -2f * gravity);
     }
     public float GetJumpVelocity()
     {

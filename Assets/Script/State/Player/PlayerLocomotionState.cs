@@ -31,7 +31,12 @@ public class PlayerLocomotionState : PlayerState
         {
             return;
         }
-        if (player.Input.JumpTriggered)
+        if (player.Input.RollTriggered&& player.ResourceSystem.UseStaminaEasy(player.Stats.RollStaminaCost))
+        {
+            player.Controller.MovementFSM.ChangeState(player.Controller.RollState);
+            return;
+        }
+        if (player.Input.JumpTriggered&& player.ResourceSystem.UseStaminaEasy(player.Stats.JumpStaminaCost))
         {
             player.Controller.MovementFSM.ChangeState(player.Controller.JumpState);
             return;
@@ -44,6 +49,8 @@ public class PlayerLocomotionState : PlayerState
         
         bool isRunPressed = player.Input.IsRunPressed;
         bool isMoving = moveInput.sqrMagnitude > 0.001f;
+
+        //  스태미나 소모 및 실제 달리기(actualRunState) 판정
         bool canRun = false;
         if (isMoving && isRunPressed)
         {
@@ -56,10 +63,12 @@ public class PlayerLocomotionState : PlayerState
         if (actualRunState)
         {
             player.Status.RemoveFlag(CharacterActionFlags.CanGuard);
+            player.Status.AddFlag(CharacterActionFlags.isRunning);
         }
         else
         {
             player.Status.AddFlag(CharacterActionFlags.CanGuard);
+            player.Status.RemoveFlag(CharacterActionFlags.isRunning);
 
         }
         float gravity= player.Jump.GroundedGravity;
