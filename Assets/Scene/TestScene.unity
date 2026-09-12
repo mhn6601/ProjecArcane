@@ -2538,8 +2538,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a6671d7b4cea4ae44bec0991f1109608, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerResourceSystem
-  staminaRegenRate: 5
-  staminaRegenDelay: 3
 --- !u!114 &1089770786
 MonoBehaviour:
   m_ObjectHideFlags: 0

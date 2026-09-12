@@ -24,3 +24,8 @@ MonoBehaviour:
   attackPerLevel: 2
   moveSpeed: 2.5
   runSpeed: 5
+  staminaRegenRate: 5
+  staminaRegenDelay: 3
+  runStaminaCostPerSec: 10
+  staminaRecoveryThreshold: 10
+  rollImmunetime: 0.2

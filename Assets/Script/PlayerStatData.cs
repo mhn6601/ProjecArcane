@@ -24,6 +24,16 @@ public class PlayerStatData : ScriptableObject
     public float moveSpeed = 2.5f;
     public float runSpeed = 5f;
 
+    [Header("Stamina Settings")]
+    public float staminaRegenRate = 5f; // 초당 회복량
+    public float staminaRegenDelay = 4f; // 사용후 회복 시작 대기시간
+
+    [Header("RunStaminaCostPerSec")]
+    public float runStaminaCostPerSec = 3f;
+    public float staminaRecoveryThreshold = 10f;
+    [Header("구르기 무적시간")]
+    public float rollImmunetime = 0.2f;
+
     // 특정 레벨의 필요 경험치 계산
     public int GetRequiredExpForLevel(int level)
     {

@@ -9,17 +9,19 @@ public class PlayerResourceSystem : MonoBehaviour
     public float MaxHealth => playerStats.MaxHealth;
     public float MaxMana => playerStats.MaxMana;
     public float MaxStamina => playerStats.MaxStamina;
+    public float StaminaRecoveryThreshold => playerStats.staminaRecoveryThreshold;
 
     public float CurrentHealth { get; private set; }
     public float CurrentMana { get; private set; }
     public float CurrentStamina { get; private set; }
-    [Header("Stamina Settings")]
-    [SerializeField] private float staminaRegenRate = 5f; // 초당 회복량
-    [SerializeField] private float staminaRegenDelay = 4f; // 사용후 회복 시작 대기시간
     private float lastStaminaUseTime;
+
+    // 스태미너 고갈(잠금) 상태 여부 외부 참조용 프로퍼티
+    public bool IsStaminaExhausted { get; private set; } = false;
     public event Action<float, float> OnHealthChanged;
     public event Action<float, float> OnManaChanged;
     public event Action<float, float> OnStaminaChanged;
+    public event Action<bool> OnStaminaExhaustedChanged;
     public event Action OnDeath;
 
     private void Awake()
@@ -35,7 +37,7 @@ public class PlayerResourceSystem : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        RegenerateStamina();
+        HandleStaminaRegeneration();
     }
     public void InitResources()
     {
@@ -103,24 +105,57 @@ public class PlayerResourceSystem : MonoBehaviour
         return true;
     }
 
-    private void RegenerateStamina()
-    {
-        if (Time.time < lastStaminaUseTime + staminaRegenDelay) return;
-        if (CurrentStamina >= playerStats.MaxStamina) return;
-
-        CurrentStamina = Mathf.Min(playerStats.MaxStamina, CurrentStamina + staminaRegenRate * Time.deltaTime);
-        OnStaminaChanged?.Invoke(CurrentStamina, playerStats.MaxStamina);
-    }
+    
     public bool ConsumeStaminaContinous(float ratePerSecond)
     {
+        if(IsStaminaExhausted) return false;
+
         float amountToConsume = ratePerSecond * Time.deltaTime;
-        if (CurrentStamina < amountToConsume) return false;
-        CurrentStamina = Mathf.Max(0f, CurrentStamina - amountToConsume);
+        if (CurrentStamina < amountToConsume) 
+        {
+            SetStaminaExhausted(true);
+            CurrentStamina = 0f;
+            lastStaminaUseTime = Time.time;
+            OnStaminaChanged?.Invoke(CurrentStamina, MaxStamina);
+            return false;
+        }
+        CurrentStamina -=  amountToConsume;
         lastStaminaUseTime = Time.time;
+
+        if (CurrentStamina <= 0f)
+        {
+            CurrentStamina = 0f;
+            SetStaminaExhausted(true);
+        }
         OnStaminaChanged?.Invoke(CurrentStamina, playerStats.MaxStamina);
         return true;
     }
+    private void HandleStaminaRegeneration()
+    {
+        // 스태미너 사용 후 대기 시간이 지났고, 아직 최대치가 아닐 때 회복
+        if (Time.time >= lastStaminaUseTime + playerStats.staminaRegenDelay && CurrentStamina < MaxStamina)
+        {
+            CurrentStamina = Mathf.Min(playerStats.MaxStamina, CurrentStamina + playerStats.staminaRegenRate * Time.deltaTime);
 
+            // 고갈 상태였고, 일정 수치 이상 회복되었다면 잠금 해제!
+            if (IsStaminaExhausted && CurrentStamina >= StaminaRecoveryThreshold)
+            {
+                SetStaminaExhausted(false);
+            }
+
+            OnStaminaChanged?.Invoke(CurrentStamina, MaxStamina);
+        }
+    }
+
+    private void SetStaminaExhausted(bool exhausted)
+    {
+        if (IsStaminaExhausted != exhausted)
+        {
+            IsStaminaExhausted = exhausted;
+            OnStaminaExhaustedChanged?.Invoke(IsStaminaExhausted);
+            // Debug.Log(exhausted ? "스태미너 고갈! 달리기 잠금" : "스태미너 회복! 달리기 가능");
+        }
+    }
     //기타
     private void HandleLevelUp(int newLevel)
     {

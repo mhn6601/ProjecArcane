@@ -43,7 +43,17 @@ public class PlayerLocomotionState : PlayerState
         }
         
         bool isRunPressed = player.Input.IsRunPressed;
-        if (isRunPressed)
+        bool isMoving = moveInput.sqrMagnitude > 0.001f;
+        bool canRun = false;
+        if (isMoving && isRunPressed)
+        {
+            // 스태미너 소모 시도 (차감 성공 시 true 반환)
+            canRun = player.ResourceSystem.ConsumeStaminaContinous(player.Stats.RunStaminaCostPerSec);
+        }
+        // 스태미너가 없거나 입력이 없으면 isRunPressed 판정을 false로 보정하여 걷기로 전환
+        bool actualRunState = isRunPressed && canRun;
+
+        if (actualRunState)
         {
             player.Status.RemoveFlag(CharacterActionFlags.CanGuard);
         }
@@ -55,12 +65,12 @@ public class PlayerLocomotionState : PlayerState
         float gravity= player.Jump.GroundedGravity;
         Vector3 gravityVector = new Vector3(0, gravity, 0);
         // 1. 단순 0 체크 optimization (.sqrMagnitude 활용)
-        if (moveInput.sqrMagnitude <= 0.001f)
+        if (!isMoving)
         {
             // 입력이 없으면 애니메이션 파라미터를 0으로 보간 후 이동 중단
             SetAnimatorParametersMoveHash(0, 0.1f);
             
-            player.Move.ExecuteMove(gravityVector, isRunPressed);
+            player.Move.ExecuteMove(gravityVector, false);
             UpdateAnimatorParameters(moveInput, 0f);
             return;
         }
@@ -77,7 +87,7 @@ public class PlayerLocomotionState : PlayerState
         }
         else
         {
-            targetSpeedMultiplier = isRunPressed ? 1.0f : 0.5f;
+            targetSpeedMultiplier = actualRunState ? 1.0f : 0.5f;
         }
         UpdateAnimatorParameters(moveInput, targetSpeedMultiplier);
         if (player.Status.IsLockOn)
@@ -92,7 +102,7 @@ public class PlayerLocomotionState : PlayerState
             SetAnimatorParametersMoveHash(targetSpeedMultiplier, 0.1f);
         }
         // 4. 이동 로직 위임
-        player.Move.ExecuteMove(moveInput+ gravityVector, isRunPressed);
+        player.Move.ExecuteMove(moveInput+ gravityVector, actualRunState);
         // 5. 2D Blend Tree 파라미터 업데이트 (MoveX, MoveZ)
     }
 

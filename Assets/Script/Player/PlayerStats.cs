@@ -15,6 +15,11 @@ public class PlayerStats : MonoBehaviour
     public float AttackPower => statData.baseAttackPower + (Level - 1) * statData.attackPerLevel;
     public float MoveSpeed => statData.moveSpeed;
     public float RunSpeed => statData.runSpeed;
+    public float staminaRegenRate => statData.staminaRegenRate;
+    public float staminaRegenDelay => statData.staminaRegenDelay;
+    public float staminaRecoveryThreshold => statData.staminaRecoveryThreshold;
+    public float RunStaminaCostPerSec => statData.runStaminaCostPerSec;
+    public float RollImmuneTime => statData.rollImmunetime;
 
 
 }
