@@ -1,8 +1,22 @@
 using UnityEngine;
 
-public abstract class Entity : MonoBehaviour
+public  class Entity : MonoBehaviour
 {
+    Animator animator;
+    public Animator Animator => animator;
 
+    EnemyController enemyController;
+    public EnemyController EnemyController=> enemyController;
+
+    [SerializeField] private EnemyData enemyData;
+    public EnemyData EnemyData=>enemyData;
+
+
+    private void Awake()
+    {
+        animator = GetComponent<Animator>();
+        enemyController = GetComponent<EnemyController>(); 
+    }
     //public bool isWalking = false;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
