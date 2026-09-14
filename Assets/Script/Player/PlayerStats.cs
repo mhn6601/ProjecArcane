@@ -23,6 +23,14 @@ public class PlayerStats : MonoBehaviour
     public float RunStaminaCostPerSec => statData.runStaminaCostPerSec;
     public float RollStaminaCost => statData.rollStaminaCost;
     public float RollImmuneTime => statData.rollImmunetime;
+    public void SetStats(int level)
+    {
+        Level = level;
 
+    }
+    public void SetEquipmentBonus()
+    {
+
+    }
 
 }

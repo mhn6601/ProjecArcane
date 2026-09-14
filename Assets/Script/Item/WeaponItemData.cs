@@ -24,12 +24,13 @@ public class WeaponItemData : EquipmentItemData
 
     [Header("무기별 콤보/애니메이션 데이터 (선택)")]
     // 무기마다 콤보 애니메이션이 다르다면 여기서 스텝 데이터를 무기가 직접 들고 있게 할 수도 있음
-    public LightAttackStepData[] lightComboSteps;
-    public HeavyAttackStepData[] heavyComboSteps;
+    public PlayerAttackData playerAttackData;
 
     [Header("표시/이펙트")]
     public GameObject weaponPrefab;      // 손에 들리는 실제 모델
     public RuntimeAnimatorController weaponOverrideController; // 무기별 애니메이터 오버라이드
+
+    
 
     // 최종 데미지 계산의 기준점. 콤보 스텝별 배율은 별도 데이터에서 곱해줌
     public float GetFinalDamage(float stepDamageMultiplier)

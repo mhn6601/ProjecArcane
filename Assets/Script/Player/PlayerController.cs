@@ -97,6 +97,7 @@ public class PlayerController : CharacterControllerBase
         JumpState = new PlayerJumpState(player);
         AttackComboState = new PlayerAttackComboState(player, player.Attack.GetLightAttackStepData());
         HeavyAttackState = new PlayerHeavyAttackState(player, player.Attack.GetHeavyAttackStepData());
+
         ParryState = new PlayerParryState(player);
         EmptyActionState = new PlayerEmptyActionState(player);
         GuardState = new PlayerGuardState(player);

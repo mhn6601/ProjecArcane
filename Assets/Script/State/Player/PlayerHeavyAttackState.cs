@@ -53,6 +53,10 @@ public class PlayerHeavyAttackState : PlayerState
         player.Status.AddFlag(CharacterActionFlags.CanJump);
         player.Status.AddFlag(CharacterActionFlags.CanGuard);
         player.Status.AddFlag(CharacterActionFlags.CanParry);
+        if (player.Attack.MainWeapon != null)
+        {
+            player.Attack.MainWeapon.WeaponHitbox.DisableHitbox();
+        }
     }
     public float StaminaCost(int comboIndex)
     {

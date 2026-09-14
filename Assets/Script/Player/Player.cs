@@ -12,7 +12,7 @@ public class Player:Singleton<Player>
     [SerializeField] private PlayerInputHandler input;
     [SerializeField] private PlayerStats stats;
     [SerializeField] private PlayerResourceSystem resourceSystem;
-    [SerializeField] private PlayerEquipment equipment;
+    [SerializeField] private EquipmentManager equipmentManager;
 
     [SerializeField] private Animator animator;
 
@@ -26,7 +26,7 @@ public class Player:Singleton<Player>
     public PlayerInputHandler Input => input;
     public PlayerStats Stats => stats;
     public PlayerResourceSystem ResourceSystem => resourceSystem;
-    public PlayerEquipment Equipment => equipment;
+    public EquipmentManager EquipmentManager => equipmentManager;
     public Animator Animator => animator;
 
 
@@ -39,6 +39,7 @@ public class Player:Singleton<Player>
     protected override void Awake()
     {
         InitComponents();
+       
 
     }
     private void OnDestroy()
@@ -62,7 +63,7 @@ public class Player:Singleton<Player>
         if (stats == null) stats = GetComponent<PlayerStats>();
         if (resourceSystem == null) resourceSystem = GetComponent<PlayerResourceSystem>();
         if (status == null) status = GetComponent<PlayerStatus>();
-        if (equipment == null) equipment = GetComponent<PlayerEquipment>();
+        if (equipmentManager == null) equipmentManager = GetComponent<EquipmentManager>();
     }
     // --- 라이프사이클 및 전체 시스템 제어 ---
 

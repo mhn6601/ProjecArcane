@@ -47,7 +47,12 @@ public class PlayerResourceSystem : MonoBehaviour
 
         NotifyAllUI();
     }
-
+    public void SetResources(float currentHealth,float currentMana, float currentStamina)
+    {
+        CurrentHealth = currentHealth;
+        CurrentMana = currentMana;
+        CurrentStamina = currentStamina;
+    }
     // 체력
     public void TakeDamage(float damageAmount)
     {

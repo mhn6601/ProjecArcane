@@ -1,8 +1,9 @@
 using UnityEngine;
 
-public enum EquipSlot
+public enum EquipmentSlot
 {
-    Weapon,
+    MainWeapon,
+    SubWeapon,
     Shield,
     Head,
     Chest,
@@ -12,9 +13,14 @@ public enum EquipSlot
 public class EquipmentItemData : ItemData
 {
     [Header("장비 공통 스탯")]
-    public EquipSlot equipSlot;
+    public EquipmentSlot equipSlot;
     public int requiredLevel = 0;
 
     // 인벤토리에서 장착 가능 여부 등을 판단할 때 재사용
     public virtual bool CanEquip(Player player) => true;
+
+    public void GetItemByID(string itemID)
+    {
+
+    }
 }

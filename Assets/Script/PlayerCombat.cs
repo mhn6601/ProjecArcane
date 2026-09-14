@@ -59,7 +59,7 @@ public class PlayerCombat : CharacterCombat,ICombatTarget
 
     private void HandleGuardedHit(AttackData attackData)
     {
-        float guardDamage = attackData.damage * attackData.guardDamageMultiplier; // 가드 관통 데미지 비율
+        float guardDamage =  attackData.guardDamageMultiplier; // 가드 관통 데미지 비율
         playerResourceSystem.TakeDamage(guardDamage);
 
         // 가드 브레이크 체크 (자세/스태미나 게이지 있다면 여기서 처리)
