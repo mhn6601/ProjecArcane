@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public enum EquipmentSlot
+public enum EquipmentSlotType
 {
     MainWeapon,
     SubWeapon,
@@ -13,7 +13,7 @@ public enum EquipmentSlot
 public class EquipmentItemData : ItemData
 {
     [Header("장비 공통 스탯")]
-    public EquipmentSlot equipSlot;
+    public EquipmentSlotType equipSlottype;
     public int requiredLevel = 0;
 
     // 인벤토리에서 장착 가능 여부 등을 판단할 때 재사용

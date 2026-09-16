@@ -21,6 +21,6 @@ public class PlayerSaveData
 [Serializable]
 public class EquippedItemSaveData
 {
-    public string slotName; // 예: "MainWeapon", "Armor" 등 (EquipmentSlot Enum.ToString())
+    public EquipmentSlotType slot; // 예: "MainWeapon", "Armor" 등 (EquipmentSlot Enum.ToString())
     public string itemID;   // 예: "EQ_SWORD_01"
 }

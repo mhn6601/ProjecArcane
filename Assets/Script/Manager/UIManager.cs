@@ -1,0 +1,263 @@
+using System;
+using System.Collections.Generic;
+using UnityEngine;
+
+public enum UIType
+{
+    Inventory,
+    Stat,
+    Skill,
+    Setting,
+    Popup
+}
+public class UIManager : Singleton<UIManager>
+{
+    Player player;
+    private UIBase focusedUI;
+    [SerializeField]
+    private List<UIBase> uiList = new List<UIBase>();
+    private List<UIBase> openedUIs = new List<UIBase>();
+
+
+    private Dictionary<UIType, UIBase> uiDictionary
+        = new Dictionary<UIType, UIBase>();
+
+    public Action<bool> OnPlayerInputChanged;
+
+
+    protected override void Awake()
+    {
+        base.Awake();
+        player = Player.Instance;
+    }
+    private void Start()
+    {
+        RegisterAllUI();
+    }
+
+
+    private void OnEnable()
+    {
+        player.Input.OnInventoryInput += ToggleInventory;
+    }
+
+
+    private void OnDisable()
+    {
+        player.Input.OnInventoryInput -= ToggleInventory;
+    }
+
+
+    // -------------------------
+    // UI 등록
+    // -------------------------
+    private void RegisterAllUI()
+    {
+        
+        foreach (UIBase ui in uiList)
+        {
+            RegisterUI(ui);
+        }
+    }
+    public void RegisterUI(UIBase ui)
+    {
+        //Debug.Log($" Regist:{ui.uIType}");
+        if (ui == null)
+        {
+            Debug.Log($" ui==null");
+            return;
+        }
+            
+
+        if (uiDictionary.ContainsKey(ui.uIType))
+        {
+           // Debug.LogWarning($"Already Registed : {ui.uIType}");
+            return;
+        }
+
+        uiDictionary.Add(ui.uIType, ui);
+        //Debug.Log($"UI Registed:{ui.uIType}");
+    }
+
+
+    private UIBase GetUI(UIType uiType)
+    {
+        if (uiDictionary.TryGetValue(uiType, out UIBase ui))
+        {
+            return ui;
+        }
+
+        Debug.LogWarning($"Can't find UI: {uiType}");
+
+        return null;
+    }
+
+
+    // -------------------------
+    // UI 열기
+    // -------------------------
+
+    public void OpenUI(UIBase ui)
+    {
+        if (ui == null)
+            return;
+
+        if (openedUIs.Contains(ui))
+        {
+            FocusUI(ui);
+            return;
+        }
+
+        openedUIs.Add(ui);
+
+        ui.Open();
+
+        FocusUI(ui);
+
+        UpdatePlayerInput();
+    }
+
+
+    public void OpenUI(UIType uiType)
+    {
+        UIBase ui = GetUI(uiType);
+
+        if (ui == null)
+            return;
+
+        OpenUI(ui);
+    }
+
+
+    // -------------------------
+    // UI 닫기
+    // -------------------------
+
+    public void CloseUI(UIBase ui)
+    {
+        if (ui == null)
+            return;
+
+        if (!openedUIs.Contains(ui))
+            return;
+
+        openedUIs.Remove(ui);
+
+        ui.Close();
+
+
+        if (focusedUI == ui)
+        {
+            if (openedUIs.Count > 0)
+            {
+                focusedUI = openedUIs[openedUIs.Count - 1];
+
+                focusedUI.Focus();
+            }
+            else
+            {
+                focusedUI = null;
+            }
+        }
+
+        UpdatePlayerInput();
+    }
+
+
+    public void CloseUI(UIType uiType)
+    {
+        UIBase ui = GetUI(uiType);
+
+        if (ui == null)
+            return;
+
+        CloseUI(ui);
+    }
+
+
+    // -------------------------
+    // Focus
+    // -------------------------
+
+    public void FocusUI(UIBase ui)
+    {
+        if (ui == null)
+            return;
+
+        if (!openedUIs.Contains(ui))
+            return;
+
+
+        openedUIs.Remove(ui);
+        openedUIs.Add(ui);
+
+        focusedUI = ui;
+
+        ui.Focus();
+    }
+
+
+    public void CloseFocusUI()
+    {
+        if (focusedUI == null)
+            return;
+
+        CloseUI(focusedUI);
+    }
+
+
+    // -------------------------
+    // UI 상태 확인
+    // -------------------------
+
+    public bool IsUIOpen(UIBase ui)
+    {
+        return openedUIs.Contains(ui);
+    }
+
+
+    public bool IsUIOpen(UIType uiType)
+    {
+        UIBase ui = GetUI(uiType);
+
+        if (ui == null)
+            return false;
+
+        return openedUIs.Contains(ui);
+    }
+
+
+    public bool IsAnyUIOpen()
+    {
+        return openedUIs.Count > 0;
+    }
+
+
+    // -------------------------
+    // 플레이어 입력
+    // -------------------------
+
+    private void UpdatePlayerInput()
+    {
+        bool canInput = openedUIs.Count == 0;
+
+        OnPlayerInputChanged?.Invoke(canInput);
+    }
+
+
+    // -------------------------
+    // Inventory
+    // -------------------------
+
+    private void ToggleInventory()
+    {
+        if (IsUIOpen(UIType.Inventory))
+        {
+            CloseUI(UIType.Inventory);
+        }
+        else
+        {
+            OpenUI(UIType.Inventory);
+        }
+    }
+}

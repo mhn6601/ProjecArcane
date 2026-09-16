@@ -1,10 +1,15 @@
+
+using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class PlayerInputHandler : MonoBehaviour
 {
     private PlayerInputAction inputActions;
-
+    public Action<bool> OnInputEnabledChanged;
+    public  Action OnInventoryInput;
+    private bool inputEnabled = true;
+    public bool InputEnabled =>inputEnabled;
     public Vector3 MoveInput { get; private set; }
     public bool IsRunPressed { get; private set; }
     public bool IsGuardHold { get; private set; }
@@ -40,6 +45,8 @@ public class PlayerInputHandler : MonoBehaviour
     private void OnEnable()
     {
         inputActions.PlayerAction.Enable();
+        inputActions.PlayerCamera.Enable();
+        inputActions.PlayerUI.Enable();
 
         inputActions.PlayerAction.Move.performed += OnMovePerformed;
         inputActions.PlayerAction.Move.canceled += OnMoveCanceled;
@@ -57,6 +64,11 @@ public class PlayerInputHandler : MonoBehaviour
         inputActions.PlayerAction.Parry.performed += OnParryPerformed;
         inputActions.PlayerAction.Guard.performed += OnGuardHoldPerformed;
         inputActions.PlayerAction.Guard.canceled += OnGuardHoldCanceled;
+
+        inputActions.PlayerUI.Inventory.performed += OnInventoryPerformed;
+
+        UIManager.Instance.OnPlayerInputChanged += SetInputEnabled;
+           
     }
 
     private void OnDisable()
@@ -76,10 +88,41 @@ public class PlayerInputHandler : MonoBehaviour
         inputActions.PlayerAction.Guard.performed -= OnGuardHoldPerformed;
         inputActions.PlayerAction.Guard.canceled -= OnGuardHoldCanceled;
 
+        inputActions.PlayerUI.Inventory.performed -= OnInventoryPerformed;
+
+        UIManager.Instance.OnPlayerInputChanged -= SetInputEnabled;
+        inputActions.PlayerUI.Disable();
+        inputActions.PlayerCamera.Disable();
         inputActions.PlayerAction.Disable();
     }
+    public void SetInputEnabled(bool enabled)
+    {
+        if (inputEnabled == enabled)
+            return;
 
-    private void OnMovePerformed(InputAction.CallbackContext context) => MoveInput = context.ReadValue<Vector3>();
+        inputEnabled = enabled;
+
+        if (!enabled)
+        {
+            MoveInput = Vector3.zero;
+            IsRunPressed = false;
+            IsGuardHold = false;
+        }
+
+        OnInputEnabledChanged?.Invoke(inputEnabled);
+    }
+    private void OnMovePerformed(InputAction.CallbackContext context)
+    {
+        if (inputEnabled)
+        {
+            MoveInput = context.ReadValue<Vector3>();
+        }
+        else
+        {
+            MoveInput = Vector3.zero;
+
+        }
+    }
     private void OnMoveCanceled(InputAction.CallbackContext context) => MoveInput = Vector3.zero;
 
     /// <summary>
@@ -104,6 +147,13 @@ public class PlayerInputHandler : MonoBehaviour
 
     private void OnRunStarted(InputAction.CallbackContext context)
     {
+        if (!inputEnabled)
+        {
+
+            OnRunCanceled(context);
+            return;
+        }
+
         float now = Time.unscaledTime;
 
         if (IsSharedKeyMode())
@@ -153,6 +203,8 @@ public class PlayerInputHandler : MonoBehaviour
 
     private void OnRollPerformed(InputAction.CallbackContext context)
     {
+        if (!inputEnabled)
+            return;
         // 공유 키 모드에서는 Run 쪽 press/release 타이밍 로직이 구르기 판정을 전담하므로
         // Roll 액션 자체의 즉시 발동(performed)은 무시해야 이중 발동을 막을 수 있음.
         if (IsSharedKeyMode())
@@ -178,13 +230,40 @@ public class PlayerInputHandler : MonoBehaviour
         }
     }
 
-    private void OnJumpPerformed(InputAction.CallbackContext context) => JumpTriggered = true;
-    private void OnAttackPerformed(InputAction.CallbackContext context) => AttackTriggered = true;
-    private void OnHeavyAttackPerformed(InputAction.CallbackContext context) => HeavyAttackTriggered = true;
-    private void OnParryPerformed(InputAction.CallbackContext context) => ParryTriggered = true;
-    private void OnGuardHoldPerformed(InputAction.CallbackContext context) => IsGuardHold = true;
-    private void OnGuardHoldCanceled(InputAction.CallbackContext context) => IsGuardHold = false;
+    private void OnJumpPerformed(InputAction.CallbackContext context)
+    {
+        if (!inputEnabled) return; 
+        JumpTriggered = true;
+    }
+    private void OnAttackPerformed(InputAction.CallbackContext context)
+    {
+        if (!inputEnabled) return; 
+        AttackTriggered = true;
+    }
+    private void OnHeavyAttackPerformed(InputAction.CallbackContext context) 
+    { 
+        if (!inputEnabled) return; 
+        HeavyAttackTriggered = true;
+    }
+    private void OnParryPerformed(InputAction.CallbackContext context) 
+    {
+        if (!inputEnabled) return; 
+        ParryTriggered = true; }
+    private void OnGuardHoldPerformed(InputAction.CallbackContext context) 
+    {
+        if (!inputEnabled) return; 
+        IsGuardHold = true;
+    }
+    private void OnGuardHoldCanceled(InputAction.CallbackContext context) 
+    {
+        if (!inputEnabled) return; 
+        IsGuardHold = false; }
 
+    private void OnInventoryPerformed(InputAction.CallbackContext context)
+    {
+        //Debug.Log("인벤열기");
+        OnInventoryInput?.Invoke();
+    }
     private void LateUpdate()
     {
         RollTriggered = false;

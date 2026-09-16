@@ -1,12 +1,9 @@
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class SaveHandler : MonoBehaviour
+public class SaveHandler : Singleton<SaveHandler>
 {
     Player player;
-    [SerializeField] private PlayerStats Stats;
-    [SerializeField] private PlayerResourceSystem resourceSystem;
-    [SerializeField] private EquipmentItemDatabaseSO equipmentItemDatabaseSO;
 
     private void Start()
     {
@@ -30,14 +27,14 @@ public class SaveHandler : MonoBehaviour
 
     public void SaveGameData()
     {
-        Debug.Log("SaveGameData");
+        //Debug.Log("SaveGameData");
         PlayerSaveData saveData = new PlayerSaveData();
         player = Player.Instance;
         // 1. 스탯 및 자원 수치 저장
-        saveData.level = Stats.Level;
+        saveData.level = player.Stats.Level;
         saveData.equippedItems = player.EquipmentManager.GetEquippedItemSaveData();
-        saveData.currentHealth = resourceSystem.CurrentHealth;
-        saveData.currentStamina = resourceSystem.CurrentStamina;
+        saveData.currentHealth = player.ResourceSystem.CurrentHealth;
+        saveData.currentStamina = player.ResourceSystem.CurrentStamina;
 
 
         SaveDataManager.SaveData(saveData);
@@ -65,7 +62,7 @@ public class SaveHandler : MonoBehaviour
         // 3. 장착 장비 데이터 복원 (저장된 딕셔너리와 DB 에셋 전달)
         if (player.EquipmentManager != null && saveData.equippedItems != null)
         {
-            player.EquipmentManager.LoadEquippedItems(saveData.equippedItems, equipmentItemDatabaseSO);
+            player.EquipmentManager.LoadEquippedItems(saveData.equippedItems, InventoryManager.Instance.GetEquipmentDB());
         }
     }
 }

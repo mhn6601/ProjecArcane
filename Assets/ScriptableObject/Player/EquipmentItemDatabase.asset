@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: EquipmentItemDatabase
   m_EditorClassIdentifier: Assembly-CSharp::EquipmentItemDatabaseSO
   allItems:
-  - {fileID: 11400000, guid: 579ffaa378da7f74bbe6c3263831879d, type: 2}
+  - {fileID: 11400000, guid: dcc3d8c1e9945ad44b174280d8dd5a35, type: 2}
   - {fileID: 11400000, guid: 579ffaa378da7f74bbe6c3263831879d, type: 2}

@@ -8,7 +8,7 @@ using UnityEngine;
 public class EquipmentManager : MonoBehaviour
 {
     // [부위 - 장착 중인 ItemSO] 딕셔너리 관리
-    private Dictionary<EquipmentSlot, EquipmentItemData> equippedItems = new Dictionary<EquipmentSlot, EquipmentItemData>();
+    private Dictionary<EquipmentSlotType, EquipmentItemData> equippedItems = new Dictionary<EquipmentSlotType, EquipmentItemData>();
 
     // 무기가 생성되어 손에 쥐어질 위치(소켓) 참조
     [Header("Weapon Sockets")]
@@ -19,8 +19,8 @@ public class EquipmentManager : MonoBehaviour
     private GameObject currentMainWeaponGO;
 
     // 장비 변경 시 UI 및 스탯 업데이트용 이벤트
-    public event Action<EquipmentSlot, EquipmentItemData> OnEquipmentChanged;
-    public event Action<EquipmentSlot, WeaponItemData> OnWeaponChanged;
+    public event Action<EquipmentSlotType, EquipmentItemData> OnEquipmentChanged;
+    public event Action<EquipmentSlotType, WeaponItemData> OnWeaponChanged;
 
     private PlayerStats playerStats;
 
@@ -33,7 +33,7 @@ public class EquipmentManager : MonoBehaviour
     {
         if (newItem == null) return;
 
-        EquipmentSlot slot = newItem.equipSlot;
+        EquipmentSlotType slot = newItem.equipSlottype;
         // 기존에 장착된 동일 부위 아이템이 있다면 해제
         if (equippedItems.ContainsKey(slot) && equippedItems[slot] != null)
         {
@@ -52,19 +52,19 @@ public class EquipmentManager : MonoBehaviour
         Debug.Log(newItem.itemName);
         if (newItem == null) return;
 
-        EquipmentSlot slot = newItem.equipSlot;
+        EquipmentSlotType slotType = newItem.equipSlottype;
 
         // 기존에 장착된 동일 부위 아이템이 있다면 해제
-        if (equippedItems.ContainsKey(slot) && equippedItems[slot] != null)
+        if (equippedItems.ContainsKey(slotType) && equippedItems[slotType] != null)
         {
-            Unequip(slot);
+            Unequip(slotType);
         }
 
         // 1. 장착 데이터 등록
-        equippedItems[slot] = newItem;
+        equippedItems[slotType] = newItem;
 
         // 2. 무기 프리팹 씬 생성 (외형/소켓 연동)
-        if (slot == EquipmentSlot.MainWeapon && newItem.weaponPrefab != null && mainHandSocket != null)
+        if (slotType == EquipmentSlotType.MainWeapon && newItem.weaponPrefab != null && mainHandSocket != null)
         {
             currentMainWeaponGO = Instantiate(newItem.weaponPrefab, mainHandSocket);
             currentMainWeaponGO.transform.localPosition = Vector3.zero;
@@ -78,18 +78,18 @@ public class EquipmentManager : MonoBehaviour
         }
 
         // 4. 이벤트 발행 (UI 업데이트 등)
-        OnEquipmentChanged?.Invoke(slot, newItem);
+        OnEquipmentChanged?.Invoke(slotType, newItem);
     }
 
     /// <summary> 장비 해제 처리 </summary>
-    public void Unequip(EquipmentSlot slot)
+    public void Unequip(EquipmentSlotType slotType)
     {
-        if (!equippedItems.ContainsKey(slot) || equippedItems[slot] == null) return;
+        if (!equippedItems.ContainsKey(slotType) || equippedItems[slotType] == null) return;
 
-        EquipmentItemData unequippedItem = equippedItems[slot];
+        EquipmentItemData unequippedItem = equippedItems[slotType];
 
         // 1. 씬 내 프리팹 파괴
-        if (slot == EquipmentSlot.MainWeapon && currentMainWeaponGO != null)
+        if (slotType == EquipmentSlotType.MainWeapon && currentMainWeaponGO != null)
         {
             Destroy(currentMainWeaponGO);
         }
@@ -101,10 +101,10 @@ public class EquipmentManager : MonoBehaviour
         }
 
         // 3. 데이터 제거
-        equippedItems[slot] = null;
+        equippedItems[slotType] = null;
 
         // 4. 이벤트 발행
-        OnEquipmentChanged?.Invoke(slot, null);
+        OnEquipmentChanged?.Invoke(slotType, null);
     }
 
     // --- 저장 / 불러오기용 메서드 ---
@@ -125,7 +125,7 @@ public class EquipmentManager : MonoBehaviour
     public WeaponItemData GetMainWeaponData()
     {
 
-        return equippedItems.FirstOrDefault(x => x.Key == EquipmentSlot.MainWeapon).Value as WeaponItemData;
+        return equippedItems.FirstOrDefault(x => x.Key == EquipmentSlotType.MainWeapon).Value as WeaponItemData;
     }
 
     /// <summary> SaveHandler가 불러올 때 호출: 저장되었던 ID 기반으로 아이템 DB/Addressables에서 찾아 재장착 </summary>
@@ -136,22 +136,20 @@ public class EquipmentManager : MonoBehaviour
 
         foreach (var itemSaveData in savedEquipList)
         {
-            if (Enum.TryParse<EquipmentSlot>(itemSaveData.slotName, out var slot))
+            
+            EquipmentItemData equipmentItemData = itemDB.GetItemByID(itemSaveData.itemID);
+            if (equipmentItemData != null&&( equipmentItemData.equipSlottype!= EquipmentSlotType.MainWeapon|| equipmentItemData.equipSlottype != EquipmentSlotType.SubWeapon))
             {
-                EquipmentItemData equipmentItemData = itemDB.GetItemByID(itemSaveData.itemID);
-                if (equipmentItemData != null&&( equipmentItemData.equipSlot!=EquipmentSlot.MainWeapon|| equipmentItemData.equipSlot != EquipmentSlot.SubWeapon))
-                {
-                    Equip(equipmentItemData);
-                }
-                else if(equipmentItemData != null && (equipmentItemData.equipSlot == EquipmentSlot.MainWeapon || equipmentItemData.equipSlot == EquipmentSlot.SubWeapon))
-                {
-                    Debug.Log("err");
-                    Equip(equipmentItemData as WeaponItemData);
-                }else if(equipmentItemData == null && (equipmentItemData.equipSlot == EquipmentSlot.MainWeapon || equipmentItemData.equipSlot == EquipmentSlot.SubWeapon))
-                {
-                    Debug.Log("ccc");
-                    Equip(equipmentItemData as WeaponItemData);
-                }
+                Equip(equipmentItemData);
+            }
+            else if(equipmentItemData != null && (equipmentItemData.equipSlottype == EquipmentSlotType.MainWeapon || equipmentItemData.equipSlottype == EquipmentSlotType.SubWeapon))
+            {
+                Debug.Log("err");
+                Equip(equipmentItemData as WeaponItemData);
+            }else if(equipmentItemData == null && (equipmentItemData.equipSlottype == EquipmentSlotType.MainWeapon || equipmentItemData.equipSlottype == EquipmentSlotType.SubWeapon))
+            {
+                Debug.Log("ccc");
+                Equip(equipmentItemData as WeaponItemData);
             }
         }
     }
@@ -166,7 +164,7 @@ public class EquipmentManager : MonoBehaviour
             {
                 saveDataList.Add(new EquippedItemSaveData
                 {
-                    slotName = pair.Key.ToString(),
+                    slot =  pair.Key,
                     itemID = pair.Value.itemId // EquipmentItemData 내 정의된 itemID
                 });
             }

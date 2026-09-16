@@ -19,7 +19,7 @@ MonoBehaviour:
   type: 0
   isStackable: 0
   maxStackSize: 1
-  equipSlot: 0
+  equipSlottype: 0
   requiredLevel: 0
   baseDamage: 10
   damageType: 0

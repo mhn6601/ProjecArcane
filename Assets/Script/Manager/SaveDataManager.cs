@@ -1,7 +1,7 @@
 using System.IO;
 using UnityEngine;
 
-public class SaveDataManager : MonoBehaviour
+public class SaveDataManager : Singleton<SaveDataManager>
 {
     private static string SavePath => Path.Combine(Application.persistentDataPath, "player_save.json");
 
@@ -18,11 +18,12 @@ public class SaveDataManager : MonoBehaviour
     {
         if (!File.Exists(SavePath))
         {
-            Debug.Log("[SaveManager] 저장 파일이 존재하지 않습니다. 기본 데이터 세팅 및 저장 파일을 생성합니다.");
+            //Debug.Log("[SaveManager] 저장 파일이 존재하지 않습니다. 기본 데이터 세팅 및 저장 파일을 생성합니다.");
 
             // 1. 기본 데이터 객체 생성
             PlayerSaveData defaultData = new PlayerSaveData();
 
+            InventoryManager.Instance.NewGame();
             // 2. 기본 데이터를 디스크 파일(JSON)로 저장
             SaveData(defaultData);
 
@@ -31,7 +32,7 @@ public class SaveDataManager : MonoBehaviour
 
         string json = File.ReadAllText(SavePath);
         PlayerSaveData data = JsonUtility.FromJson<PlayerSaveData>(json);
-        Debug.Log("[SaveManager] Data Loaded Successfully.");
+        //Debug.Log("[SaveManager] Data Loaded Successfully.");
         return data;
     }
 }

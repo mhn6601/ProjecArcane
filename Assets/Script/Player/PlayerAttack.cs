@@ -61,15 +61,15 @@ public class PlayerAttack : MonoBehaviour
 
         return defaultMainAttackData != null ? defaultMainAttackData.heavyAttackSteps : null;
     }
-    public void SetCurrentAttackData(EquipmentSlot slot, WeaponItemData data)
+    public void SetCurrentAttackData(EquipmentSlotType slotType, WeaponItemData data)
     {
         // 1. EquipmentManager를 통해 현재 장착된 무기 데이터 가져오기
-        if (slot == EquipmentSlot.MainWeapon)
+        if (slotType == EquipmentSlotType.MainWeapon)
         {
             mainAttackData = data.playerAttackData;
         }
         
-        if (slot == EquipmentSlot.SubWeapon) 
+        if (slotType == EquipmentSlotType.SubWeapon) 
         {
             subAttackData = data.playerAttackData;
         }
