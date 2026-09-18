@@ -2717,6 +2717,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 69577d97be0e07141859a8d61238cf81, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerInputHandler
+  cinemachineInputAxisController: {fileID: 0}
   holdThreshold: 0.2
   runCancelRollBufferTime: 0.15
 --- !u!114 &1089770783
