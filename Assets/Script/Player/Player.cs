@@ -38,12 +38,14 @@ public class Player:Singleton<Player>
 
     protected override void Awake()
     {
+        base.Awake();
         InitComponents();
        
 
     }
-    private void OnDestroy()
+    protected override void OnDestroy()
     {
+        base.OnDestroy();
         if (stats != null)
         {
             //playerStats.OnDeath -= HandleDeath;

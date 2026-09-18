@@ -2,6 +2,7 @@ using UnityEngine;
 using System.Collections.Generic;
 using UnityEditor.Overlays;
 using System.Linq;
+using System;
 
 public class InventoryManager : Singleton<InventoryManager>
 {
@@ -18,21 +19,42 @@ public class InventoryManager : Singleton<InventoryManager>
     private Transform inventoryTransform;
     [SerializeField]
     private EquipmentItemData defaultWeapon;
+    [SerializeField]
     private List<ItemData> inventory = new List<ItemData>();
     private Dictionary<EquipmentSlotType, EquipmentItemData> equipedItemDictionary=new Dictionary<EquipmentSlotType, EquipmentItemData>();
     public IReadOnlyList<ItemData> Inventory => inventory;
     public Dictionary<EquipmentSlotType, EquipmentItemData> EquipedItemDictionary => equipedItemDictionary;
+
+    [SerializeField] private InventoryUI inventoryUI;
+
+    public event Action inventoryChanged;
 
     protected override void Awake()
     {
         base.Awake();
         Init();
     }
+    private void Start()
+    {
+        if (inventoryUI != null)
+        {
+            inventoryChanged += inventoryUI.RefreshUI;
+        }
+    }
+
+    protected override void OnDestroy()
+    {
+        base.OnDestroy();
+        if (inventoryUI != null)
+        {
+            inventoryChanged -= inventoryUI.RefreshUI;
+        }
+    }
     public void Init()
     {
         for (int i = inventoryTransform.childCount; i < inventorySize; i++)
         {
-            Instantiate(inventoryPrefab, inventoryTransform);
+            inventoryUI.SetInventorySlots(Instantiate(inventoryPrefab, inventoryTransform).GetComponent<InventorySlot>());
         }
         
     }
@@ -43,16 +65,11 @@ public class InventoryManager : Singleton<InventoryManager>
 
         GiveDefaultEquipment();
     }
-    public void EquipDefaultItem(EquipmentItemData item)
-    {
-        if (item == null)
-            return;
-
-        equipedItemDictionary[item.equipSlottype] = item;
-    }
+    
     public void GiveDefaultEquipment()
     {
-        EquipDefaultItem(defaultWeapon);
+        Debug.Log("GiveDefaultEquipment");
+        AddItem(defaultWeapon);
     }
     public bool AddItem(ItemData itemdata)
     {
@@ -60,10 +77,22 @@ public class InventoryManager : Singleton<InventoryManager>
         if (inventory.Count >= inventorySize) return false;
 
         inventory.Add(itemdata);
+        inventoryChanged?.Invoke();
         return true;
     }
-    public bool RemoveItem()
+    public bool RemoveItem(ItemData itemdata)
     {
+        if(itemdata == null)
+        {
+            return false;
+        }
+        if (!inventory.Contains(itemdata))
+        {
+            return false;
+        }
+        inventory.Remove(itemdata);
+
+        inventoryChanged?.Invoke();
         return true;
     }
     public bool EquipItem(EquipmentItemData itemData)
@@ -72,30 +101,47 @@ public class InventoryManager : Singleton<InventoryManager>
         if (!inventory.Contains(itemData)) return false;
 
         EquipmentSlotType slotType = itemData.equipSlottype;
-        if(equipedItemDictionary.TryGetValue(slotType, out EquipmentItemData oldItem))
+        if (equipedItemDictionary.TryGetValue(slotType, out EquipmentItemData oldItem) && oldItem != null)
         {
             inventory.Add(oldItem);
-            equipedItemDictionary[slotType] = itemData;
+        }
+        equipedItemDictionary[slotType] = itemData;
 
-        }
-        else
-        {
-            equipedItemDictionary.Add(slotType, itemData);
-        }
         inventory.Remove(itemData);
+        inventoryChanged?.Invoke();
         return true;
     }
     public bool UnEquipItem(EquipmentItemData itemData)
     {
-        if (itemData == null) return false;
-        if (!equipedItemDictionary.ContainsKey(itemData.equipSlottype)) return false;
+        if (itemData == null)
+            return false;
+
+        if (!equipedItemDictionary.TryGetValue(
+                itemData.equipSlottype,
+                out EquipmentItemData equippedItem))
+        {
+            return false;
+        }
+
+        if (equippedItem != itemData)
+            return false;
+
+        if (inventory.Count >= inventorySize)
+            return false;
 
         equipedItemDictionary[itemData.equipSlottype] = null;
+
         inventory.Add(itemData);
+
+        inventoryChanged?.Invoke();
+
         return true;
     }
     public void LoadInventory(PlayerSaveData saveData)
     {
+        if (saveData == null)
+            return;
+
         inventory.Clear();
         equipedItemDictionary.Clear();
 
@@ -115,6 +161,7 @@ public class InventoryManager : Singleton<InventoryManager>
                 EquipedItemDictionary[equipmentSaveData.slot] = itemData;
             }
         }
+        inventoryChanged?.Invoke();
     }
 
     public EquipmentItemDatabaseSO GetEquipmentDB()

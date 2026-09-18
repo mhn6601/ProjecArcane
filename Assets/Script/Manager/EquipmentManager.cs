@@ -66,6 +66,7 @@ public class EquipmentManager : MonoBehaviour
         // 2. 무기 프리팹 씬 생성 (외형/소켓 연동)
         if (slotType == EquipmentSlotType.MainWeapon && newItem.weaponPrefab != null && mainHandSocket != null)
         {
+            Debug.Log("무기생성");
             currentMainWeaponGO = Instantiate(newItem.weaponPrefab, mainHandSocket);
             currentMainWeaponGO.transform.localPosition = Vector3.zero;
             currentMainWeaponGO.transform.localRotation = Quaternion.identity;

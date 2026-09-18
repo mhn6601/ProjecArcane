@@ -5,29 +5,29 @@ public class Singleton<T>:MonoBehaviour where T:MonoBehaviour
     private static T instance;
     public static T Instance 
     { 
-        get {
-            if (instance == null)
-            {
-                instance = (T)FindAnyObjectByType(typeof(T));
-                if (instance == null)
-                {
-                    GameObject obj = new GameObject(typeof(T).Name, typeof(T));
-                    instance = obj.GetComponent<T>();
-                }
-            }
+        get 
+        {
             return instance;
         } 
     }
 
     protected virtual void Awake()
     {
-        if (transform.parent != null && transform.root != null) 
+        if (instance != null && instance != this)
         {
-            DontDestroyOnLoad(this.transform.root.gameObject);
+            Destroy(gameObject);
+            return;
         }
-        else
+
+        instance = this as T;
+
+
+    }
+    protected virtual void OnDestroy()
+    {
+        if (instance == this)
         {
-            DontDestroyOnLoad(this.gameObject);
+            instance = null;
         }
     }
 }

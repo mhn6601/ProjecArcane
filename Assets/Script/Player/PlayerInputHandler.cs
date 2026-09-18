@@ -6,6 +6,7 @@ using UnityEngine.InputSystem;
 
 public class PlayerInputHandler : MonoBehaviour
 {
+    private UIManager uiManager;
     private PlayerInputAction inputActions;
     [SerializeField]private CinemachineInputAxisController cinemachineInputAxisController;
     public Action<bool> OnInputEnabledChanged;
@@ -70,7 +71,6 @@ public class PlayerInputHandler : MonoBehaviour
 
         inputActions.PlayerUI.Inventory.performed += OnInventoryPerformed;
 
-        UIManager.Instance.OnPlayerInputChanged += SetInputEnabled;
            
     }
 
@@ -93,10 +93,21 @@ public class PlayerInputHandler : MonoBehaviour
 
         inputActions.PlayerUI.Inventory.performed -= OnInventoryPerformed;
 
-        UIManager.Instance.OnPlayerInputChanged -= SetInputEnabled;
+        
         inputActions.PlayerUI.Disable();
         //inputActions.PlayerCamera.Disable();
         inputActions.PlayerAction.Disable();
+    }
+    private void Start()
+    {
+        uiManager = UIManager.Instance;
+        if(uiManager!=null)
+        uiManager.OnPlayerInputChanged += SetInputEnabled;
+    }
+    private void OnDestroy()
+    {
+        if (uiManager != null)
+            uiManager.OnPlayerInputChanged -= SetInputEnabled;
     }
     public void SetInputEnabled(bool enabled)
     {

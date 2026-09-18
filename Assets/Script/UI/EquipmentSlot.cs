@@ -9,6 +9,7 @@ public class EquipmentSlot : MonoBehaviour
     public EquipmentSlotType ItemType => itemType;
     [SerializeField]
     private Image itemImage;
+    [SerializeField]
     private EquipmentItemData equipmentItemData;
     [SerializeField]
     private Transform iconTransform;
@@ -28,6 +29,10 @@ public class EquipmentSlot : MonoBehaviour
             //itemImage.gameObject.SetActive(false);
             SetIdleIcon();
             return;
+        }
+        else
+        {
+            itemImage.sprite = equipmentItemData.icon;
         }
         //itemImage.gameObject.SetActive(true);
     }

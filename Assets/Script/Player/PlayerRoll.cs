@@ -8,6 +8,10 @@ public class PlayerRoll : MonoBehaviour
     {
         player = Player.Instance;
 
+       
+    }
+    private void Start()
+    {
         if (playerFollowCamera == null || playerFollowCamera != FollowPlayerCamera.Instance.transform)
         {
             if (FollowPlayerCamera.Instance != null)

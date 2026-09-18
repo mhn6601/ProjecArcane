@@ -63,10 +63,12 @@ public class PlayerAttack : MonoBehaviour
     }
     public void SetCurrentAttackData(EquipmentSlotType slotType, WeaponItemData data)
     {
+        Debug.Log(data.itemName);
         // 1. EquipmentManager를 통해 현재 장착된 무기 데이터 가져오기
         if (slotType == EquipmentSlotType.MainWeapon)
         {
             mainAttackData = data.playerAttackData;
+            
         }
         
         if (slotType == EquipmentSlotType.SubWeapon) 

@@ -1,17 +1,23 @@
+using Unity.VisualScripting;
 using UnityEngine;
+using System.Collections.Generic;
 
 public class InventoryUI : UIBase
 {
     [SerializeField]
-    private InventorySlot[] inventorySlots;
+    private List<InventorySlot> inventorySlots=new List<InventorySlot>();
 
     [SerializeField]
-    private EquipmentSlot[] equipmentSlots;
+    private List<EquipmentSlot> equipmentSlots=new List<EquipmentSlot>();
     [SerializeField]
     private GameObject InventoryContent;
 
     private void Awake()
     {
+    }
+    private void Start()
+    {
+        
     }
     private void OnEnable()
     {
@@ -23,24 +29,32 @@ public class InventoryUI : UIBase
         base.Open();
         RefreshUI();
     }
-
+    public void SetInventorySlots(InventorySlot slot)
+    {
+        inventorySlots.Add(slot);
+    }
     public void RefreshUI()
     {
-        RefreshInventory();
-        RefreshEquipment();
+        Debug.Log("RefreshUI");
+        if (gameObject.activeInHierarchy)
+        {
+            Debug.Log(gameObject.activeInHierarchy);
+            RefreshInventory();
+            RefreshEquipment();
+        }
     }
     private void RefreshInventory()
     {
         var inventory = InventoryManager.Instance.Inventory;
 
         // 모든 슬롯을 먼저 초기화
-        for (int i = 0; i < inventorySlots.Length; i++)
+        for (int i = 0; i < inventorySlots.Count; i++)
         {
             inventorySlots[i].Clear();
         }
 
         // 실제 아이템 표시
-        for (int i = 0; i < inventory.Count && i < inventorySlots.Length; i++)
+        for (int i = 0; i < inventory.Count && i < inventorySlots.Count; i++)
         {
             inventorySlots[i].SetItem(inventory[i]);
         }
@@ -51,7 +65,7 @@ public class InventoryUI : UIBase
         var equippedItems = InventoryManager.Instance.EquipedItemDictionary;
 
         // 모든 장비 슬롯 초기화
-        for (int i = 0; i < equipmentSlots.Length; i++)
+        for (int i = 0; i < equipmentSlots.Count; i++)
         {
             equipmentSlots[i].Clear();
         }

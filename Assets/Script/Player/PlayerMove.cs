@@ -21,6 +21,10 @@ public class PlayerMove : MonoBehaviour
         player = Player.Instance;
         controller = player.Controller;
 
+        
+    }
+    private void Start()
+    {
         if (playerFollowCamera == null || playerFollowCamera != FollowPlayerCamera.Instance.transform)
         {
             if (FollowPlayerCamera.Instance != null)

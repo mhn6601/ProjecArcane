@@ -25,6 +25,13 @@ public class PlayerJump : MonoBehaviour
         player = Player.Instance;
         inputActions = new PlayerInputAction();
         controller = player.Controller;
+        
+        
+    }
+    private void Start()
+    {
+        IsGroundedInitialize();
+
         if (playerFollowCamera == null || playerFollowCamera != FollowPlayerCamera.Instance.transform)
         {
             if (FollowPlayerCamera.Instance != null)
@@ -45,11 +52,6 @@ public class PlayerJump : MonoBehaviour
                 }
             }
         }
-        
-    }
-    private void Start()
-    {
-        IsGroundedInitialize();
     }
     private void OnEnable()
     {
