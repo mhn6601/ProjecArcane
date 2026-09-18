@@ -23,4 +23,12 @@ public class EquippedItemSaveData
 {
     public EquipmentSlotType slot; // 예: "MainWeapon", "Armor" 등 (EquipmentSlot Enum.ToString())
     public string itemID;   // 예: "EQ_SWORD_01"
+    public string itemType;
+}
+[Serializable]
+public class InventoryItemSaveData
+{
+    public string itemID;  
+    public string itemType;
+
 }

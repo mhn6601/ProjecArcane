@@ -10,21 +10,21 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9b568ff811c8ff4419f4afa1c36bed77, type: 3}
-  m_Name: WeaponData_Sword
+  m_Name: WeaponData_MainWeapon_Default
   m_EditorClassIdentifier: Assembly-CSharp::WeaponItemData
-  itemId: 1
-  itemName: Sword
-  description: Sword
-  icon: {fileID: 21300000, guid: 8e115b4d13a607b46a5d2068c8119278, type: 3}
+  itemId: 000000
+  itemName: Hand
+  description: Hand
+  icon: {fileID: 0}
   type: 0
   isStackable: 0
   maxStackSize: 1
   equipSlottype: 0
   requiredLevel: 0
-  baseDamage: 10
+  baseDamage: 1
   damageType: 0
   attackSpeedMultiplier: 1
   staminaCostMultiplier: 1
-  playerAttackData: {fileID: 11400000, guid: 983cf4868ace8a84dae4221121e7e7f8, type: 2}
-  weaponPrefab: {fileID: 7859262209417132261, guid: 260dbfa030dcfc54888e5bd65e534000, type: 3}
+  playerAttackData: {fileID: 11400000, guid: 88f0accf62366c64b869c38de5762c04, type: 2}
+  weaponPrefab: {fileID: 7163789656875974490, guid: f07a122db8db9494795c479ee8252071, type: 3}
   weaponOverrideController: {fileID: 22100000, guid: 34cc6d542e156c5419cb6ad5655469aa, type: 2}

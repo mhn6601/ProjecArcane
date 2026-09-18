@@ -20,7 +20,7 @@ public class PlayerEmptyActionState : PlayerState
             player.Controller.ActionFSM.ChangeState(player.Controller.GuardState);
             return;
         }
-        else if (player.Status.CanParry && player.Input.ParryTriggered)
+        else if (player.Status.CanParry && player.Input.ParryTriggered&&player.Attack.GetSubWeaponCanParry())
         {
             player.Controller.ActionFSM.ChangeState(player.Controller.ParryState);
             return;

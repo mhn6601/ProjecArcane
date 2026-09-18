@@ -109,4 +109,9 @@ public class PlayerController : CharacterControllerBase
         movementFSM.Update();
         actionFSM.Update();
     }
+    public void OnMainWeaponChange(PlayerAttackData playerAttackData)
+    {
+        AttackComboState = new PlayerAttackComboState(player, playerAttackData.lightAttackSteps);
+        HeavyAttackState = new PlayerHeavyAttackState(player, playerAttackData.heavyAttackSteps);
+    }
 }

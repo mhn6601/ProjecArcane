@@ -18,16 +18,8 @@ public class SaveDataManager : Singleton<SaveDataManager>
     {
         if (!File.Exists(SavePath))
         {
-            //Debug.Log("[SaveManager] 저장 파일이 존재하지 않습니다. 기본 데이터 세팅 및 저장 파일을 생성합니다.");
-
-            // 1. 기본 데이터 객체 생성
-            PlayerSaveData defaultData = new PlayerSaveData();
-
-            InventoryManager.Instance.NewGame();
-            // 2. 기본 데이터를 디스크 파일(JSON)로 저장
-            SaveData(defaultData);
-
-            return defaultData;
+            //Debug.Log("[SaveManager] ==null ");
+            return null ;
         }
 
         string json = File.ReadAllText(SavePath);

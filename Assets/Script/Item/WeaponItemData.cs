@@ -8,7 +8,10 @@ public enum DamageType
     Lightning,
     Arcane
 }
-
+public enum DefaultWeapon 
+{
+    defaultWeapon = 000000
+}
 [CreateAssetMenu(fileName = "WeaponItem_", menuName = "Item/Equipment/Weapon")]
 public class WeaponItemData : EquipmentItemData
 {

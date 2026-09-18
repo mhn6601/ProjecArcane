@@ -23,7 +23,7 @@ public class PlayerParryState : PlayerState
         player.Status.RemoveFlag(CharacterActionFlags.CanRotate);
         player.Status.RemoveFlag(CharacterActionFlags.CanJump);
         player.Controller.Animator.CrossFade(ParryHash, 0f);
-        player.ResourceSystem.UseStaminaEasy(player.Attack.SubAttackData.parryStamina);
+        player.ResourceSystem.UseStaminaEasy(player.Attack.GetSubWeaponParryStamina());
     }
     public override void Update()
     {

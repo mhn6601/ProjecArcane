@@ -9,6 +9,6 @@ public class PlayerAttackData : ScriptableObject
 
     [Header("Heavy Attack Combo Extensions")]
     public HeavyAttackStepData[] heavyAttackSteps = new HeavyAttackStepData[4];
-
+    public bool canParry = false;
     public float parryStamina;
 }

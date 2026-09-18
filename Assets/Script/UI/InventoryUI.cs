@@ -62,7 +62,7 @@ public class InventoryUI : UIBase
 
     private void RefreshEquipment()
     {
-        var equippedItems = InventoryManager.Instance.EquipedItemDictionary;
+        var equippedItems = InventoryManager.Instance.EquippedItems;
 
         // 모든 장비 슬롯 초기화
         for (int i = 0; i < equipmentSlots.Count; i++)
