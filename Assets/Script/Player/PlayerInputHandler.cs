@@ -1,11 +1,13 @@
 
 using System;
+using Unity.Cinemachine;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class PlayerInputHandler : MonoBehaviour
 {
     private PlayerInputAction inputActions;
+    [SerializeField]private CinemachineInputAxisController cinemachineInputAxisController;
     public Action<bool> OnInputEnabledChanged;
     public  Action OnInventoryInput;
     private bool inputEnabled = true;
@@ -40,12 +42,13 @@ public class PlayerInputHandler : MonoBehaviour
     private void Awake()
     {
         inputActions = new PlayerInputAction();
+        cinemachineInputAxisController = FindAnyObjectByType<CinemachineInputAxisController>();
     }
 
     private void OnEnable()
     {
         inputActions.PlayerAction.Enable();
-        inputActions.PlayerCamera.Enable();
+        //inputActions.PlayerCamera.Enable();
         inputActions.PlayerUI.Enable();
 
         inputActions.PlayerAction.Move.performed += OnMovePerformed;
@@ -92,7 +95,7 @@ public class PlayerInputHandler : MonoBehaviour
 
         UIManager.Instance.OnPlayerInputChanged -= SetInputEnabled;
         inputActions.PlayerUI.Disable();
-        inputActions.PlayerCamera.Disable();
+        //inputActions.PlayerCamera.Disable();
         inputActions.PlayerAction.Disable();
     }
     public void SetInputEnabled(bool enabled)
@@ -107,6 +110,12 @@ public class PlayerInputHandler : MonoBehaviour
             MoveInput = Vector3.zero;
             IsRunPressed = false;
             IsGuardHold = false;
+            cinemachineInputAxisController.enabled = false;
+        }
+        else
+        {
+
+            cinemachineInputAxisController.enabled = true;
         }
 
         OnInputEnabledChanged?.Invoke(inputEnabled);

@@ -26,24 +26,28 @@ public class CameraZoom : MonoBehaviour
 
     private void Update()
     {
-        float scroll = Mouse.current.scroll.ReadValue().y;
-
-        if (scroll != 0)
+        if (Player.Instance&&Player.Instance.Input.InputEnabled)
         {
-            targetRadius -= scroll * zoomSpeed;
+            float scroll = Mouse.current.scroll.ReadValue().y;
 
-            targetRadius = Mathf.Clamp(
+            if (scroll != 0)
+            {
+                targetRadius -= scroll * zoomSpeed;
+
+                targetRadius = Mathf.Clamp(
+                    targetRadius,
+                    minRadius,
+                    maxRadius
+                );
+            }
+
+            orbitalFollow.Radius = Mathf.SmoothDamp(
+                orbitalFollow.Radius,
                 targetRadius,
-                minRadius,
-                maxRadius
+                ref smoothVelocity,
+                smoothTime
             );
         }
-
-        orbitalFollow.Radius = Mathf.SmoothDamp(
-            orbitalFollow.Radius,
-            targetRadius,
-            ref smoothVelocity,
-            smoothTime
-        );
+        
     }
 }
