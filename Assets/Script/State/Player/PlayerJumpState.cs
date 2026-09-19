@@ -7,7 +7,7 @@ public class PlayerJumpState : PlayerState
     private static readonly int WalkJumpHash = Animator.StringToHash("WalkJump");
     private static readonly int RunJumpHash = Animator.StringToHash("RunJump");
 
-    public PlayerJumpState(Player player) : base(player) { }
+    public PlayerJumpState(Player player,Animator animator) : base(player,animator) { }
 
     public override void OnEnter()
     {
@@ -51,13 +51,13 @@ public class PlayerJumpState : PlayerState
         player.Controller.AirborneState.SetInertiaData(initialJumpDirection, initialIsRun);
 
         // 4. Sub-State Machine 진입 파라미터 및 애니메이션 재생
-        player.Animator.SetFloat(JumpSpeedHash, initialSpeedMultiplier);
+        animator.SetFloat(JumpSpeedHash, initialSpeedMultiplier);
 
         int targetAnimHash = initialSpeedMultiplier == 0
             ? IdleJumpHash
             : (initialSpeedMultiplier >= 0.5f ? WalkJumpHash : RunJumpHash);
 
-        player.Animator.CrossFade(targetAnimHash, 0.1f);
+        animator.CrossFade(targetAnimHash, 0.1f);
     }
 
     public override void Update()

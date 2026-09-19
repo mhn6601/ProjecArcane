@@ -2563,6 +2563,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c46354872474d7445b9eb318122fd434, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Player
+  animation: {fileID: 0}
   controller: {fileID: 0}
   move: {fileID: 0}
   jump: {fileID: 0}
@@ -2774,6 +2775,21 @@ MonoBehaviour:
   defaultSubWeaponData: {fileID: 11400000, guid: 0dcc42c09f26c344faf6f11028718a65, type: 2}
   mainHandSocket: {fileID: 1296651461}
   subHandSocket: {fileID: 65187224}
+--- !u!114 &1089770792
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1089770764}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 158f4a231130ed7439fda1e5c702aecd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerAnimation
+  animator: {fileID: 0}
+  defaultOverride: {fileID: 9100000, guid: 3bfbaccca82539b48b17b8fe198a4a79, type: 2}
+  weaponOverride: {fileID: 0}
 --- !u!1 &1098880349
 GameObject:
   m_ObjectHideFlags: 0
@@ -6112,6 +6128,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 3369967373867493423, guid: 168712f6723106f4da0cbea0d1af48d4, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1089770781}
+    - targetCorrespondingSourceObject: {fileID: 3369967373867493423, guid: 168712f6723106f4da0cbea0d1af48d4, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1089770792}
     - targetCorrespondingSourceObject: {fileID: 3369967373867493423, guid: 168712f6723106f4da0cbea0d1af48d4, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1089770767}

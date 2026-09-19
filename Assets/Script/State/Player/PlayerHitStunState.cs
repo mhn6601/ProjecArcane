@@ -4,7 +4,7 @@ public class PlayerHitStunState : PlayerState
 {
     float hitStunDuration = 0.5f;
     float hitStunTimer = 0f;
-    public PlayerHitStunState(Player player) : base(player)
+    public PlayerHitStunState(Player player, Animator animator) : base(player, animator)
     {
     }
     public override void OnEnter()
@@ -18,7 +18,7 @@ public class PlayerHitStunState : PlayerState
         player.Status.RemoveFlag(CharacterActionFlags.CanAttack);
         player.Status.RemoveFlag(CharacterActionFlags.CanRotate);
         
-        player.Animator.CrossFade("HitStun", 0f);
+        animator.CrossFade("HitStun", 0f);
     }
     public override void Update()
     {

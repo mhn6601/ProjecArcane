@@ -29,7 +29,9 @@ public class PlayerStatData : ScriptableObject
 
     [Header("Stamina Settings")]
     public float staminaRegenRate = 5f; // 초당 회복량
+    public float staminaRegenBoostMul = 5f; // 부스트 초당 회복량 배율
     public float staminaRegenDelay = 4f; // 사용후 회복 시작 대기시간
+    public float staminaRegenBoostDelay = 8f; // 사용후 회복 가속 대기시간
 
     [Header("RunStaminaCostPerSec")]
     public float runStaminaCostPerSec = 3f;

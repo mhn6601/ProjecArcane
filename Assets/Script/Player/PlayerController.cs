@@ -43,7 +43,7 @@ public class PlayerController : CharacterControllerBase
     protected override void Awake()
     {
         player = Player.Instance;
-        animator = Player.Instance.Animator;
+        animator = Player.Instance.Animation.Animator;
 
        
 
@@ -90,20 +90,20 @@ public class PlayerController : CharacterControllerBase
     private void PlayerStateInitialize()
     {
         #region MovementState
-        locomotionState = new PlayerLocomotionState(player);
-        AirborneState = new PlayerAirborneState(player);
-        RollState = new PlayerRollState(player);
+        locomotionState = new PlayerLocomotionState(player, animator);
+        AirborneState = new PlayerAirborneState(player, animator);
+        RollState = new PlayerRollState(player, animator);
         #endregion
 
         #region ActionState
-        JumpState = new PlayerJumpState(player);
-        AttackComboState = new PlayerAttackComboState(player, player.Attack.GetLightAttackStepData());
-        HeavyAttackState = new PlayerHeavyAttackState(player, player.Attack.GetHeavyAttackStepData());
+        JumpState = new PlayerJumpState(player, animator);
+        AttackComboState = new PlayerAttackComboState(player, animator, player.Attack.GetLightAttackStepData());
+        HeavyAttackState = new PlayerHeavyAttackState(player, animator, player.Attack.GetHeavyAttackStepData());
 
-        ParryState = new PlayerParryState(player);
-        EmptyActionState = new PlayerEmptyActionState(player);
-        GuardState = new PlayerGuardState(player);
-        HitStunState = new PlayerHitStunState(player);
+        ParryState = new PlayerParryState(player, animator);
+        EmptyActionState = new PlayerEmptyActionState(player, animator);
+        GuardState = new PlayerGuardState(player,animator);
+        HitStunState = new PlayerHitStunState(player, animator);
         #endregion 
     }
     private void FSMUpdate()
@@ -113,8 +113,8 @@ public class PlayerController : CharacterControllerBase
     }
     public void OnMainWeaponChange(PlayerAttackData playerAttackData)
     {
-        AttackComboState = new PlayerAttackComboState(player, playerAttackData.lightAttackSteps);
-        HeavyAttackState = new PlayerHeavyAttackState(player, playerAttackData.heavyAttackSteps);
+        AttackComboState = new PlayerAttackComboState(player,animator, playerAttackData.lightAttackSteps);
+        HeavyAttackState = new PlayerHeavyAttackState(player, animator,playerAttackData.heavyAttackSteps);
     }
     public void OnSubWeaponChange(PlayerAttackData playerAttackData)
     {

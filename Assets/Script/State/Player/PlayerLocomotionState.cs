@@ -13,15 +13,15 @@ public class PlayerLocomotionState : PlayerState
     private static readonly int WalkBoolHash = Animator.StringToHash("isWalk");
     private static readonly int RunBoolHash = Animator.StringToHash("isRun");
 
-    public PlayerLocomotionState(Player player): base(player) 
+    public PlayerLocomotionState(Player player, Animator animator) : base(player, animator)
     {
     }
 
     public override void OnEnter()
     {
         // Debug.Log("PlayerLocomotionState OnEnter");
-        player.Animator.CrossFade(LocomotionHash, 0.1f);
-        player.Animator.SetBool(GroundedBoolHash, true);
+        animator.CrossFade(LocomotionHash, 0.1f);
+        animator.SetBool(GroundedBoolHash, true);
     }
 
     public override void Update()
@@ -124,19 +124,19 @@ public class PlayerLocomotionState : PlayerState
     private void UpdateAnimatorParameters(Vector3 moveInput, float speedMultiplier)
     {
         // 걷기/뛰기 상태에 따라 Bool 파라미터 설정
-        player.Animator.SetBool(IdleBoolHash, speedMultiplier == 0f);
-        player.Animator.SetBool(WalkBoolHash, speedMultiplier > 0f && speedMultiplier < 1f);
-        player.Animator.SetBool(RunBoolHash, speedMultiplier >= 1f);
+        animator.SetBool(IdleBoolHash, speedMultiplier == 0f);
+        animator.SetBool(WalkBoolHash, speedMultiplier > 0f && speedMultiplier < 1f);
+        animator.SetBool(RunBoolHash, speedMultiplier >= 1f);
     }
     private void SetAnimatorParametersMoveHash(Vector2 animInput, float dampTime)
     {
-        player.Animator.SetFloat(MoveXHash, animInput.x, dampTime, Time.fixedDeltaTime);
-        player.Animator.SetFloat(MoveZHash, animInput.y, dampTime, Time.fixedDeltaTime); 
+        animator.SetFloat(MoveXHash, animInput.x, dampTime, Time.fixedDeltaTime);
+        animator.SetFloat(MoveZHash, animInput.y, dampTime, Time.fixedDeltaTime); 
     }
      private void SetAnimatorParametersMoveHash(float value, float dampTime)
     {
-        player.Animator.SetFloat(MoveXHash, value, dampTime, Time.fixedDeltaTime);
-        player.Animator.SetFloat(MoveZHash, value, dampTime, Time.fixedDeltaTime);
+        animator.SetFloat(MoveXHash, value, dampTime, Time.fixedDeltaTime);
+        animator.SetFloat(MoveZHash, value, dampTime, Time.fixedDeltaTime);
     }
 
 }

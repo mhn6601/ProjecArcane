@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class PlayerEmptyActionState : PlayerState   
 {
-    public PlayerEmptyActionState(Player player) : base(player)
+    public PlayerEmptyActionState(Player player, Animator animator) : base(player, animator)
     {
     }
     public override void OnEnter()

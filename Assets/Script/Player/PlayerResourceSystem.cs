@@ -138,9 +138,22 @@ public class PlayerResourceSystem : MonoBehaviour
     private void HandleStaminaRegeneration()
     {
         // 스태미너 사용 후 대기 시간이 지났고, 아직 최대치가 아닐 때 회복
-        if (Time.time >= lastStaminaUseTime + playerStats.staminaRegenDelay && CurrentStamina < MaxStamina)
+        if (Time.time >= lastStaminaUseTime + playerStats.staminaRegenBoostDelay && CurrentStamina < MaxStamina)
         {
-            CurrentStamina = Mathf.Min(playerStats.MaxStamina, CurrentStamina + playerStats.staminaRegenRate * Time.deltaTime);
+            
+            CurrentStamina = Mathf.Min(playerStats.MaxStamina, CurrentStamina + playerStats.staminaRegenRate* playerStats.staminaRegenBoostMul * Time.deltaTime);
+
+            // 고갈 상태였고, 일정 수치 이상 회복되었다면 잠금 해제!
+            if (IsStaminaExhausted && CurrentStamina >= StaminaRecoveryThreshold)
+            {
+                SetStaminaExhausted(false);
+            }
+
+            OnStaminaChanged?.Invoke(CurrentStamina, MaxStamina);
+        }
+        else if(Time.time >= lastStaminaUseTime + playerStats.staminaRegenDelay && CurrentStamina < MaxStamina)
+        {
+            CurrentStamina = Mathf.Min(playerStats.MaxStamina, CurrentStamina + playerStats.staminaRegenRate  * Time.deltaTime);
 
             // 고갈 상태였고, 일정 수치 이상 회복되었다면 잠금 해제!
             if (IsStaminaExhausted && CurrentStamina >= StaminaRecoveryThreshold)

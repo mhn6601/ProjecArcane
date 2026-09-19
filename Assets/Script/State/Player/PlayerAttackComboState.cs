@@ -8,7 +8,7 @@ public class PlayerAttackComboState : PlayerState
     private float comboInputBufferTimeMin = 0.3f; // 콤보 입력 버퍼 최소시간
     private float stateNormalizedTimeMax = 0.85f; // 콤보 입력 버퍼 최대시간
     private readonly LightAttackStepData[] comboSteps;
-    public PlayerAttackComboState(Player player, LightAttackStepData[] steps):base(player)
+    public PlayerAttackComboState(Player player,Animator animator,LightAttackStepData[] steps):base(player,animator)
     {
         this.comboSteps = steps;
     }
@@ -25,7 +25,7 @@ public class PlayerAttackComboState : PlayerState
     override public void Update()
     {
         
-        AnimatorStateInfo stateInfo = player.Animator.GetCurrentAnimatorStateInfo(0);
+        AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);
         //패리 입력 처리 일반 공격 중 패리 연계
         if (player.Input.ParryTriggered)
         {
@@ -101,7 +101,7 @@ public class PlayerAttackComboState : PlayerState
         LightAttackStepData stepData = comboSteps[currentComboIndex];
         string anim = stepData.animName;
 
-        player.Animator.CrossFade(anim, 0f);
+        animator.CrossFade(anim, 0f);
     }
     public void SetComboIndex(int index)
     {

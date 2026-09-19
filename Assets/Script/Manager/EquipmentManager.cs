@@ -85,6 +85,7 @@ public class EquipmentManager : MonoBehaviour
             RemoveWeaponVisual(item);
 
             CreateWeaponVisual(item);
+            player.Animation.SetWeaponAnimation(item as WeaponItemData);
         }
         else if (slot == EquipmentSlotType.SubWeapon)
         {

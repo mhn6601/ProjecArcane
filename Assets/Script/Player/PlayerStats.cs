@@ -18,7 +18,9 @@ public class PlayerStats : MonoBehaviour
     public float Jumphight => statData.jumphight;
     public float JumpStaminaCost => statData.jumpStaminaCost;
     public float staminaRegenRate => statData.staminaRegenRate;
+    public float staminaRegenBoostMul => statData.staminaRegenBoostMul;
     public float staminaRegenDelay => statData.staminaRegenDelay;
+    public float staminaRegenBoostDelay => statData.staminaRegenBoostDelay;
     public float staminaRecoveryThreshold => statData.staminaRecoveryThreshold;
     public float RunStaminaCostPerSec => statData.runStaminaCostPerSec;
     public float RollStaminaCost => statData.rollStaminaCost;

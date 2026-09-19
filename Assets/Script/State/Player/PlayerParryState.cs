@@ -12,7 +12,7 @@ public class PlayerParryState : PlayerState
 
     // PlayerParryState.cs 에 추가
     public bool IsInParryWindow => !isParrysuccess && stateTimer <= parryWindowDuration;
-    public PlayerParryState(Player player) : base(player)
+    public PlayerParryState(Player player, Animator animator) : base(player, animator   )
     {
     }
     public override void OnEnter()

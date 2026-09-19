@@ -10,7 +10,7 @@ public class PlayerRollState : PlayerState
     private float currentImmuneTime;
     Vector3 lastInput;
 
-    public PlayerRollState(Player player) : base(player)
+    public PlayerRollState(Player player, Animator animator) : base(player, animator)
     {
 
     }
@@ -38,11 +38,11 @@ public class PlayerRollState : PlayerState
         // ★ Status.IsRunning 대신, 이번 구르기가 "달리다가 이어진 것"인지 인풋에서 직접 판단
         if (player.Input.RollWhileRunning)
         {
-            player.Animator.CrossFade(RunRoll, 0f);
+            animator.CrossFade(RunRoll, 0f);
         }
         else
         {
-            player.Animator.CrossFade(BaseRoll, 0f);
+            animator.CrossFade(BaseRoll, 0f);
         }
         ApplyRollDirectionSnap();
     }
@@ -56,7 +56,7 @@ public class PlayerRollState : PlayerState
             player.Status.RemoveFlag(CharacterActionFlags.IsSuperArmor);
         }
 
-        AnimatorStateInfo stateInfo = player.Animator.GetCurrentAnimatorStateInfo(0);
+        AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);
 
         // 애니메이션 종료 시 대기(EmptyActionState)로 복귀
         if (stateInfo.normalizedTime >= stateNormalizedTimeMax)

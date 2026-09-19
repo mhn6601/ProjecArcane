@@ -6,7 +6,7 @@ public class PlayerAirborneState : PlayerState
     private Vector3 initialJumpDirection;
     private bool initialIsRun;
 
-    public PlayerAirborneState(Player player) : base(player)
+    public PlayerAirborneState(Player player, Animator animator) : base(player, animator)
     {
     }
 

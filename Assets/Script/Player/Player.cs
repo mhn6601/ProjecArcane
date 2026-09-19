@@ -1,8 +1,9 @@
 using UnityEngine;
 public class Player:Singleton<Player>
 {
-    
+
     [Header("Sub Systems / Components")]
+    [SerializeField] private PlayerAnimation animation;
     [SerializeField] private PlayerController controller;
     [SerializeField] private PlayerMove move;
     [SerializeField] private PlayerJump jump;
@@ -17,6 +18,7 @@ public class Player:Singleton<Player>
     [SerializeField] private Animator animator;
 
     // 외부 공개용 프로퍼티 (Get)
+    public PlayerAnimation Animation => animation;
     public PlayerController Controller => controller;
     public PlayerMove Move => move;
     public PlayerJump Jump => jump;
@@ -27,8 +29,6 @@ public class Player:Singleton<Player>
     public PlayerStats Stats => stats;
     public PlayerResourceSystem ResourceSystem => resourceSystem;
     public EquipmentManager EquipmentManager => equipmentManager;
-    public Animator Animator => animator;
-
 
 
     public Transform lockOnTarget;
@@ -54,7 +54,7 @@ public class Player:Singleton<Player>
 
     private void InitComponents()
     {
-        if (animator == null) animator = GetComponent<Animator>();
+        if (animation == null) animation = GetComponent<PlayerAnimation>();
         if (controller == null) controller = GetComponent<PlayerController>();
         if (move == null) move = GetComponent<PlayerMove>();
         if (jump == null) jump = GetComponent<PlayerJump>();

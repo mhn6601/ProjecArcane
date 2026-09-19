@@ -6,7 +6,7 @@ public class PlayerHeavyAttackState : PlayerState
     private readonly HeavyAttackStepData[] heavySteps;
     private int stepIndex = 0;
 
-    public PlayerHeavyAttackState(Player player, HeavyAttackStepData[] steps) : base(player)
+    public PlayerHeavyAttackState(Player player, Animator animator,HeavyAttackStepData[] steps) : base(player,animator)
     {
         this.heavySteps = steps;
     }
@@ -32,12 +32,12 @@ public class PlayerHeavyAttackState : PlayerState
         HeavyAttackStepData currentData = heavySteps[stepIndex];
 
         // 애니메이션 재생 및 스태미너 소모 등의 로직 실행
-        player.Animator.CrossFade(currentData.animName, 0f);
+        animator.CrossFade(currentData.animName, 0f);
     }
 
     public override void Update()
     {
-        AnimatorStateInfo stateInfo = player.Animator.GetCurrentAnimatorStateInfo(0);
+        AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);
 
         // 애니메이션 종료 시 대기(EmptyActionState)로 복귀
         if (stateInfo.normalizedTime >= stateNormalizedTimeMax)
