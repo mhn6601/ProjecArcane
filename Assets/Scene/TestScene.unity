@@ -2770,8 +2770,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::EquipmentManager
   mainWeapon: {fileID: 0}
   subWeapon: {fileID: 0}
-  defaultMainWeapon: {fileID: 11400000, guid: dcc3d8c1e9945ad44b174280d8dd5a35, type: 2}
-  defaultSubWeapon: {fileID: 11400000, guid: 0dcc42c09f26c344faf6f11028718a65, type: 2}
+  defaultMainWeaponData: {fileID: 11400000, guid: dcc3d8c1e9945ad44b174280d8dd5a35, type: 2}
+  defaultSubWeaponData: {fileID: 11400000, guid: 0dcc42c09f26c344faf6f11028718a65, type: 2}
   mainHandSocket: {fileID: 1296651461}
   subHandSocket: {fileID: 65187224}
 --- !u!1 &1098880349

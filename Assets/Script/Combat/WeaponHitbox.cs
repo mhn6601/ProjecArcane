@@ -40,7 +40,7 @@ public class WeaponHitBox : MonoBehaviour
 
     public void EnableHitBox()
     {
-        Debug.Log("weaponhitbox-EnableHitBox");
+        //Debug.Log("weaponhitbox-EnableHitBox");
         alreadyHit.Clear();
 
         for (int i = 0; i < hitColliders.Length; i++)
@@ -48,7 +48,7 @@ public class WeaponHitBox : MonoBehaviour
             if (hitColliders[i] != null)
                 hitColliders[i].enabled = true;
         }
-        Debug.Log(hitColliders[0].enabled);
+       // Debug.Log(hitColliders[0].enabled);
         if (testObject)
         {
            // Debug.Log($"Before : activeSelf = {testObject.activeSelf}, activeInHierarchy = {testObject.activeInHierarchy}");
