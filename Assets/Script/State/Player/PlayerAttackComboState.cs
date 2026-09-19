@@ -82,7 +82,7 @@ public class PlayerAttackComboState : PlayerState
         currentComboIndex = 0;
         if (player.Attack.MainWeapon != null) 
         {
-            player.Attack.MainWeapon.WeaponHitbox.DisableHitbox();
+            player.Attack.MainWeapon.WeaponHitBox.DisableHitBox();
         } 
     }
     private void PlayComboAnimation()

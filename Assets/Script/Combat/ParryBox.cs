@@ -21,7 +21,7 @@ public class ParryBox : MonoBehaviour
             parryColliders = GetComponentsInChildren<Collider>(true);
         }
 
-        DisableParrybox();
+        DisableParryBox();
     }
 
     private void Reset()
@@ -36,7 +36,7 @@ public class ParryBox : MonoBehaviour
         currentAttackData = attackData;
     }
 
-    public void EnableParrybox()
+    public void EnableParryBox()
     {
         alreadyParry.Clear();
 
@@ -47,7 +47,7 @@ public class ParryBox : MonoBehaviour
         }
     }
 
-    public void DisableParrybox()
+    public void DisableParryBox()
     {
         for (int i = 0; i < parryColliders.Length; i++)
         {
@@ -62,9 +62,9 @@ public class ParryBox : MonoBehaviour
         if (alreadyParry.Contains(other)) return;
 
         // 적 몬스터의 Collider가 자식 오브젝트에 붙어있는 경우를 대비해 InParent 검색 권장
-        if (!other.TryGetComponent<WeaponHitbox>(out var weaponHitbox))
+        if (!other.TryGetComponent<WeaponHitBox>(out var weaponHitbox))
         {
-            weaponHitbox = other.GetComponentInParent<WeaponHitbox>();
+            weaponHitbox = other.GetComponentInParent<WeaponHitBox>();
             if (weaponHitbox == null) return;
         }
 

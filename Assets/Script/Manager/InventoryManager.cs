@@ -269,6 +269,7 @@ public class InventoryManager : Singleton<InventoryManager>
         if (Player.Instance != null &&
             Player.Instance.EquipmentManager != null)
         {
+            Debug.Log(itemData);
             Player.Instance.EquipmentManager.RemoveEquipment(itemData);
         }
 

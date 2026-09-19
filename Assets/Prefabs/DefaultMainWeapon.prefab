@@ -81,7 +81,7 @@ CapsuleCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 1
   m_ProvidesContacts: 0
-  m_Enabled: 0
+  m_Enabled: 1
   serializedVersion: 2
   m_Radius: 0.1
   m_Height: 1.27
@@ -133,7 +133,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4801b05a18f2ca34180176468d721cde, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MeleeWeapon
-  WeaponHitbox: {fileID: 1551204012702581316}
+  WeaponHitBox: {fileID: 1551204012702581316}
   WeaponItemData: {fileID: 11400000, guid: dcc3d8c1e9945ad44b174280d8dd5a35, type: 2}
 --- !u!114 &1551204012702581316
 MonoBehaviour:

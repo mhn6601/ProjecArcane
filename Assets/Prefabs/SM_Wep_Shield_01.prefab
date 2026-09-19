@@ -79,7 +79,7 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
@@ -173,7 +173,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fea3bf857e7b20748b90b87b9b2ddad5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Shield
-  WeaponHitbox: {fileID: 0}
+  WeaponHitBox: {fileID: 0}
   WeaponItemData: {fileID: 11400000, guid: 7cb717e02b2bb2847a188cb42f88faac, type: 2}
   parryBox: {fileID: 8355945022648290801}
 --- !u!114 &8355945022648290801

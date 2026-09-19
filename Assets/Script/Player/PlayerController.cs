@@ -45,12 +45,14 @@ public class PlayerController : CharacterControllerBase
         player = Player.Instance;
         animator = Player.Instance.Animator;
 
-        PlayerStateMachineInitialize();
-        PlayerStateInitialize();
+       
 
     }
     private void Start()
     {
+
+        PlayerStateMachineInitialize();
+        PlayerStateInitialize();
         movementFSM.Initialize(locomotionState);
         actionFSM.Initialize(EmptyActionState);
     }
@@ -113,5 +115,8 @@ public class PlayerController : CharacterControllerBase
     {
         AttackComboState = new PlayerAttackComboState(player, playerAttackData.lightAttackSteps);
         HeavyAttackState = new PlayerHeavyAttackState(player, playerAttackData.heavyAttackSteps);
+    }
+    public void OnSubWeaponChange(PlayerAttackData playerAttackData)
+    {
     }
 }

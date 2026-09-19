@@ -2,6 +2,6 @@ using UnityEngine;
 
 public abstract class Weapon : MonoBehaviour
 {
-    public WeaponHitbox WeaponHitbox;
+    public WeaponHitBox WeaponHitBox;
     public WeaponItemData WeaponItemData;
 }

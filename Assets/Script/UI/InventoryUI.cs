@@ -35,10 +35,10 @@ public class InventoryUI : UIBase
     }
     public void RefreshUI()
     {
-        Debug.Log("RefreshUI");
+       // Debug.Log("RefreshUI");
         if (gameObject.activeInHierarchy)
         {
-            Debug.Log(gameObject.activeInHierarchy);
+            //Debug.Log(gameObject.activeInHierarchy);
             RefreshInventory();
             RefreshEquipment();
         }

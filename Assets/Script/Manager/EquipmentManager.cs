@@ -12,9 +12,12 @@ public class EquipmentManager : MonoBehaviour
 
     [Header("Default Equipment")]
     [SerializeField]
-    private Weapon defaultMainWeapon;
+    private EquipmentItemData defaultMainWeaponData;
+    public EquipmentItemData DefaultMainWeaponData=>defaultMainWeaponData;
+    
     [SerializeField]
-    private Weapon defaultSubWeapon;
+    private EquipmentItemData defaultSubWeaponData;
+    public EquipmentItemData DefaultSubWeaponData=>defaultSubWeaponData;
     // =========================================================
     // Weapon Sockets
     // =========================================================
@@ -42,7 +45,7 @@ public class EquipmentManager : MonoBehaviour
     public event Action<EquipmentSlotType, EquipmentItemData>
         OnEquipmentChanged;
 
-    public event Action< WeaponItemData>
+    public event Action<EquipmentSlotType, WeaponItemData>
         OnWeaponChanged;
 
 
@@ -77,20 +80,16 @@ public class EquipmentManager : MonoBehaviour
         EquipmentSlotType slot =
             item.equipSlottype;
 
-
-        // 기존 무기 GameObject 제거
         if (slot == EquipmentSlotType.MainWeapon)
         {
-            mainWeapon = (item as WeaponItemData).weaponPrefab.GetComponent<Weapon>();
-            player.Attack.MainWeapon = MainWeapon;
             RemoveWeaponVisual(item);
+
             CreateWeaponVisual(item);
         }
-        if (slot == EquipmentSlotType.SubWeapon)
+        else if (slot == EquipmentSlotType.SubWeapon)
         {
-            subWeapon = (item as WeaponItemData).weaponPrefab.GetComponent<Weapon>();
-            player.Attack.SubWeapon = subWeapon;
             RemoveWeaponVisual(item);
+
             CreateWeaponVisual(item);
         }
 
@@ -112,7 +111,7 @@ public class EquipmentManager : MonoBehaviour
         if (item is WeaponItemData weaponItem)
         {
             //Debug.Log("APply");
-            OnWeaponChanged?.Invoke(
+            OnWeaponChanged?.Invoke(weaponItem.equipSlottype,
                 weaponItem
             );
         }
@@ -142,13 +141,13 @@ public class EquipmentManager : MonoBehaviour
         {
             RemoveWeaponVisual(item);
             mainWeapon = null;
-            player.Attack.MainWeapon = defaultMainWeapon.GetComponent<Weapon>();
+            ApplyEquipment(defaultMainWeaponData);
         }
         else if (slot == EquipmentSlotType.SubWeapon)
         {
             RemoveWeaponVisual(item);
             subWeapon = null;
-            player.Attack.SubWeapon = defaultSubWeapon.GetComponent<Weapon>(); ;
+            ApplyEquipment(defaultSubWeaponData);
         }
 
 
@@ -164,14 +163,6 @@ public class EquipmentManager : MonoBehaviour
             slot,
             null
         );
-
-
-        if (item is WeaponItemData weaponItem)
-        {
-            OnWeaponChanged?.Invoke(InventoryManager.Instance.GetItemDatabase().GetItemByID(DefaultWeapon.defaultWeapon.ToString()) as WeaponItemData);
-               
-            
-        }
     }
 
 
@@ -203,6 +194,7 @@ public class EquipmentManager : MonoBehaviour
                     weaponItem.weaponPrefab,
                     mainHandSocket
                 );
+            mainWeapon = currentMainWeaponGO.GetComponent<Weapon>();
         }
         else if(item.equipSlottype == EquipmentSlotType.SubWeapon)
         {
@@ -215,6 +207,7 @@ public class EquipmentManager : MonoBehaviour
                     weaponItem.weaponPrefab,
                     subHandSocket
                 );
+            subWeapon = currentSubWeaponGO.GetComponent<Weapon>();
         }
 
 
@@ -275,23 +268,23 @@ public class EquipmentManager : MonoBehaviour
 
         if (!main)
         {
-            if (defaultMainWeapon == null)
+            if (defaultMainWeaponData == null)
             {
             }
             else
             {
-                player.Attack.MainWeapon = defaultMainWeapon;
+                ApplyEquipment( defaultMainWeaponData);
             }
         }
 
         if (!sub)
         {
-            if (defaultSubWeapon == null)
+            if (defaultSubWeaponData == null)
             {
             }
             else
             {
-                player.Attack.SubWeapon = defaultSubWeapon;
+                ApplyEquipment(defaultSubWeaponData);
             }
         }
     }

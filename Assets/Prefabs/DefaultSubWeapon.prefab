@@ -46,7 +46,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4801b05a18f2ca34180176468d721cde, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MeleeWeapon
-  WeaponHitbox: {fileID: 245920202860420271}
+  WeaponHitBox: {fileID: 245920202860420271}
   WeaponItemData: {fileID: 11400000, guid: 0dcc42c09f26c344faf6f11028718a65, type: 2}
 --- !u!114 &245920202860420271
 MonoBehaviour:
