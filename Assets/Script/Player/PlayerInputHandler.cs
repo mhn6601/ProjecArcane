@@ -49,7 +49,7 @@ public class PlayerInputHandler : MonoBehaviour
     private void OnEnable()
     {
         inputActions.PlayerAction.Enable();
-        //inputActions.PlayerCamera.Enable();
+        inputActions.PlayerCamera.Enable();
         inputActions.PlayerUI.Enable();
 
         inputActions.PlayerAction.Move.performed += OnMovePerformed;

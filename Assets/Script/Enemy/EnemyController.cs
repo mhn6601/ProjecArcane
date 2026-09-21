@@ -12,6 +12,7 @@ public class EnemyController : CharacterControllerBase
     #region State
     public EnemyLocomotionState LocomotionState { get; private set; }
     public EnemyEmptyActionState EmptyActionState { get; private set; }
+    public EnemyHitStunState HitStunState { get; private set; }
     #endregion
 
     protected override void Awake()

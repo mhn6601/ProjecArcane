@@ -12,7 +12,7 @@ public class PlayerCombat : CharacterCombat,ICombatTarget
     public event Action OnParrySuccess;          // 패링 이펙트/사운드용
     public bool IsDead { get { return player.isDead; } }
 
-    public override void ResolveHit(AttackData attackData, Transform attacker, BodyPart bodyPart)
+    public override void ResolveHit(AttackData attackData, Transform attacker, HitPart hitPart)
     {
         // 1. 무적 프레임 (구르기 등)
         if (player.Status.IsInvincible)
@@ -29,7 +29,7 @@ public class PlayerCombat : CharacterCombat,ICombatTarget
             else
             {
                 // 패링 불가 공격(적색 판정 등) -> 그냥 피격 처리
-                ApplyDamage(attackData, bodyPart);
+                ApplyDamage(attackData, hitPart);
             }
             return;
         }
@@ -42,7 +42,7 @@ public class PlayerCombat : CharacterCombat,ICombatTarget
         }
 
         // 4. 일반 피격
-        ApplyDamage(attackData, bodyPart);
+        ApplyDamage(attackData, hitPart);
     }
 
     private void HandleParrySuccess(PlayerParryState parryState, Transform attacker, AttackData attackData)
@@ -65,9 +65,9 @@ public class PlayerCombat : CharacterCombat,ICombatTarget
         // 가드 브레이크 체크 (자세/스태미나 게이지 있다면 여기서 처리)
     }
 
-    private void ApplyDamage(AttackData attackData, BodyPart bodyPart)
+    private void ApplyDamage(AttackData attackData, HitPart hitPart)
     {
-        float finalDamage = attackData.damage * GetBodyPartMultiplier(bodyPart);
+        float finalDamage = attackData.damage * GetBodyPartMultiplier(hitPart);
         playerResourceSystem.TakeDamage(finalDamage);
         OnHitTaken?.Invoke(attackData);
 
@@ -88,11 +88,11 @@ public class PlayerCombat : CharacterCombat,ICombatTarget
         //player.Controller.ActionFSM.ChangeState(player.Controller.StaggerState);
     }
 
-    private float GetBodyPartMultiplier(BodyPart part) =>
-        part switch
+    private float GetBodyPartMultiplier(HitPart hitpart) =>
+        hitpart switch
         {
-            BodyPart.Head => 1.5f,
-            BodyPart.Body => 1.0f,
+            HitPart.Head => 1.5f,
+            HitPart.Body => 1.0f,
             _ => 1.0f
         };
 }

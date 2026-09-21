@@ -43,6 +43,7 @@ public class PlayerStatus : MonoBehaviour
         canAttack = CanAttack;
         canJump = CanJump;
         canParry = CanParry;
+        canGuard = CanGuard;
         isRunning = IsRunning;
         isLockOn = IsLockOn;
         isInvincible = IsInvincible;

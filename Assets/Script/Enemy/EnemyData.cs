@@ -3,7 +3,11 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "EnemyData", menuName = "Combat/Enemy Data")]
 public class EnemyData : ScriptableObject
 {
+    public string enemyId;
     public string enemyName;
+    public bool isInvincible = false;
+    public bool isInfinityHealht = false;
+    public bool deadAble = true;
     public float maxHp = 100f;
     public float moveSpeed = 3.5f;
     public float detectRange = 10f;  // 감지 범위

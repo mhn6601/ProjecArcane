@@ -14,7 +14,6 @@ public class Player:Singleton<Player>
     [SerializeField] private PlayerStats stats;
     [SerializeField] private PlayerResourceSystem resourceSystem;
     [SerializeField] private EquipmentManager equipmentManager;
-
     [SerializeField] private Animator animator;
 
     // 외부 공개용 프로퍼티 (Get)
