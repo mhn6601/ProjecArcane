@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 
@@ -8,12 +9,14 @@ public class WeaponHitBox : MonoBehaviour
     [SerializeField] private Collider[] hitColliders = System.Array.Empty<Collider>();
 
     // 공격을 시작할 때 외부(State 등)에서 이 데이터를 교체하여 주입
+    [SerializeField]
     private AttackData currentAttackData;
 
     // 초기 용량을 8 정도로 지정하여 런타임 Re-hash 및 GC 방지
-    private readonly HashSet<Collider> alreadyHit = new(8);
+    private readonly HashSet<CharacterCombat> alreadyHit = new(8);
 
     [SerializeField]private GameObject testObject;
+    private CharacterCombat owner;
 
     private void Awake()
     {
@@ -22,7 +25,7 @@ public class WeaponHitBox : MonoBehaviour
         {
             hitColliders = GetComponentsInChildren<Collider>(true);
         }
-
+        owner = GetComponentInParent<CharacterCombat>();
         DisableHitBox();
     }
 
@@ -75,20 +78,34 @@ public class WeaponHitBox : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        // 이미 이번 스윙에 맞은 대상이면 무시
-        if (alreadyHit.Contains(other)) return;
+        HurtBox hurtbox = other.GetComponent<HurtBox>();
 
-        // 적 몬스터의 Collider가 자식 오브젝트에 붙어있는 경우를 대비해 InParent 검색 권장
-        if (!other.TryGetComponent<HurtBox>(out var hurtbox))
-        {
+        if (hurtbox == null)
             hurtbox = other.GetComponentInParent<HurtBox>();
-            if (hurtbox == null) return;
-        }
 
-        alreadyHit.Add(other);
+        if (hurtbox == null)
+            return;
 
-        Debug.Log("hitboxTriggered");
-        // 피격 처리 수행 (공격 데이터 및 넉백 방향 계산을 위한 Transform 전달)
-        hurtbox.TakeHit(currentAttackData, transform);
+        CharacterCombat target = hurtbox.owner;
+
+        // 자기 자신
+        if (target == owner)
+            return;
+
+        // 이번 공격에서 이미 맞은 캐릭터
+        if (alreadyHit.Contains(target))
+            return;
+
+        alreadyHit.Add(target);
+
+        target.ResolveHit(
+            currentAttackData,
+            transform,
+            hurtbox.HitPart
+        );
     }
+    //public void SetOwner(PlayerCombat playerCombat)
+    //{
+    //    owner = playerCombat;
+    //}
 }

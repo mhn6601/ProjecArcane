@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class EnemyHitStunState : EnemyState
 {
-     EnemyHitStunState(Enemy enemy,Animator animator): base(enemy, animator)
+     public EnemyHitStunState(Enemy enemy,Animator animator): base(enemy, animator)
     {
 
     }

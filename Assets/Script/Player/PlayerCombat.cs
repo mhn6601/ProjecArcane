@@ -4,22 +4,36 @@ using System;
 
 public class PlayerCombat : CharacterCombat,ICombatTarget
 {
+
     [SerializeField] private Player player;
-    [SerializeField] private PlayerResourceSystem playerResourceSystem;
+    [SerializeField] private PlayerStatus status;
+    [SerializeField] private PlayerController controller;
+    [SerializeField] private PlayerResourceSystem resourceSystem;
 
     public event Action OnDeath;
     public event Action<AttackData> OnHitTaken; // 피격 이펙트/사운드용
     public event Action OnParrySuccess;          // 패링 이펙트/사운드용
     public bool IsDead { get { return player.isDead; } }
 
+    private void Awake()
+    {
+        player = Player.Instance;
+    }
+    private void Start()
+    {
+        status = player.Status;
+        controller = player.Controller;
+        resourceSystem = player.ResourceSystem;
+
+    }
     public override void ResolveHit(AttackData attackData, Transform attacker, HitPart hitPart)
     {
         // 1. 무적 프레임 (구르기 등)
-        if (player.Status.IsInvincible)
+        if (status.IsInvincible)
             return;
 
         // 2. 현재 상태가 PlayerParryState이고 패링 윈도우 안인지 체크
-        if (player.Controller.ActionFSM.CurrentState is PlayerParryState parryState
+        if (controller.ActionFSM.CurrentState is PlayerParryState parryState
             && parryState.IsInParryWindow)
         {
             if (attackData.canBeParried)
@@ -35,7 +49,7 @@ public class PlayerCombat : CharacterCombat,ICombatTarget
         }
 
         // 3. 가드 중인지 체크
-        if (player.Status.IsGuarding)
+        if (status.IsGuarding)
         {
             HandleGuardedHit(attackData);
             return;
@@ -60,25 +74,27 @@ public class PlayerCombat : CharacterCombat,ICombatTarget
     private void HandleGuardedHit(AttackData attackData)
     {
         float guardDamage =  attackData.guardDamageMultiplier; // 가드 관통 데미지 비율
-        playerResourceSystem.TakeDamage(guardDamage);
+        resourceSystem.TakeDamage(guardDamage);
 
         // 가드 브레이크 체크 (자세/스태미나 게이지 있다면 여기서 처리)
     }
 
     private void ApplyDamage(AttackData attackData, HitPart hitPart)
     {
+        Debug.Log(attackData);
+        Debug.Log(hitPart);
         float finalDamage = attackData.damage * GetBodyPartMultiplier(hitPart);
-        playerResourceSystem.TakeDamage(finalDamage);
+        resourceSystem.TakeDamage(finalDamage);
         OnHitTaken?.Invoke(attackData);
 
         // 히트스턴 처리: 상태머신으로 전이
-        if (playerResourceSystem.CurrentHealth <= 0f)
+        if (resourceSystem.CurrentHealth <= 0f)
         {
             OnDeath?.Invoke();
         }
         else
         {
-            player.Controller.ActionFSM.ChangeState(player.Controller.HitStunState);
+            controller.ActionFSM.ChangeState(controller.HitStunState);
         }
     }
 

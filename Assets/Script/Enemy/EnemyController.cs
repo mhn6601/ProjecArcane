@@ -52,6 +52,7 @@ public class EnemyController : CharacterControllerBase
 
         #region ActionState
         EmptyActionState = new EnemyEmptyActionState(enemy,animator);
+        HitStunState = new EnemyHitStunState(enemy,animator);
         #endregion 
 
     }

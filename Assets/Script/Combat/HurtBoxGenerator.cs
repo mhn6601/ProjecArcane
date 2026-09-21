@@ -122,6 +122,6 @@ public class HurtBoxGenerator : MonoBehaviour
         HurtBox hurtBoxComponent =
             hurtBox.AddComponent<HurtBox>();
         hurtBoxComponent.SetHitPart(hitPart);
-        hurtBoxComponent.SetOwner(owner);
+        hurtBoxComponent.owner=owner;
     }
 }
