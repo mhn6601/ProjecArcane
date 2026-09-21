@@ -43,14 +43,14 @@ public class PlayerController : CharacterControllerBase
     protected override void Awake()
     {
         player = Player.Instance;
-        animator = Player.Instance.Animation.Animator;
+        
 
        
 
     }
     private void Start()
     {
-
+        animator = Player.Instance.Animation.Animator;
         PlayerStateMachineInitialize();
         PlayerStateInitialize();
         movementFSM.Initialize(locomotionState);

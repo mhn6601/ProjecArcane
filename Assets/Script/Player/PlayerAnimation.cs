@@ -22,7 +22,7 @@ public class PlayerAnimation : MonoBehaviour
             
         else
         {
-            Debug.Log(weaponData.itemId);
+           // Debug.Log(weaponData.itemId);
             animator.runtimeAnimatorController =
            weaponData.weaponOverrideController;
         }

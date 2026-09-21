@@ -2,10 +2,12 @@ using UnityEngine;
 
 public abstract class EnemyState : State
 {
-    protected Entity entity;
+    protected Enemy enemy;
+    protected Animator animator;
 
-    public EnemyState(Entity entity)
+    public EnemyState(Enemy enemy, Animator animator)
     {
-        this.entity = entity;
+        this.enemy = enemy;
+        this.animator = animator;
     }
 }

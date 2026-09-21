@@ -4188,6 +4188,9 @@ PrefabInstance:
       addedObject: {fileID: 1655560070}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 3c97edc7ae0aa27459afaee60ec87acd, type: 3}
       insertIndex: -1
+      addedObject: {fileID: 1655560075}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 3c97edc7ae0aa27459afaee60ec87acd, type: 3}
+      insertIndex: -1
       addedObject: {fileID: 1655560071}
   m_SourcePrefab: {fileID: 100100000, guid: 3c97edc7ae0aa27459afaee60ec87acd, type: 3}
 --- !u!4 &1518001654 stripped
@@ -4414,7 +4417,7 @@ CharacterController:
   m_StepOffset: 0.3
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0.001
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Center: {x: 0, y: 0.8, z: 0}
 --- !u!114 &1655560072
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4428,6 +4431,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Entity
   enemyData: {fileID: 0}
+--- !u!114 &1655560075
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1655560067}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f7768c95c810d5f41a326cabafeee987, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyAnimation
+  animator: {fileID: 0}
 --- !u!1 &1680094340
 GameObject:
   m_ObjectHideFlags: 0

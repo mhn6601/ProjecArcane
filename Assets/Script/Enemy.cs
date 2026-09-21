@@ -1,9 +1,9 @@
 using UnityEngine;
 
-public  class Entity : MonoBehaviour
+public  class Enemy : MonoBehaviour
 {
-    Animator animator;
-    public Animator Animator => animator;
+    EnemyAnimation animation;
+    public EnemyAnimation Animation => animation;
 
     EnemyController enemyController;
     public EnemyController EnemyController=> enemyController;
@@ -14,8 +14,12 @@ public  class Entity : MonoBehaviour
 
     private void Awake()
     {
-        animator = GetComponent<Animator>();
-        enemyController = GetComponent<EnemyController>(); 
+        InitComponents();
+    }
+    private void InitComponents()
+    {
+        animation = GetComponent<EnemyAnimation>();
+        enemyController = GetComponent<EnemyController>();
     }
     //public bool isWalking = false;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -24,9 +28,4 @@ public  class Entity : MonoBehaviour
         
     }
 
-    // Update is called once per frame
-    void FixedUpdate()
-    {
-        
-    }
 }

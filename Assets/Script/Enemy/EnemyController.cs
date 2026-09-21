@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class EnemyController : CharacterControllerBase
 {
-    Entity entity;
+    Enemy enemy;
     #region StateMachine
     private CharacterStateMachine movementFSM;
     public CharacterStateMachine MovementFSM => movementFSM;
@@ -16,16 +16,18 @@ public class EnemyController : CharacterControllerBase
 
     protected override void Awake()
     {
-        entity = GetComponent<Entity>();
-        animator = entity.Animator;
-
-        EntityStateMachineInitialize();
-        EntityStateInitialize();
+        enemy = GetComponent<Enemy>();
+        
 
     }
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        animator = enemy.Animation.Animator;
+
+        EntityStateMachineInitialize();
+        EntityStateInitialize();
+
         movementFSM.Initialize(LocomotionState);
         actionFSM.Initialize(EmptyActionState);
     }
@@ -44,11 +46,11 @@ public class EnemyController : CharacterControllerBase
     void EntityStateInitialize()
     {
         #region MovementState
-        LocomotionState = new EnemyLocomotionState(entity);
+        LocomotionState = new EnemyLocomotionState(enemy, animator);
         #endregion
 
         #region ActionState
-        EmptyActionState = new EnemyEmptyActionState(entity);
+        EmptyActionState = new EnemyEmptyActionState(enemy,animator);
         #endregion 
 
     }

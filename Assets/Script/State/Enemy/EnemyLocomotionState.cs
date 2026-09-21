@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class EnemyLocomotionState : EnemyState
 {
-    public EnemyLocomotionState(Entity entity) :base(entity)
+    public EnemyLocomotionState(Enemy enemy, Animator animator) :base(enemy,animator)
         {
 
     }

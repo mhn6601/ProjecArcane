@@ -54,7 +54,8 @@ public class Player:Singleton<Player>
 
     private void InitComponents()
     {
-        if (animation == null) animation = GetComponent<PlayerAnimation>();
+        if (animation == null) 
+        { animation = GetComponent<PlayerAnimation>(); animator = Animation.Animator; } 
         if (controller == null) controller = GetComponent<PlayerController>();
         if (move == null) move = GetComponent<PlayerMove>();
         if (jump == null) jump = GetComponent<PlayerJump>();

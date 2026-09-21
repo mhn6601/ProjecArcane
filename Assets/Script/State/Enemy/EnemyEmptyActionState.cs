@@ -3,7 +3,7 @@ using UnityEngine;
 public class EnemyEmptyActionState : EnemyState
 {
     
-    public EnemyEmptyActionState(Entity entity) : base(entity)
+    public EnemyEmptyActionState(Enemy enemy, Animator animator) : base(enemy, animator)
     {
 
     }
