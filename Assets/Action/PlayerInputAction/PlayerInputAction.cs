@@ -353,6 +353,26 @@ public partial class @PlayerInputAction: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""initialStateCheck"": true,
                     ""priority"": 0
+                },
+                {
+                    ""name"": ""LockOn"",
+                    ""type"": ""Button"",
+                    ""id"": ""6f873343-086f-445a-a862-bed0c0cf7146"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false,
+                    ""priority"": 0
+                },
+                {
+                    ""name"": ""LockOnTargetSwitch"",
+                    ""type"": ""Value"",
+                    ""id"": ""54b062ac-362a-46b3-a4e0-0d1dbbe4d033"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true,
+                    ""priority"": 0
                 }
             ],
             ""bindings"": [
@@ -386,6 +406,28 @@ public partial class @PlayerInputAction: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Zoom"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""89e13de1-ef7d-4ac5-b3a3-a25a26774235"",
+                    ""path"": ""<Mouse>/middleButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""LockOn"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""c22a44e5-23a5-4c78-8360-2b46b4deef68"",
+                    ""path"": ""<Mouse>/delta"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""LockOnTargetSwitch"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -437,6 +479,8 @@ public partial class @PlayerInputAction: IInputActionCollection2, IDisposable
         m_PlayerCamera = asset.FindActionMap("PlayerCamera", throwIfNotFound: true);
         m_PlayerCamera_Rotate = m_PlayerCamera.FindAction("Rotate", throwIfNotFound: true);
         m_PlayerCamera_Zoom = m_PlayerCamera.FindAction("Zoom", throwIfNotFound: true);
+        m_PlayerCamera_LockOn = m_PlayerCamera.FindAction("LockOn", throwIfNotFound: true);
+        m_PlayerCamera_LockOnTargetSwitch = m_PlayerCamera.FindAction("LockOnTargetSwitch", throwIfNotFound: true);
         // PlayerUI
         m_PlayerUI = asset.FindActionMap("PlayerUI", throwIfNotFound: true);
         m_PlayerUI_Inventory = m_PlayerUI.FindAction("Inventory", throwIfNotFound: true);
@@ -697,6 +741,8 @@ public partial class @PlayerInputAction: IInputActionCollection2, IDisposable
     private List<IPlayerCameraActions> m_PlayerCameraActionsCallbackInterfaces = new List<IPlayerCameraActions>();
     private readonly InputAction m_PlayerCamera_Rotate;
     private readonly InputAction m_PlayerCamera_Zoom;
+    private readonly InputAction m_PlayerCamera_LockOn;
+    private readonly InputAction m_PlayerCamera_LockOnTargetSwitch;
     /// <summary>
     /// Provides access to input actions defined in input action map "PlayerCamera".
     /// </summary>
@@ -716,6 +762,14 @@ public partial class @PlayerInputAction: IInputActionCollection2, IDisposable
         /// Provides access to the underlying input action "PlayerCamera/Zoom".
         /// </summary>
         public InputAction @Zoom => m_Wrapper.m_PlayerCamera_Zoom;
+        /// <summary>
+        /// Provides access to the underlying input action "PlayerCamera/LockOn".
+        /// </summary>
+        public InputAction @LockOn => m_Wrapper.m_PlayerCamera_LockOn;
+        /// <summary>
+        /// Provides access to the underlying input action "PlayerCamera/LockOnTargetSwitch".
+        /// </summary>
+        public InputAction @LockOnTargetSwitch => m_Wrapper.m_PlayerCamera_LockOnTargetSwitch;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -748,6 +802,12 @@ public partial class @PlayerInputAction: IInputActionCollection2, IDisposable
             @Zoom.started += instance.OnZoom;
             @Zoom.performed += instance.OnZoom;
             @Zoom.canceled += instance.OnZoom;
+            @LockOn.started += instance.OnLockOn;
+            @LockOn.performed += instance.OnLockOn;
+            @LockOn.canceled += instance.OnLockOn;
+            @LockOnTargetSwitch.started += instance.OnLockOnTargetSwitch;
+            @LockOnTargetSwitch.performed += instance.OnLockOnTargetSwitch;
+            @LockOnTargetSwitch.canceled += instance.OnLockOnTargetSwitch;
         }
 
         /// <summary>
@@ -765,6 +825,12 @@ public partial class @PlayerInputAction: IInputActionCollection2, IDisposable
             @Zoom.started -= instance.OnZoom;
             @Zoom.performed -= instance.OnZoom;
             @Zoom.canceled -= instance.OnZoom;
+            @LockOn.started -= instance.OnLockOn;
+            @LockOn.performed -= instance.OnLockOn;
+            @LockOn.canceled -= instance.OnLockOn;
+            @LockOnTargetSwitch.started -= instance.OnLockOnTargetSwitch;
+            @LockOnTargetSwitch.performed -= instance.OnLockOnTargetSwitch;
+            @LockOnTargetSwitch.canceled -= instance.OnLockOnTargetSwitch;
         }
 
         /// <summary>
@@ -979,6 +1045,20 @@ public partial class @PlayerInputAction: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnZoom(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "LockOn" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnLockOn(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "LockOnTargetSwitch" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnLockOnTargetSwitch(InputAction.CallbackContext context);
     }
     /// <summary>
     /// Interface to implement callback methods for all input action callbacks associated with input actions defined by "PlayerUI" which allows adding and removing callbacks.
