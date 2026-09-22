@@ -17,8 +17,8 @@ TagManager:
   - EnemyAttackHitBox
   - PlayerHurtBox
   - EnemyHurtBox
-  - 
-  - 
+  - LockOnSystem
+  - Enemy
   - 
   - 
   - 

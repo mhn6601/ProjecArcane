@@ -64,7 +64,7 @@ public class PlayerMove : MonoBehaviour
         if ( player.Status.IsLockOn)
         {
             // 락온 상태: 이동 방향이 아니라 '타겟(적)'을 바라보도록 회전
-            RotateTowardsTarget(player.lockOnTarget.position);
+            RotateTowardsTarget(player.LockOn.CurrentTarget.position);
         }
         else
         {

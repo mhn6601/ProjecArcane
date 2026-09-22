@@ -11,6 +11,8 @@ public class PlayerInputHandler : MonoBehaviour
     [SerializeField]private CinemachineInputAxisController cinemachineInputAxisController;
     public Action<bool> OnInputEnabledChanged;
     public  Action OnInventoryInput;
+    public Action<Vector2> OnLookInput;
+    public Action OnLockOnClicked;
     private bool inputEnabled = true;
     public bool InputEnabled =>inputEnabled;
     public Vector3 MoveInput { get; private set; }
@@ -22,6 +24,7 @@ public class PlayerInputHandler : MonoBehaviour
     public bool AttackTriggered { get; private set; }
     public bool HeavyAttackTriggered { get; private set; }
     public bool ParryTriggered { get; private set; }
+    public bool IsLockedOn { get; private set; }
 
     // ★ 구르기 트리거 시점에 달리는 중이었는지 여부. RollState에서 애니메이션 분기에 사용.
     public bool RollWhileRunning { get; private set; }
@@ -71,6 +74,9 @@ public class PlayerInputHandler : MonoBehaviour
 
         inputActions.PlayerUI.Inventory.performed += OnInventoryPerformed;
 
+        inputActions.PlayerCamera.Rotate.performed += OnLookPerformed;
+        inputActions.PlayerCamera.LockOn.performed += OnLockOnPerformed;
+        inputActions.PlayerCamera.LockOnTargetSwitch.performed += OnLockOnTargetSwitched;
            
     }
 
@@ -93,7 +99,10 @@ public class PlayerInputHandler : MonoBehaviour
 
         inputActions.PlayerUI.Inventory.performed -= OnInventoryPerformed;
 
-        
+        inputActions.PlayerCamera.Rotate.performed -= OnLookPerformed;
+        inputActions.PlayerCamera.LockOn.performed -= OnLockOnPerformed;
+        inputActions.PlayerCamera.LockOnTargetSwitch.performed -= OnLockOnTargetSwitched;
+
         inputActions.PlayerUI.Disable();
         //inputActions.PlayerCamera.Disable();
         inputActions.PlayerAction.Disable();
@@ -283,6 +292,25 @@ public class PlayerInputHandler : MonoBehaviour
     {
         //Debug.Log("인벤열기");
         OnInventoryInput?.Invoke();
+    }
+    private void OnLookPerformed(InputAction.CallbackContext context)
+    {
+        if (!inputEnabled)
+            return;
+
+        Vector2 value = context.ReadValue<Vector2>();
+
+        OnLookInput?.Invoke(value);
+    }
+    private void OnLockOnPerformed(InputAction.CallbackContext context)
+    {
+        //Debug.Log("LockOnPerformed");
+        OnLockOnClicked?.Invoke();
+        //IsLockedOn = !IsLockedOn;
+    }
+    private void OnLockOnTargetSwitched(InputAction.CallbackContext context)
+    {
+
     }
     private void LateUpdate()
     {

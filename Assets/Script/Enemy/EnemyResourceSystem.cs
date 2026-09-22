@@ -27,10 +27,6 @@ public class EnemyResourceSystem : MonoBehaviour
     {
         
         enemyStats = GetComponent<EnemyStats>();
-    }
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
         InitResources();
     }
 
@@ -47,9 +43,13 @@ public class EnemyResourceSystem : MonoBehaviour
     }
     public void SetResources(float currentHealth, float currentMana, float currentStamina)
     {
-        CurrentHealth = currentHealth;
-        CurrentMana = currentMana;
-        CurrentStamina = currentStamina;
+        CurrentHealth = Mathf.Clamp(currentHealth, 0f, MaxHealth);
+        CurrentMana = Mathf.Clamp(currentMana, 0f, MaxMana);
+        CurrentStamina = Mathf.Clamp(currentStamina, 0f, MaxStamina);
+
+        OnHealthChanged?.Invoke(CurrentHealth, MaxHealth);
+        OnManaChanged?.Invoke(CurrentMana, MaxMana);
+        OnStaminaChanged?.Invoke(CurrentStamina, MaxStamina);
     }
     // 체력
     public void TakeDamage(float damageAmount)

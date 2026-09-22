@@ -111,7 +111,7 @@ public class PlayerAttackComboState : PlayerState
     {
         if (player.Status.IsLockOn)
         {
-            player.Move.RotateSnapTowardsTarget(player.lockOnTarget.position);
+            player.Move.RotateSnapTowardsTarget(player.LockOn.CurrentTarget.position);
             return;
         }
 

@@ -14,10 +14,12 @@ public class Player:Singleton<Player>
     [SerializeField] private PlayerStats stats;
     [SerializeField] private PlayerResourceSystem resourceSystem;
     [SerializeField] private EquipmentManager equipmentManager;
+    [SerializeField] private PlayerLockOn lockOn;
     [SerializeField] private Animator animator;
 
     // 외부 공개용 프로퍼티 (Get)
     public PlayerAnimation Animation => animation;
+    public Animator Animator => animator;
     public PlayerController Controller => controller;
     public PlayerMove Move => move;
     public PlayerJump Jump => jump;
@@ -28,9 +30,8 @@ public class Player:Singleton<Player>
     public PlayerStats Stats => stats;
     public PlayerResourceSystem ResourceSystem => resourceSystem;
     public EquipmentManager EquipmentManager => equipmentManager;
+    public PlayerLockOn LockOn => lockOn;
 
-
-    public Transform lockOnTarget;
 
     [Header("Global Player State Flags")]
     public bool isDead { get; private set; }
@@ -50,6 +51,15 @@ public class Player:Singleton<Player>
             //playerStats.OnDeath -= HandleDeath;
         }
     }
+    private void OnEnable()
+    {
+        input.OnLookInput += lockOn.HandleLookInput;
+            
+    }
+    private void OnDisable()
+    {
+        input.OnLookInput -= lockOn.HandleLookInput;
+    }
 
     private void InitComponents()
     {
@@ -66,6 +76,7 @@ public class Player:Singleton<Player>
         if (resourceSystem == null) resourceSystem = GetComponent<PlayerResourceSystem>();
         if (status == null) status = GetComponent<PlayerStatus>();
         if (equipmentManager == null) equipmentManager = GetComponent<EquipmentManager>();
+        if (lockOn == null) lockOn = GetComponent<PlayerLockOn>();
     }
     // --- 라이프사이클 및 전체 시스템 제어 ---
 

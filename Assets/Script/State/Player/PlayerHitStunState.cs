@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class PlayerHitStunState : PlayerState
 {
+    private static readonly int HitStunHash = Animator.StringToHash("HitStun");
     float hitStunDuration = 0.5f;
     float hitStunTimer = 0f;
     public PlayerHitStunState(Player player, Animator animator) : base(player, animator)
@@ -18,7 +19,7 @@ public class PlayerHitStunState : PlayerState
         player.Status.RemoveFlag(CharacterActionFlags.CanAttack);
         player.Status.RemoveFlag(CharacterActionFlags.CanRotate);
         
-        animator.CrossFade("HitStun", 0f);
+        animator.CrossFade(HitStunHash, 0f);
     }
     public override void Update()
     {

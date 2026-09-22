@@ -66,7 +66,7 @@ public class PlayerJump : MonoBehaviour
     }
     public void ExecuteJump(Vector3 rawInput, bool isRun)
     {
-        player.ResourceSystem.UseStaminaEasy(player.Stats.JumpStaminaCost);
+
         // 1. 수평 이동 벡터 계산 (X, Z) - 속도 적용
         float currentSpeed = isRun ? player.Stats.MoveSpeed*player.Stats.RunSpeedMultiply : player.Stats.MoveSpeed;
         Vector3 horizontalMove = rawInput * currentSpeed;

@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Unity.AppUI.UI;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
 public class HurtBoxGenerator : MonoBehaviour
@@ -75,7 +76,9 @@ public class HurtBoxGenerator : MonoBehaviour
         CreateHurtBox("Head", Head, HeadRadius,HitPart.Head);
         CreateHurtBox("Body", Spine, SpineRadius, HitPart.Body);
         CreateHurtBox("LeftArm", LeftArm, LeftArmRadius, HitPart.Arm);
+        CreateHurtBox("RightArm", RightArm, RightArmRadius, HitPart.Arm);
         CreateHurtBox("LeftLeg", LeftLeg, LeftLegRadius, HitPart.Leg);
+        CreateHurtBox("RightLeg", RightLeg, RightLegRadius, HitPart.Leg);
     }
 
     private void CreateBoneDictionary()
@@ -106,6 +109,14 @@ public class HurtBoxGenerator : MonoBehaviour
         }
 
         GameObject hurtBox = new GameObject(hurtBoxName);
+        if (owner.gameObject.layer == LayerMask.NameToLayer("Player"))
+        {
+            hurtBox.layer= LayerMask.NameToLayer("Player");
+        }
+        else
+        {
+            hurtBox.layer = LayerMask.NameToLayer("Enemy");
+        }
 
         hurtBox.transform.SetParent(bone);
         hurtBox.transform.localPosition = Vector3.zero;

@@ -55,9 +55,11 @@ public class PlayerJumpState : PlayerState
 
         int targetAnimHash = initialSpeedMultiplier == 0
             ? IdleJumpHash
-            : (initialSpeedMultiplier >= 0.5f ? WalkJumpHash : RunJumpHash);
+            : (initialSpeedMultiplier<= 0.5f ? WalkJumpHash : RunJumpHash);
 
         animator.CrossFade(targetAnimHash, 0.1f);
+
+        //player.Jump.ExecuteJump(initialJumpDirection, initialIsRun);
     }
 
     public override void Update()
