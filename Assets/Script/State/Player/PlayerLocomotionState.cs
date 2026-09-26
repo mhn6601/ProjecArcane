@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class PlayerLocomotionState : PlayerState
 {
@@ -99,17 +100,8 @@ public class PlayerLocomotionState : PlayerState
             targetSpeedMultiplier = actualRunState ? 1.0f : 0.5f;
         }
         UpdateAnimatorParameters(moveInput, targetSpeedMultiplier);
-        if (player.Status.IsLockOn)
-        {
-            var animInput=Vector2.zero;
-            SetAnimatorParametersMoveHash(animInput,0.1f);
-        }
-        else
-        {
-            //var animInput= moveInput.sqrMagnitude > 0.001f ? targetSpeedMultiplier : 0f;
-            //Debug.Log(animInput);
-            SetAnimatorParametersMoveHash(targetSpeedMultiplier, 0.1f);
-        }
+        SetAnimatorParametersMoveHash(targetSpeedMultiplier, 0.1f);
+
         // 4. 이동 로직 위임
         player.Move.ExecuteMove(moveInput+ gravityVector, actualRunState);
         // 5. 2D Blend Tree 파라미터 업데이트 (MoveX, MoveZ)

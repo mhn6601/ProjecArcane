@@ -22,10 +22,15 @@ MonoBehaviour:
   manaPerLevel: 10
   staminaPerLevel: 5
   attackPerLevel: 2
-  moveSpeed: 2.5
-  runSpeed: 5
-  staminaRegenRate: 5
+  moveSpeed: 3
+  runSpeedMultiply: 2
+  jumphight: 1.5
+  jumpStaminaCost: 10
+  staminaRegenRate: 10
+  staminaRegenBoostMul: 2.5
   staminaRegenDelay: 3
+  staminaRegenBoostDelay: 6
   runStaminaCostPerSec: 10
   staminaRecoveryThreshold: 10
+  rollStaminaCost: 10
   rollImmunetime: 0.2

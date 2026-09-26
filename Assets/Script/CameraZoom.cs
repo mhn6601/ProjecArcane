@@ -10,44 +10,57 @@ public class CameraZoom : MonoBehaviour
     [SerializeField] private float minRadius = 3.5f;
     [SerializeField] private float maxRadius = 8f;
     [SerializeField] private float smoothTime = 0.15f;
-
+    [SerializeField] private bool ZoomAble = false;
     private CinemachineOrbitalFollow orbitalFollow;
+    private CinemachineFollow follow;
 
     private float targetRadius;
     private float smoothVelocity;
 
     private void Awake()
     {
-        orbitalFollow =
-            cinemachineCamera.GetComponent<CinemachineOrbitalFollow>();
+        
+        cinemachineCamera.TryGetComponent<CinemachineOrbitalFollow>(out CinemachineOrbitalFollow OrbitalFollow);
+        orbitalFollow = OrbitalFollow;
 
-        targetRadius = orbitalFollow.Radius;
+        if (orbitalFollow)
+        {
+
+            targetRadius = orbitalFollow.Radius;
+        }
     }
 
     private void Update()
     {
-        if (Player.Instance&&Player.Instance.Input.InputEnabled)
+        if (ZoomAble)
         {
-            float scroll = Mouse.current.scroll.ReadValue().y;
-
-            if (scroll != 0)
+            if (Player.Instance && Player.Instance.Input.InputEnabled)
             {
-                targetRadius -= scroll * zoomSpeed;
+                float scroll = Mouse.current.scroll.ReadValue().y;
+                if (orbitalFollow)
+                {
+                    if (scroll != 0)
+                    {
+                        targetRadius -= scroll * zoomSpeed;
 
-                targetRadius = Mathf.Clamp(
-                    targetRadius,
-                    minRadius,
-                    maxRadius
-                );
+                        targetRadius = Mathf.Clamp(
+                            targetRadius,
+                            minRadius,
+                            maxRadius
+                        );
+                    }
+
+
+                    orbitalFollow.Radius = Mathf.SmoothDamp(
+                        orbitalFollow.Radius,
+                        targetRadius,
+                        ref smoothVelocity,
+                        smoothTime
+                    );
+                }
             }
-
-            orbitalFollow.Radius = Mathf.SmoothDamp(
-                orbitalFollow.Radius,
-                targetRadius,
-                ref smoothVelocity,
-                smoothTime
-            );
         }
+        
         
     }
 }

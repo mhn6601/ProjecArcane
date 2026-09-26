@@ -215,7 +215,7 @@ PrefabInstance:
       objectReference: {fileID: 9100000, guid: 3bfbaccca82539b48b17b8fe198a4a79, type: 2}
     - target: {fileID: 5866666021909216657, guid: 67be6951f54a05d46abf482ec86ada63, type: 3}
       propertyPath: m_ApplyRootMotion
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6379265584044378490, guid: 67be6951f54a05d46abf482ec86ada63, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -415,7 +415,41 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 44598216b172f9b40a0b01c62151ca0f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerRoll
-  playerFollowCamera: {fileID: 0}
+  rollSpeedCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0.033332825
+      value: 0.8983345
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.75231624
+      value: 0.6055961
+      inSlope: -0.97559077
+      outSlope: -0.97559077
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.18089938
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0.3
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  rollDistance: 5
+  rollDuration: 0.5
 --- !u!114 &5709410208493636976
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -428,14 +462,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: beb68dd9325ef48449a9e4051a9bdc6c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerLockOn
-  lockOnRange: 20
-  lockOnAngle: 100
-  lockOnLayer:
+  lockOnRadius: 15
+  maxAngle: 60
+  enemyLayer:
     serializedVersion: 2
-    m_Bits: 4096
-  switchInputThreshold: 0.5
-  switchCooldown: 0.15
-  currentTarget: {fileID: 0}
+    m_Bits: 8192
+  obstacleLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  lockOnCamera: {fileID: 0}
+  freeLookCamera: {fileID: 0}
+  lookAtRig: {fileID: 0}
 --- !u!114 &6378095158773022455
 MonoBehaviour:
   m_ObjectHideFlags: 0

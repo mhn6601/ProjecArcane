@@ -1,6 +1,6 @@
-using System.Collections;
+ï»¿using System.Collections;
+using Unity.Mathematics;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 [RequireComponent(typeof(CharacterController))]
 public class PlayerMove : MonoBehaviour
@@ -35,13 +35,13 @@ public class PlayerMove : MonoBehaviour
             {
                 if (Camera.main != null && FollowPlayerCamera.Instance == null)
                 {
-                    Debug.LogError("ÇÃ·¹ÀÌ¾î ÆÈ·Î¿ì Ä«¸Ş¶ó ¼³Á¤ ¿À·ù ÆÈ·Î¿ìÄ«¸Ş¶ó ¾øÀ½\nplayerFollowCamera=" + playerFollowCamera + "\nFollowPlayerCamera.Instance=" + FollowPlayerCamera.Instance);
+                    Debug.LogError("í”Œë ˆì´ì–´ íŒ”ë¡œìš° ì¹´ë©”ë¼ ì„¤ì • ì˜¤ë¥˜ íŒ”ë¡œìš°ì¹´ë©”ë¼ ì—†ìŒ\nplayerFollowCamera=" + playerFollowCamera + "\nFollowPlayerCamera.Instance=" + FollowPlayerCamera.Instance);
                     playerFollowCamera = Camera.main.transform;
                 }
                 else
                 {
                     playerFollowCamera = FindAnyObjectByType<Camera>().transform;
-                    Debug.LogError("ÇÃ·¹ÀÌ¾î ÆÈ·Î¿ì Ä«¸Ş¶ó ¼³Á¤ ¿À·ù- ÆÈ·Î¿ìÄ«¸Ş¶ó, ¸ŞÀÎÄ«¸Ş¶ó ¾øÀ½");
+                    Debug.LogError("í”Œë ˆì´ì–´ íŒ”ë¡œìš° ì¹´ë©”ë¼ ì„¤ì • ì˜¤ë¥˜- íŒ”ë¡œìš°ì¹´ë©”ë¼, ë©”ì¸ì¹´ë©”ë¼ ì—†ìŒ");
                 }
             }
         }
@@ -60,40 +60,71 @@ public class PlayerMove : MonoBehaviour
         if (rawInput.sqrMagnitude <= 0.001f && !player.Status.IsLockOn) return;
 
         Vector3 moveDir = CalculateDirection(rawInput);
-        // [È¸Àü ºĞ±â]
-        if ( player.Status.IsLockOn)
+        if (player.Status.IsLockOn)
         {
-            // ¶ô¿Â »óÅÂ: ÀÌµ¿ ¹æÇâÀÌ ¾Æ´Ï¶ó 'Å¸°Ù(Àû)'À» ¹Ù¶óº¸µµ·Ï È¸Àü
-            RotateTowardsTarget(player.LockOn.CurrentTarget.position);
+            if (isRun && moveDir.sqrMagnitude > 0.001f)
+            {
+                // ë½ì˜¨ + ë‹¬ë¦¬ê¸°: ìºë¦­í„°ê°€ ì´ë™ ë°©í–¥ì„ ë³´ê²Œ í•¨ (ì¹´ë©”ë¼ëŠ” CameraFollowAnchorê°€ ë³„ë„ë¡œ íƒ€ê²Ÿ ê³ ì •)
+                RotateTowardsDirection(moveDir);
+            }
+            else
+            {
+                // ë½ì˜¨ + ì •ì§€/ê±·ê¸°: íƒ€ê²Ÿì„ ê³„ì† ë´„
+                RotateTowardsTarget(player.LockOn.CurrentTarget.position);
+            }
         }
         else
         {
-            // ³í¶ô¿Â »óÅÂ: ÀÚ½ÅÀÌ ÀÌµ¿ÇÏ´Â ¹æÇâÀ» ¹Ù¶óº¸µµ·Ï È¸Àü
             RotateTowardsDirection(moveDir);
-            //Debug.Log("³í¶ô¿Â »óÅÂ È¸Àü Ã³¸®");
         }
 
-        // ÀÌµ¿ Ã³¸®
-        float currentSpeed = isRun ? player.Stats.MoveSpeed*player.Stats.RunSpeedMultiply : player.Stats.MoveSpeed;
-        moveDir.y = -8f;
-        controller.CC.Move(moveDir * currentSpeed * Time.deltaTime);
+        // ì´ë™ ì²˜ë¦¬
+        float currentSpeed = isRun ? player.Stats.MoveSpeed * player.Stats.RunSpeedMultiply : player.Stats.MoveSpeed;
+        Vector3 horizontalMove = moveDir * currentSpeed;
+        Vector3 verticalMove = new Vector3(0f, -8f, 0f);
+        controller.CC.Move((horizontalMove + verticalMove) * Time.deltaTime);
     }
+    
 
-
-    // Ä«¸Ş¶ó È¸ÀüÀ» °í·ÁÇÏ¿© ÀÔ·Â ¹æÇâÀ» ¿ùµå ÁÂÇ¥°è ¹æÇâÀ¸·Î º¯È¯ÇÏ´Â ¿¬»ê ÇÔ¼ö
+    // ì¹´ë©”ë¼ íšŒì „ì„ ê³ ë ¤í•˜ì—¬ ì…ë ¥ ë°©í–¥ì„ ì›”ë“œ ì¢Œí‘œê³„ ë°©í–¥ìœ¼ë¡œ ë³€í™˜í•˜ëŠ” ì—°ì‚° í•¨ìˆ˜
     private Vector3 CalculateDirection(Vector3 input)
     {
-        if (playerFollowCamera == null) return Vector3.zero;
+        Vector3 dirForward;
+        Vector3 dirRight;
 
-        var camForward = playerFollowCamera.forward;
-        var camRight = playerFollowCamera.right;
+        if (player.Status.IsLockOn &&!player.Status.IsRunning)
+        {
+            // ë¡ì˜¨ ì¤‘: ì¹´ë©”ë¼ê°€ ì•„ë‹ˆë¼ ìºë¦­í„° ìì‹ ì˜ ì •ë©´(=íƒ€ê²Ÿ ë°©í–¥) ê¸°ì¤€
+            dirForward = transform.forward;
+            dirRight = transform.right;
+        }
+        else if(player.Status.IsLockOn && player.Status.IsRunning)
+        {
+            Vector3 forward=(player.LockOn.CurrentTarget.transform.position - transform.position).normalized;
+            forward.y = 0f;
+            dirForward = forward;
+            Quaternion right = Quaternion.Euler(0f, 90f, 0f);
+            dirRight = right*dirForward ;
+        }
+        else
+        {
+            if (playerFollowCamera == null) return Vector3.zero;
 
-        camForward.y = 0f;
-        camRight.y = 0f;
+            dirForward = playerFollowCamera.forward;
+            dirRight = playerFollowCamera.right;
+        }
 
-        camForward.Normalize();
-        camRight.Normalize();
-        return (camForward * input.z) + (camRight * input.x);
+        dirForward.y = 0f;
+        dirRight.y = 0f;
+
+        dirForward.Normalize();
+        dirRight.Normalize();
+        Vector3 result = (dirForward * input.z) + (dirRight * input.x);
+        if (result.magnitude > 1f)
+        {
+            result.Normalize();
+        }
+        return result;
     }
 
     public void RotateTowardsDirection(Vector3 dir)
@@ -108,7 +139,22 @@ public class PlayerMove : MonoBehaviour
     {
         return CalculateDirection(rawInput);
     }
-    // °ø°İ ½ÃÀÛ ½Ã ÇÑ ¹ø¸¸ È£ÃâµÇ´Â 1È¸¼º º¸°£ È¸Àü (Slerp)
+
+    // ì¦‰ì‹œíšŒì „
+    public void RotateInstant(Vector3 worldDir)
+    {
+        if (worldDir.sqrMagnitude <= 0.001f) return;
+
+        // í˜¹ì‹œ ì§„í–‰ ì¤‘ì¸ ë³´ê°„ íšŒì „(ê³µê²© ìŠ¤ëƒ… ë“±)ì´ ìˆë‹¤ë©´ ì¤‘ë‹¨
+        if (attackRotateCoroutine != null)
+        {
+            StopCoroutine(attackRotateCoroutine);
+            attackRotateCoroutine = null;
+        }
+
+        transform.rotation = Quaternion.LookRotation(worldDir);
+    }
+    // ê³µê²© ì‹œì‘ ì‹œ í•œ ë²ˆë§Œ í˜¸ì¶œë˜ëŠ” 1íšŒì„± ë³´ê°„ íšŒì „ (Slerp)
     public void RotateSnap(Vector3 worldDir)
     {
         if (worldDir.sqrMagnitude <= 0.001f) return;
@@ -154,7 +200,7 @@ public class PlayerMove : MonoBehaviour
     private void RotateTowardsTarget(Vector3 targetPos)
     {
         Vector3 dirToTarget = targetPos - transform.position;
-        dirToTarget.y = 0f; // YÃà °íÁ¤
+        dirToTarget.y = 0f; // Yì¶• ê³ ì •
 
         if (dirToTarget.sqrMagnitude > 0.001f)
         {
@@ -162,5 +208,4 @@ public class PlayerMove : MonoBehaviour
             transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotateSpeed * Time.deltaTime);
         }
     }
-
 }

@@ -51,15 +51,6 @@ public class Player:Singleton<Player>
             //playerStats.OnDeath -= HandleDeath;
         }
     }
-    private void OnEnable()
-    {
-        input.OnLookInput += lockOn.HandleLookInput;
-            
-    }
-    private void OnDisable()
-    {
-        input.OnLookInput -= lockOn.HandleLookInput;
-    }
 
     private void InitComponents()
     {

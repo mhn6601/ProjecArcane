@@ -1,5 +1,6 @@
 using UnityEngine;
 
+
 public class PlayerRollState : PlayerState
 {
     private float stateNormalizedTimeMax = 0.85f; // 구르기 최대시간
@@ -35,7 +36,8 @@ public class PlayerRollState : PlayerState
         player.Status.AddFlag(CharacterActionFlags.IsInvincible);
         player.Status.AddFlag(CharacterActionFlags.IsSuperArmor);
 
-        // ★ Status.IsRunning 대신, 이번 구르기가 "달리다가 이어진 것"인지 인풋에서 직접 판단
+        ApplyRollDirectionSnap();
+       
         if (player.Input.RollWhileRunning)
         {
             animator.CrossFade(RunRoll, 0f);
@@ -44,7 +46,6 @@ public class PlayerRollState : PlayerState
         {
             animator.CrossFade(BaseRoll, 0f);
         }
-        ApplyRollDirectionSnap();
     }
     public override void Update()
     {
@@ -77,11 +78,13 @@ public class PlayerRollState : PlayerState
     }
     private void ApplyRollDirectionSnap()
     {
-
         Vector3 rawInput = player.Input.MoveInput;
-        if (rawInput.sqrMagnitude <= 0.001f) return;
+        Vector3 rollDirWorld = rawInput.sqrMagnitude > 0.001f
+            ? player.Move.GetWorldDirection(rawInput)
+            : player.transform.forward;
 
-        Vector3 worldDir = player.Move.GetWorldDirection(rawInput);
-        player.Move.RotateSnap(worldDir);
+        // 락온 여부 관계없이 입력 방향으로 즉시 회전 → 루트모션이 그 방향으로 곧게 나감
+        player.Move.RotateInstant(rollDirWorld);
+        player.Roll.SetRollDirection(rollDirWorld);
     }
 }

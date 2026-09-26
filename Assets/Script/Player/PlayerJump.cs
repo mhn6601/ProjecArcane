@@ -117,18 +117,7 @@ public class PlayerJump : MonoBehaviour
     }
     public Vector3 CalculateDirection(Vector3 input)
     {
-        if (playerFollowCamera == null) return Vector3.zero;
-
-        var camForward = playerFollowCamera.forward;
-        var camRight = playerFollowCamera.right;
-
-        camForward.y = 0f;
-        camRight.y = 0f;
-
-        camForward.Normalize();
-        camRight.Normalize();
-
-        return (camForward * input.z) + (camRight * input.x);
+        return player.Move.GetWorldDirection(input);
     }
     private Vector3 GetRayOrigin()
     {
