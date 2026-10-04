@@ -289,4 +289,9 @@ public class EquipmentManager : MonoBehaviour
             }
         }
     }
+
+    public float GetTotalSpellDamage()
+    {
+        return mainWeapon.WeaponItemData.baseSpellDamage + playerStats.SpellPower;
+    }
 }

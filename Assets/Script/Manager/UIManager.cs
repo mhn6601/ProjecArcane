@@ -7,7 +7,7 @@ public enum UIType
 {
     Inventory,
     Stat,
-    Skill,
+    Spell,
     Setting,
     Popup
 }
@@ -39,13 +39,12 @@ public class UIManager : Singleton<UIManager>
 
     private void OnEnable()
     {
-        player.Input.OnInventoryInput += ToggleInventory;
+        player.Input.OnUIToggleInput += ToggleUI;
     }
-
 
     private void OnDisable()
     {
-        player.Input.OnInventoryInput -= ToggleInventory;
+        player.Input.OnUIToggleInput -= ToggleUI;
     }
 
 
@@ -108,7 +107,7 @@ public class UIManager : Singleton<UIManager>
             FocusUI(ui);
             return;
         }
-
+        CloseOtherUIs(ui);
         openedUIs.Add(ui);
 
         ui.Open();
@@ -174,7 +173,20 @@ public class UIManager : Singleton<UIManager>
 
         CloseUI(ui);
     }
+    private void CloseOtherUIs(UIBase except)
+    {
+        // 순회 중 리스트가 바뀌므로 뒤에서부터 돈다
+        for (int i = openedUIs.Count - 1; i >= 0; i--)
+        {
+            UIBase other = openedUIs[i];
+            if (other == except) continue;
 
+            openedUIs.RemoveAt(i);
+            other.Close();
+        }
+
+        focusedUI = null;
+    }
 
     // -------------------------
     // Focus
@@ -250,15 +262,11 @@ public class UIManager : Singleton<UIManager>
     // Inventory
     // -------------------------
 
-    private void ToggleInventory()
+    public void ToggleUI(UIType uiType)
     {
-        if (IsUIOpen(UIType.Inventory))
-        {
-            CloseUI(UIType.Inventory);
-        }
+        if (IsUIOpen(uiType))
+            CloseUI(uiType);
         else
-        {
-            OpenUI(UIType.Inventory);
-        }
+            OpenUI(uiType);
     }
 }

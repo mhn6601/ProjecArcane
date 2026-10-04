@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ee1f219d029ba3a4eaa414d52d1ac1bf, type: 3}
+  m_Name: SpellData_001_EnergyBolt_Fire
+  m_EditorClassIdentifier: Assembly-CSharp::SpellData
+  spellId: 001
+  spellName: FireBolt
+  spellDescription: "\uD30C\uC774\uC5B4\uBCFC\uC744 \uBC1C\uC0AC\uD569\uB2C8\uB2E4.\\n\uC801\uC911\uC2DC{damage}\uC758
+    \uD53C\uD574\uB97C \uC90D\uB2C8\uB2E4.\\n\uC0AC\uC6A9\uC2DC MP{mp}\uB97C \uC18C\uBAA8\uD569\uB2C8\uB2E4\\n\uC7AC\uC0AC\uC6A9\uB300\uAE30\uC2DC\uAC04:
+    {cooldown}\uCD08"
+  VideoClip: {fileID: 32900000, guid: 05069b5c88dff644dbaf2d8eb9679bcc, type: 3}
+  Icon: {fileID: 21300000, guid: f85ea78a8f8f76546a8d8affdc6d19aa, type: 3}
+  baseDamage: 20
+  spellPowerRatio: 1.2
+  baseMpCost: 2
+  cooldown: 2
+  animName: EnergyBolt
+  elementType: 2
+  VfxPrefab: {fileID: 612326187836827543, guid: 9170d42be578e7541877a8814625b291, type: 3}

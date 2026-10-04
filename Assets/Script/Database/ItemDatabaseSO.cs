@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "ItemDatabase", menuName = "Data/Item Database")]
+[CreateAssetMenu(fileName = "ItemDatabase", menuName = "Database/Item Database")]
 public class ItemDatabaseSO : ScriptableObject
 {
     // 프로젝트 내에 존재하는 모든 ItemSO 에셋을 등록해 두는 리스트

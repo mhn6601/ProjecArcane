@@ -24,7 +24,7 @@ public class PlayerHeavyAttackState : PlayerState
         player.Status.RemoveFlag(CharacterActionFlags.CanJump);
         player.Status.RemoveFlag(CharacterActionFlags.CanGuard);
         player.Status.RemoveFlag(CharacterActionFlags.CanParry);
-
+        animator.applyRootMotion = true;
         // 강공격 시작 직전 입력 방향으로 1회성 회전
         ApplyAttackDirectionSnap();
 
@@ -53,6 +53,7 @@ public class PlayerHeavyAttackState : PlayerState
         player.Status.AddFlag(CharacterActionFlags.CanJump);
         player.Status.AddFlag(CharacterActionFlags.CanGuard);
         player.Status.AddFlag(CharacterActionFlags.CanParry);
+        animator.applyRootMotion = false;
         if (player.Attack.MainWeapon != null)
         {
             player.Attack.MainWeapon.WeaponHitBox.DisableHitBox();

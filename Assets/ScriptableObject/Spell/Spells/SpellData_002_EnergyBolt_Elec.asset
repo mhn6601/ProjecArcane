@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ee1f219d029ba3a4eaa414d52d1ac1bf, type: 3}
+  m_Name: SpellData_002_EnergyBolt_Elec
+  m_EditorClassIdentifier: Assembly-CSharp::SpellData
+  spellId: 002
+  spellName: ElectricBolt
+  spellDescription: "\uC77C\uB809\uBCFC\uC744 \uBC1C\uC0AC\uD569\uB2C8\uB2E4.\\n\uC801\uC911\uC2DC{damage}\uC758
+    \uD53C\uD574\uB97C \uC90D\uB2C8\uB2E4.\\n\uC0AC\uC6A9\uC2DC MP{mp}\uB97C \uC18C\uBAA8\uD569\uB2C8\uB2E4\\n\uC7AC\uC0AC\uC6A9\uB300\uAE30\uC2DC\uAC04:
+    {cooldown}\uCD08"
+  VideoClip: {fileID: 32900000, guid: e435e56311e612245854750cff309f42, type: 3}
+  Icon: {fileID: 21300000, guid: 7b34caca00a1514468b8d9cc005a43fc, type: 3}
+  baseDamage: 20
+  spellPowerRatio: 1
+  baseMpCost: 2
+  cooldown: 2
+  animName: EnergyBolt
+  elementType: 3
+  VfxPrefab: {fileID: 1819793614438822389, guid: e3b82e39501f61d46952cb20f2eff8aa, type: 3}

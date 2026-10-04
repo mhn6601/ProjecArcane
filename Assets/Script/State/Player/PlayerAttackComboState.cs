@@ -20,6 +20,7 @@ public class PlayerAttackComboState : PlayerState
         player.Status.RemoveFlag(CharacterActionFlags.CanRoll);
         player.Status.RemoveFlag(CharacterActionFlags.CanRotate);
         player.Status.RemoveFlag(CharacterActionFlags.CanJump);
+        animator.applyRootMotion = true;
         PlayComboAnimation();
     }
     override public void Update()
@@ -80,6 +81,7 @@ public class PlayerAttackComboState : PlayerState
         player.Status.AddFlag(CharacterActionFlags.CanRotate);
         player.Status.AddFlag(CharacterActionFlags.CanJump);
         currentComboIndex = 0;
+        animator.applyRootMotion = false;
         if (player.Attack.MainWeapon != null) 
         {
             player.Attack.MainWeapon.WeaponHitBox.DisableHitBox();

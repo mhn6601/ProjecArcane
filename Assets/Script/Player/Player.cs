@@ -15,6 +15,8 @@ public class Player:Singleton<Player>
     [SerializeField] private PlayerResourceSystem resourceSystem;
     [SerializeField] private EquipmentManager equipmentManager;
     [SerializeField] private PlayerLockOn lockOn;
+    [SerializeField] private PlayerMagicSystem magicSystem;
+    [SerializeField] private MagicSocketHandler magicSocketHandler;
     [SerializeField] private Animator animator;
 
     // 외부 공개용 프로퍼티 (Get)
@@ -31,6 +33,8 @@ public class Player:Singleton<Player>
     public PlayerResourceSystem ResourceSystem => resourceSystem;
     public EquipmentManager EquipmentManager => equipmentManager;
     public PlayerLockOn LockOn => lockOn;
+    public PlayerMagicSystem MagicSystem => magicSystem;
+    public  MagicSocketHandler MagicSocketHandler=>magicSocketHandler;
 
 
     [Header("Global Player State Flags")]
@@ -68,6 +72,8 @@ public class Player:Singleton<Player>
         if (status == null) status = GetComponent<PlayerStatus>();
         if (equipmentManager == null) equipmentManager = GetComponent<EquipmentManager>();
         if (lockOn == null) lockOn = GetComponent<PlayerLockOn>();
+        if (magicSystem == null) magicSystem = GetComponent<PlayerMagicSystem>();
+        if (magicSocketHandler == null) magicSocketHandler = GetComponent<MagicSocketHandler>();
     }
     // --- 라이프사이클 및 전체 시스템 제어 ---
 

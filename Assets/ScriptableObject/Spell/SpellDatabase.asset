@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 68706448c42eb8f419cafe1f96230110, type: 3}
+  m_Name: SpellDatabase
+  m_EditorClassIdentifier: Assembly-CSharp::SpellDatabaseSO
+  allSpells:
+  - {fileID: 11400000, guid: f2e83b9be3b62ad49951c51c77b7754e, type: 2}
+  - {fileID: 11400000, guid: d4621669c7cf19d4a91ca31fb52c1f92, type: 2}
+  - {fileID: 11400000, guid: 72a2d60c464b1294b9df42caa480e5ab, type: 2}
+  - {fileID: 11400000, guid: 663d7750279d42f4fac373a4ddacbde2, type: 2}

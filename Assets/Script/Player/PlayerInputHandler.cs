@@ -1,5 +1,6 @@
 
 using System;
+using System.Collections.Generic;
 using Unity.Cinemachine;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -9,9 +10,11 @@ public class PlayerInputHandler : MonoBehaviour
     private UIManager uiManager;
     private PlayerInputAction inputActions;
     [SerializeField]private CinemachineInputAxisController cinemachineInputAxisController;
-    public Action<bool> OnInputEnabledChanged;
-    public  Action OnInventoryInput;
+
+    private Dictionary<InputAction, UIType> uiToggleMap;
+    public  Action<UIType> OnUIToggleInput;
     public Action<Vector2> OnLookInput;
+    public Action<bool> OnInputEnabledChanged;
     public Action OnLockOnClicked;
     private bool inputEnabled = true;
     public bool InputEnabled =>inputEnabled;
@@ -51,15 +54,12 @@ public class PlayerInputHandler : MonoBehaviour
 
     private void OnEnable()
     {
+        #region Player Action
+
         inputActions.PlayerAction.Enable();
-        inputActions.PlayerCamera.Enable();
-        inputActions.PlayerUI.Enable();
 
         inputActions.PlayerAction.Move.performed += OnMovePerformed;
         inputActions.PlayerAction.Move.canceled += OnMoveCanceled;
-
-        // ★ Run, Roll 둘 다 Input Actions 에셋에서 Interaction을 전부 제거(No Interaction)해야 합니다.
-        //   그래야 started = 실제 press, canceled = 실제 release, performed = press 시점 즉시 발생 이 보장됩니다.
         inputActions.PlayerAction.Run.started += OnRunStarted;
         inputActions.PlayerAction.Run.canceled += OnRunCanceled;
 
@@ -71,17 +71,39 @@ public class PlayerInputHandler : MonoBehaviour
         inputActions.PlayerAction.Parry.performed += OnParryPerformed;
         inputActions.PlayerAction.Guard.performed += OnGuardHoldPerformed;
         inputActions.PlayerAction.Guard.canceled += OnGuardHoldCanceled;
+        #endregion
 
-        inputActions.PlayerUI.Inventory.performed += OnInventoryPerformed;
+        #region Player Caemra
+        inputActions.PlayerCamera.Enable();
 
         inputActions.PlayerCamera.Rotate.performed += OnLookPerformed;
         inputActions.PlayerCamera.LockOn.performed += OnLockOnPerformed;
         inputActions.PlayerCamera.LockOnTargetSwitch.performed += OnLockOnTargetSwitched;
-           
+
+        #endregion
+
+        #region Player UI
+        inputActions.PlayerUI.Enable();
+
+        uiToggleMap = new Dictionary<InputAction, UIType>
+{
+    { inputActions.PlayerUI.Inventory, UIType.Inventory },
+    { inputActions.PlayerUI.Spell,     UIType.Spell },
+    // 새 UI는 여기에 한 줄만 추가
+};
+
+        foreach (var pair in uiToggleMap)
+            pair.Key.performed += OnUITogglePerformed;
+        #endregion
+
+
+
     }
 
     private void OnDisable()
+
     {
+        #region Player Action
         inputActions.PlayerAction.Move.performed -= OnMovePerformed;
         inputActions.PlayerAction.Move.canceled -= OnMoveCanceled;
 
@@ -97,15 +119,29 @@ public class PlayerInputHandler : MonoBehaviour
         inputActions.PlayerAction.Guard.performed -= OnGuardHoldPerformed;
         inputActions.PlayerAction.Guard.canceled -= OnGuardHoldCanceled;
 
-        inputActions.PlayerUI.Inventory.performed -= OnInventoryPerformed;
+        inputActions.PlayerAction.Disable();
+        #endregion
+
+        #region Player Caemra
 
         inputActions.PlayerCamera.Rotate.performed -= OnLookPerformed;
         inputActions.PlayerCamera.LockOn.performed -= OnLockOnPerformed;
         inputActions.PlayerCamera.LockOnTargetSwitch.performed -= OnLockOnTargetSwitched;
 
+        inputActions.PlayerCamera.Disable();
+        #endregion
+
+        #region Player UI
+        if (uiToggleMap != null)
+        {
+            foreach (var pair in uiToggleMap)
+                pair.Key.performed -= OnUITogglePerformed;
+        }
         inputActions.PlayerUI.Disable();
-        //inputActions.PlayerCamera.Disable();
-        inputActions.PlayerAction.Disable();
+        #endregion
+
+
+
     }
     private void Start()
     {
@@ -288,10 +324,10 @@ public class PlayerInputHandler : MonoBehaviour
         if (!inputEnabled) return; 
         IsGuardHold = false; }
 
-    private void OnInventoryPerformed(InputAction.CallbackContext context)
+    private void OnUITogglePerformed(InputAction.CallbackContext context)
     {
-        //Debug.Log("인벤열기");
-        OnInventoryInput?.Invoke();
+        if (uiToggleMap.TryGetValue(context.action, out UIType uiType))
+            OnUIToggleInput?.Invoke(uiType);
     }
     private void OnLookPerformed(InputAction.CallbackContext context)
     {

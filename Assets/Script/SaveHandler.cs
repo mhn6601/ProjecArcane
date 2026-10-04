@@ -64,7 +64,7 @@ public class SaveHandler : Singleton<SaveHandler>
         //Debug.Log($"inventory count: {saveData.inventoryItemIDs.Count}");
         //Debug.Log($"equipment count: {saveData.equippedItems.Count}");
 
-
+        SpellProgressManager.Instance.Save();
         SaveDataManager.SaveData(saveData);
 
         //Debug.Log("===== SaveDataManager.SaveData =====");

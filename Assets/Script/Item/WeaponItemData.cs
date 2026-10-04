@@ -16,7 +16,8 @@ public enum DefaultWeapon
 public class WeaponItemData : EquipmentItemData
 {
     [Header("무기 전투 스탯")]
-    public float baseDamage = 10f;
+    public float basePhysicalDamage = 10f;
+    public float baseSpellDamage = 10f;
     public DamageType damageType = DamageType.Physical;
 
     [Header("무기별 속도/스태미너 보정")]
@@ -35,9 +36,5 @@ public class WeaponItemData : EquipmentItemData
 
     
 
-    // 최종 데미지 계산의 기준점. 콤보 스텝별 배율은 별도 데이터에서 곱해줌
-    public float GetFinalDamage(float stepDamageMultiplier)
-    {
-        return baseDamage * stepDamageMultiplier;
-    }
+    
 }

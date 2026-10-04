@@ -13,12 +13,14 @@ public class PlayerStatData : ScriptableObject
     public float baseMaxMana = 100f;
     public float baseMaxStamina = 100f;
     public float baseAttackPower = 10f;
+    public float baseSpellPower = 10f;
 
     [Header("Stat Increase Per Level")]
     public float healthPerLevel = 10f;
     public float manaPerLevel = 10f;
     public float staminaPerLevel = 5f;
     public float attackPerLevel = 2f;
+    public float spellPerLevel = 2f;
 
     [Header("BaseSpeed")]
     public float moveSpeed = 2.5f;
