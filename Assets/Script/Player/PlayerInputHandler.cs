@@ -16,6 +16,12 @@ public class PlayerInputHandler : MonoBehaviour
     public Action<Vector2> OnLookInput;
     public Action<bool> OnInputEnabledChanged;
     public Action OnLockOnClicked;
+    public Action<int> OnSpellInput;
+    private const float SpellBufferTime = 0.2f;
+    private int bufferedSpellSlot = -1;
+    private float bufferedSpellTime;
+    private InputAction[] spellActions;
+    private Action<InputAction.CallbackContext>[] spellCallbacks;
     private bool inputEnabled = true;
     public bool InputEnabled =>inputEnabled;
     public Vector3 MoveInput { get; private set; }
@@ -71,6 +77,7 @@ public class PlayerInputHandler : MonoBehaviour
         inputActions.PlayerAction.Parry.performed += OnParryPerformed;
         inputActions.PlayerAction.Guard.performed += OnGuardHoldPerformed;
         inputActions.PlayerAction.Guard.canceled += OnGuardHoldCanceled;
+        BindSpellInputs();
         #endregion
 
         #region Player Caemra
@@ -118,7 +125,7 @@ public class PlayerInputHandler : MonoBehaviour
         inputActions.PlayerAction.Parry.performed -= OnParryPerformed;
         inputActions.PlayerAction.Guard.performed -= OnGuardHoldPerformed;
         inputActions.PlayerAction.Guard.canceled -= OnGuardHoldCanceled;
-
+        UnbindSpellInputs();
         inputActions.PlayerAction.Disable();
         #endregion
 
@@ -166,6 +173,7 @@ public class PlayerInputHandler : MonoBehaviour
             MoveInput = Vector3.zero;
             IsRunPressed = false;
             IsGuardHold = false;
+            bufferedSpellSlot = -1;
             cinemachineInputAxisController.enabled = false;
         }
         else
@@ -176,6 +184,7 @@ public class PlayerInputHandler : MonoBehaviour
 
         OnInputEnabledChanged?.Invoke(inputEnabled);
     }
+    #region Move input handling
     private void OnMovePerformed(InputAction.CallbackContext context)
     {
         if (inputEnabled)
@@ -189,27 +198,8 @@ public class PlayerInputHandler : MonoBehaviour
         }
     }
     private void OnMoveCanceled(InputAction.CallbackContext context) => MoveInput = Vector3.zero;
-
-    /// <summary>
-    /// Run 액션과 Roll 액션이 현재(리바인딩 반영된) 상태에서 같은 물리 컨트롤을 가리키는지 실시간 판정.
-    /// 캐시하지 않고 그때그때 계산하므로, 리바인딩 메뉴에서 무엇을 바꾸든 별도 갱신 호출 없이 항상 최신 상태를 반영합니다.
-    /// </summary>
-    private bool IsSharedKeyMode()
-    {
-        var runControls = inputActions.PlayerAction.Run.controls;
-        var rollControls = inputActions.PlayerAction.Roll.controls;
-
-        for (int i = 0; i < runControls.Count; i++)
-        {
-            for (int j = 0; j < rollControls.Count; j++)
-            {
-                if (runControls[i] == rollControls[j])
-                    return true;
-            }
-        }
-        return false;
-    }
-
+    #endregion
+    #region Run input handling
     private void OnRunStarted(InputAction.CallbackContext context)
     {
         if (!inputEnabled)
@@ -265,6 +255,29 @@ public class PlayerInputHandler : MonoBehaviour
 
         IsRunPressed = false;
     }
+    #endregion
+    #region Roll input handling
+    /// <summary>
+    /// Run 액션과 Roll 액션이 현재(리바인딩 반영된) 상태에서 같은 물리 컨트롤을 가리키는지 실시간 판정.
+    /// 캐시하지 않고 그때그때 계산하므로, 리바인딩 메뉴에서 무엇을 바꾸든 별도 갱신 호출 없이 항상 최신 상태를 반영합니다.
+    /// </summary>
+    private bool IsSharedKeyMode()
+    {
+        var runControls = inputActions.PlayerAction.Run.controls;
+        var rollControls = inputActions.PlayerAction.Roll.controls;
+
+        for (int i = 0; i < runControls.Count; i++)
+        {
+            for (int j = 0; j < rollControls.Count; j++)
+            {
+                if (runControls[i] == rollControls[j])
+                    return true;
+            }
+        }
+        return false;
+    }
+
+   
 
     private void OnRollPerformed(InputAction.CallbackContext context)
     {
@@ -284,22 +297,16 @@ public class PlayerInputHandler : MonoBehaviour
         RollTriggered = true;
         RollWhileRunning = wasRunning;
     }
-
-    private void Update()
-    {
-        // 공유 키 모드에서만 홀드 임계값 판정 수행
-        if (IsSharedKeyMode() && isHeld && !hasBecomeRun && (Time.unscaledTime - pressStartTime >= holdThreshold))
-        {
-            IsRunPressed = true;
-            hasBecomeRun = true;
-        }
-    }
-
+    #endregion
+   
+    #region Jump input handling
     private void OnJumpPerformed(InputAction.CallbackContext context)
     {
         if (!inputEnabled) return; 
         JumpTriggered = true;
     }
+    #endregion
+    #region Attack input handling
     private void OnAttackPerformed(InputAction.CallbackContext context)
     {
         if (!inputEnabled) return; 
@@ -310,10 +317,16 @@ public class PlayerInputHandler : MonoBehaviour
         if (!inputEnabled) return; 
         HeavyAttackTriggered = true;
     }
+    #endregion
+    #region Parry input handling
+
     private void OnParryPerformed(InputAction.CallbackContext context) 
     {
         if (!inputEnabled) return; 
-        ParryTriggered = true; }
+        ParryTriggered = true; 
+    }
+    #endregion 
+    #region Guard input handling
     private void OnGuardHoldPerformed(InputAction.CallbackContext context) 
     {
         if (!inputEnabled) return; 
@@ -322,13 +335,67 @@ public class PlayerInputHandler : MonoBehaviour
     private void OnGuardHoldCanceled(InputAction.CallbackContext context) 
     {
         if (!inputEnabled) return; 
-        IsGuardHold = false; }
+        IsGuardHold = false; 
+    }
+    #endregion
+    #region Spell Input Handling
+    private void UnbindSpellInputs()
+    {
+        if (spellActions == null) return;
 
+        for (int i = 0; i < spellActions.Length; i++)
+            spellActions[i].performed -= spellCallbacks[i];
+
+        spellActions = null;
+        spellCallbacks = null;
+    }
+    private void OnSpellPerformed(InputAction.CallbackContext context,int slotIndex)
+    {
+        if (!inputEnabled) return;
+        // "이 슬롯을 눌렀다"는 의도만 기록
+        
+        bufferedSpellSlot = slotIndex;
+        bufferedSpellTime = Time.unscaledTime;   // hitStop 중에도 안전
+        OnSpellInput?.Invoke(slotIndex);
+    }
+    private void BindSpellInputs()
+    {
+        spellActions = new[] {
+            inputActions.PlayerAction.Spell1,
+            inputActions.PlayerAction.Spell2,
+            inputActions.PlayerAction.Spell3,
+            inputActions.PlayerAction.Spell4
+        };
+        spellCallbacks = new Action<InputAction.CallbackContext>[spellActions.Length];
+        for (int i = 0; i < spellActions.Length; i++)
+        {
+            int slotIndex = i; // 로컬 변수로 캡처
+            spellCallbacks[i] = ctx=> OnSpellPerformed(ctx,slotIndex);
+            spellActions[i].performed += spellCallbacks[i];
+        }
+    }
+    /// <summary>상태에서 호출. 유효한 입력이 있으면 슬롯 번호를 반환하고 버퍼를 비움. 없으면 -1.</summary>
+    public int PeekSpellInput()
+    {
+        if (bufferedSpellSlot < 0) return -1;
+        if (Time.unscaledTime - bufferedSpellTime > SpellBufferTime)
+        {
+            bufferedSpellSlot = -1;
+            return -1;
+        }
+        return bufferedSpellSlot;
+    }
+
+    public void ClearSpellInput() => bufferedSpellSlot = -1;
+    #endregion
+    #region UI Input Handling
     private void OnUITogglePerformed(InputAction.CallbackContext context)
     {
         if (uiToggleMap.TryGetValue(context.action, out UIType uiType))
             OnUIToggleInput?.Invoke(uiType);
     }
+    #endregion
+    #region Camera Input Handling
     private void OnLookPerformed(InputAction.CallbackContext context)
     {
         if (!inputEnabled)
@@ -348,6 +415,7 @@ public class PlayerInputHandler : MonoBehaviour
     {
 
     }
+    #endregion
     private void LateUpdate()
     {
         RollTriggered = false;
@@ -357,5 +425,14 @@ public class PlayerInputHandler : MonoBehaviour
         ParryTriggered = false;
         // WasRunningAtRollTrigger는 RollState.OnEnter()에서 값을 읽어갈 시간이 필요하므로
         // 여기서 강제로 초기화하지 않고, 다음 RollTriggered 발생 시 TriggerRoll()에서 덮어씁니다.
+    }
+    private void Update()
+    {
+        // 공유 키 모드에서만 홀드 임계값 판정 수행
+        if (IsSharedKeyMode() && isHeld && !hasBecomeRun && (Time.unscaledTime - pressStartTime >= holdThreshold))
+        {
+            IsRunPressed = true;
+            hasBecomeRun = true;
+        }
     }
 }

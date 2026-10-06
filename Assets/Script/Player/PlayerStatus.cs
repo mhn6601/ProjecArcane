@@ -8,7 +8,7 @@ public class PlayerStatus : MonoBehaviour
 
     // 비트마스크 원본 데이터 (내부 연산용)
     public CharacterActionFlags CurrentFlags { get; private set; } =
-        CharacterActionFlags.CanMove | CharacterActionFlags.CanRotate | CharacterActionFlags.CanAttack | CharacterActionFlags.CanParry;
+        CharacterActionFlags.CanMove | CharacterActionFlags.CanRotate | CharacterActionFlags.CanAttack | CharacterActionFlags.CanParry | CharacterActionFlags.CanCastSpell;
 
     [Header("=== Realtime Flags Monitor ===")]
     [SerializeField] private bool canMove;
@@ -17,6 +17,7 @@ public class PlayerStatus : MonoBehaviour
     [SerializeField] private bool canJump;
     [SerializeField] private bool canGuard;
     [SerializeField] private bool canParry;
+    [SerializeField] private bool canCastSpell;
     [SerializeField] private bool isRunning;
     [SerializeField] private bool isLockOn;
     [SerializeField] private bool isInvincible;
@@ -29,6 +30,7 @@ public class PlayerStatus : MonoBehaviour
     public bool CanJump => HasFlag(CharacterActionFlags.CanJump);
     public bool CanGuard => HasFlag(CharacterActionFlags.CanGuard);
     public bool CanParry => HasFlag(CharacterActionFlags.CanParry);
+    public bool CanCastSpell => HasFlag(CharacterActionFlags.CanCastSpell);
     public bool IsRunning => HasFlag(CharacterActionFlags.isRunning);
     public bool IsLockOn => HasFlag(CharacterActionFlags.isLockOn);
     public bool IsInvincible => HasFlag(CharacterActionFlags.IsInvincible);
@@ -48,6 +50,7 @@ public class PlayerStatus : MonoBehaviour
         isLockOn = IsLockOn;
         isInvincible = IsInvincible;
         isGuarding = IsGuarding;
+        canCastSpell = CanCastSpell;
     }
 
     public void AddFlag(CharacterActionFlags flag) => CurrentFlags |= flag;

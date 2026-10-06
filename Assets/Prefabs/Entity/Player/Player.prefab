@@ -366,9 +366,10 @@ MonoBehaviour:
   resourceSystem: {fileID: 0}
   equipmentManager: {fileID: 0}
   lockOn: {fileID: 0}
-  magicSystem: {fileID: 0}
+  castSpell: {fileID: 0}
   magicSocketHandler: {fileID: 0}
   animator: {fileID: 0}
+  animEvents: {fileID: 0}
 --- !u!114 &7812721037624248209
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -573,6 +574,7 @@ MonoBehaviour:
   canJump: 0
   canGuard: 0
   canParry: 0
+  canCastSpell: 0
   isRunning: 0
   isLockOn: 0
   isInvincible: 0
@@ -676,27 +678,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ac86cb47a581b6543b4eb3c818efe041, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerMagicSystem
-  quickSlots:
-  - baseData: {fileID: 0}
-    currentElement: 0
-    equippedNodes:
-    - {fileID: 0}
-    - {fileID: 0}
-  - baseData: {fileID: 0}
-    currentElement: 0
-    equippedNodes:
-    - {fileID: 0}
-    - {fileID: 0}
-  - baseData: {fileID: 0}
-    currentElement: 0
-    equippedNodes:
-    - {fileID: 0}
-    - {fileID: 0}
-  - baseData: {fileID: 0}
-    currentElement: 0
-    equippedNodes:
-    - {fileID: 0}
-    - {fileID: 0}
 --- !u!4 &3114665165494011718 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 67be6951f54a05d46abf482ec86ada63, type: 3}

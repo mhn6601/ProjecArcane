@@ -14,12 +14,12 @@ public class SpellData : ScriptableObject
     [TextArea(5,10)]
     public string spellDescription;
     public VideoClip VideoClip;
+    public AnimationClip animationClip;
     public Sprite Icon;
     public float baseDamage;
     public float spellPowerRatio;
     public float baseMpCost;
     public float cooldown;
-    public string animName;
     public ElementType elementType;
 
     // 속성별 비주얼/이펙트 프리팹 맵
@@ -50,9 +50,13 @@ public class SpellData : ScriptableObject
         public ElementType currentElement = ElementType.Water; // 기본 속성은 물
         public SpellType spellType;
         public SpecialNodeData[] equippedNodes = new SpecialNodeData[2]; // 최대 2개
-
-        // 노드 추가 비용이 합산된 총 MP 소모량
-        public float GetTotalMpCost()
+    public RuntimeSpellInstance(SpellData data)
+    {
+        baseData = data;
+        currentElement = data.elementType;   // 기본 속성은 스펠 에셋을 따름
+    }
+    // 노드 추가 비용이 합산된 총 MP 소모량
+    public float GetTotalMpCost()
         {
             float cost = baseData.baseMpCost;
             foreach (var node in equippedNodes)

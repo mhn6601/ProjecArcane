@@ -34,4 +34,12 @@ public class LockOnTarget : MonoBehaviour
 
         return null;
     }
+    public Transform GetPrimaryPoint()
+    {
+        // LockOnPoint가 컴포넌트라면
+        if (lockOnPoints != null && lockOnPoints.Count > 0 && lockOnPoints[0] != null)
+            return lockOnPoints[0].transform;
+
+        return transform;
+    }
 }

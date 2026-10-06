@@ -36,6 +36,7 @@ public class PlayerController : CharacterControllerBase
     public PlayerEmptyActionState EmptyActionState { get;private set; }
     public PlayerGuardState GuardState { get;private set; }
     public PlayerHitStunState HitStunState { get;private set; }
+    public PlayerSpellCastState SpellCastState { get;private set; }
     #endregion
 
 
@@ -104,7 +105,8 @@ public class PlayerController : CharacterControllerBase
         EmptyActionState = new PlayerEmptyActionState(player, animator);
         GuardState = new PlayerGuardState(player,animator);
         HitStunState = new PlayerHitStunState(player, animator);
-        #endregion 
+        SpellCastState= new PlayerSpellCastState(player, animator,null);
+        #endregion
     }
     private void FSMUpdate()
     {

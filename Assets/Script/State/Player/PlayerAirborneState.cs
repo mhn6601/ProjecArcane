@@ -31,6 +31,7 @@ public class PlayerAirborneState : PlayerState
         player.Status.RemoveFlag(CharacterActionFlags.CanGuard);
         player.Status.RemoveFlag(CharacterActionFlags.CanParry);
         player.Status.RemoveFlag(CharacterActionFlags.CanAttack);
+        player.Status.RemoveFlag(CharacterActionFlags.CanCastSpell);
     }
 
     public override void Update()
@@ -55,6 +56,7 @@ public class PlayerAirborneState : PlayerState
         player.Status.AddFlag(CharacterActionFlags.CanGuard);   
         player.Status.AddFlag(CharacterActionFlags.CanParry);   
         player.Status.AddFlag(CharacterActionFlags.CanAttack);   
+        player.Status.AddFlag(CharacterActionFlags.CanCastSpell);   
 
 
         // 관성 데이터 초기화

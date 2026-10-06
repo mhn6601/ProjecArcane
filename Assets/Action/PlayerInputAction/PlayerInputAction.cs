@@ -173,9 +173,39 @@ public partial class @PlayerInputAction: IInputActionCollection2, IDisposable
                     ""priority"": 0
                 },
                 {
-                    ""name"": ""Magic"",
+                    ""name"": ""Spell1"",
                     ""type"": ""Button"",
                     ""id"": ""82283064-c8b2-444d-9916-f3c0932fd124"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false,
+                    ""priority"": 0
+                },
+                {
+                    ""name"": ""Spell2"",
+                    ""type"": ""Button"",
+                    ""id"": ""1d752bd5-de86-4934-a113-9135fac95a5b"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false,
+                    ""priority"": 0
+                },
+                {
+                    ""name"": ""Spell3"",
+                    ""type"": ""Button"",
+                    ""id"": ""e41555ad-b11f-4fd3-9652-41ae485198d9"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false,
+                    ""priority"": 0
+                },
+                {
+                    ""name"": ""Spell4"",
+                    ""type"": ""Button"",
+                    ""id"": ""b2b549c7-55b3-47f7-b900-6db2ec8a07f7"",
                     ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """",
@@ -345,40 +375,40 @@ public partial class @PlayerInputAction: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Magic"",
+                    ""action"": ""Spell1"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
                 {
                     ""name"": """",
-                    ""id"": ""68c93194-007d-4cee-989b-1f90f5d08611"",
+                    ""id"": ""456e3ceb-b0e9-4b19-a5bc-0efd8a8940a7"",
                     ""path"": ""<Keyboard>/2"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Magic"",
+                    ""action"": ""Spell2"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
                 {
                     ""name"": """",
-                    ""id"": ""0f245a8d-5513-4c6c-9924-7fb799914ea1"",
+                    ""id"": ""a17a3a67-a883-435b-a258-d96045b45243"",
                     ""path"": ""<Keyboard>/3"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Magic"",
+                    ""action"": ""Spell3"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
                 {
                     ""name"": """",
-                    ""id"": ""77b43a8f-6547-496f-a6ad-9246572661d2"",
+                    ""id"": ""16c6a68b-a92c-471c-a358-56bc6620e884"",
                     ""path"": ""<Keyboard>/4"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Magic"",
+                    ""action"": ""Spell4"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -550,7 +580,10 @@ public partial class @PlayerInputAction: IInputActionCollection2, IDisposable
         m_PlayerAction_Parry = m_PlayerAction.FindAction("Parry", throwIfNotFound: true);
         m_PlayerAction_Run = m_PlayerAction.FindAction("Run", throwIfNotFound: true);
         m_PlayerAction_Roll = m_PlayerAction.FindAction("Roll", throwIfNotFound: true);
-        m_PlayerAction_Magic = m_PlayerAction.FindAction("Magic", throwIfNotFound: true);
+        m_PlayerAction_Spell1 = m_PlayerAction.FindAction("Spell1", throwIfNotFound: true);
+        m_PlayerAction_Spell2 = m_PlayerAction.FindAction("Spell2", throwIfNotFound: true);
+        m_PlayerAction_Spell3 = m_PlayerAction.FindAction("Spell3", throwIfNotFound: true);
+        m_PlayerAction_Spell4 = m_PlayerAction.FindAction("Spell4", throwIfNotFound: true);
         // PlayerCamera
         m_PlayerCamera = asset.FindActionMap("PlayerCamera", throwIfNotFound: true);
         m_PlayerCamera_Rotate = m_PlayerCamera.FindAction("Rotate", throwIfNotFound: true);
@@ -651,7 +684,10 @@ public partial class @PlayerInputAction: IInputActionCollection2, IDisposable
     private readonly InputAction m_PlayerAction_Parry;
     private readonly InputAction m_PlayerAction_Run;
     private readonly InputAction m_PlayerAction_Roll;
-    private readonly InputAction m_PlayerAction_Magic;
+    private readonly InputAction m_PlayerAction_Spell1;
+    private readonly InputAction m_PlayerAction_Spell2;
+    private readonly InputAction m_PlayerAction_Spell3;
+    private readonly InputAction m_PlayerAction_Spell4;
     /// <summary>
     /// Provides access to input actions defined in input action map "PlayerAction".
     /// </summary>
@@ -696,9 +732,21 @@ public partial class @PlayerInputAction: IInputActionCollection2, IDisposable
         /// </summary>
         public InputAction @Roll => m_Wrapper.m_PlayerAction_Roll;
         /// <summary>
-        /// Provides access to the underlying input action "PlayerAction/Magic".
+        /// Provides access to the underlying input action "PlayerAction/Spell1".
         /// </summary>
-        public InputAction @Magic => m_Wrapper.m_PlayerAction_Magic;
+        public InputAction @Spell1 => m_Wrapper.m_PlayerAction_Spell1;
+        /// <summary>
+        /// Provides access to the underlying input action "PlayerAction/Spell2".
+        /// </summary>
+        public InputAction @Spell2 => m_Wrapper.m_PlayerAction_Spell2;
+        /// <summary>
+        /// Provides access to the underlying input action "PlayerAction/Spell3".
+        /// </summary>
+        public InputAction @Spell3 => m_Wrapper.m_PlayerAction_Spell3;
+        /// <summary>
+        /// Provides access to the underlying input action "PlayerAction/Spell4".
+        /// </summary>
+        public InputAction @Spell4 => m_Wrapper.m_PlayerAction_Spell4;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -749,9 +797,18 @@ public partial class @PlayerInputAction: IInputActionCollection2, IDisposable
             @Roll.started += instance.OnRoll;
             @Roll.performed += instance.OnRoll;
             @Roll.canceled += instance.OnRoll;
-            @Magic.started += instance.OnMagic;
-            @Magic.performed += instance.OnMagic;
-            @Magic.canceled += instance.OnMagic;
+            @Spell1.started += instance.OnSpell1;
+            @Spell1.performed += instance.OnSpell1;
+            @Spell1.canceled += instance.OnSpell1;
+            @Spell2.started += instance.OnSpell2;
+            @Spell2.performed += instance.OnSpell2;
+            @Spell2.canceled += instance.OnSpell2;
+            @Spell3.started += instance.OnSpell3;
+            @Spell3.performed += instance.OnSpell3;
+            @Spell3.canceled += instance.OnSpell3;
+            @Spell4.started += instance.OnSpell4;
+            @Spell4.performed += instance.OnSpell4;
+            @Spell4.canceled += instance.OnSpell4;
         }
 
         /// <summary>
@@ -787,9 +844,18 @@ public partial class @PlayerInputAction: IInputActionCollection2, IDisposable
             @Roll.started -= instance.OnRoll;
             @Roll.performed -= instance.OnRoll;
             @Roll.canceled -= instance.OnRoll;
-            @Magic.started -= instance.OnMagic;
-            @Magic.performed -= instance.OnMagic;
-            @Magic.canceled -= instance.OnMagic;
+            @Spell1.started -= instance.OnSpell1;
+            @Spell1.performed -= instance.OnSpell1;
+            @Spell1.canceled -= instance.OnSpell1;
+            @Spell2.started -= instance.OnSpell2;
+            @Spell2.performed -= instance.OnSpell2;
+            @Spell2.canceled -= instance.OnSpell2;
+            @Spell3.started -= instance.OnSpell3;
+            @Spell3.performed -= instance.OnSpell3;
+            @Spell3.canceled -= instance.OnSpell3;
+            @Spell4.started -= instance.OnSpell4;
+            @Spell4.performed -= instance.OnSpell4;
+            @Spell4.canceled -= instance.OnSpell4;
         }
 
         /// <summary>
@@ -1123,12 +1189,33 @@ public partial class @PlayerInputAction: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnRoll(InputAction.CallbackContext context);
         /// <summary>
-        /// Method invoked when associated input action "Magic" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// Method invoked when associated input action "Spell1" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
         /// </summary>
         /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
-        void OnMagic(InputAction.CallbackContext context);
+        void OnSpell1(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "Spell2" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnSpell2(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "Spell3" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnSpell3(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "Spell4" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnSpell4(InputAction.CallbackContext context);
     }
     /// <summary>
     /// Interface to implement callback methods for all input action callbacks associated with input actions defined by "PlayerCamera" which allows adding and removing callbacks.

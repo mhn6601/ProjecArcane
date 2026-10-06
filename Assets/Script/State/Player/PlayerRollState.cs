@@ -32,6 +32,7 @@ public class PlayerRollState : PlayerState
         player.Status.RemoveFlag(CharacterActionFlags.CanParry);
         player.Status.RemoveFlag(CharacterActionFlags.CanRoll);
         player.Status.RemoveFlag(CharacterActionFlags.CanRotate);
+        player.Status.RemoveFlag(CharacterActionFlags.CanCastSpell);
 
         player.Status.AddFlag(CharacterActionFlags.IsInvincible);
         player.Status.AddFlag(CharacterActionFlags.IsSuperArmor);
@@ -75,6 +76,7 @@ public class PlayerRollState : PlayerState
         player.Status.AddFlag(CharacterActionFlags.CanParry);
         player.Status.AddFlag(CharacterActionFlags.CanRoll);
         player.Status.AddFlag(CharacterActionFlags.CanRotate);
+        player.Status.AddFlag(CharacterActionFlags.CanCastSpell);
     }
     private void ApplyRollDirectionSnap()
     {

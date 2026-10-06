@@ -14,6 +14,8 @@ public class PlayerLockOn : MonoBehaviour
     [SerializeField] private LockOnLookAtTarget lookAtRig;
 
     public Transform CurrentTarget { get; private set; }
+    public Transform CurrentLockOnPoint { get; private set; }
+    public Transform AimPoint => CurrentLockOnPoint != null ? CurrentLockOnPoint : CurrentTarget;
     public bool IsLockedOn => CurrentTarget != null;
 
     private Camera _mainCam;
@@ -43,7 +45,8 @@ public class PlayerLockOn : MonoBehaviour
         Transform best = FindBestTarget();
         if (best == null) return;
 
-        CurrentTarget = best;
+        CurrentTarget = best; 
+        CurrentLockOnPoint = ResolveLockOnPoint(best);
         lookAtRig.SetTargets(Player.Instance.transform, CurrentTarget);
         lockOnCamera.Priority.Value = freeLookCamera.Priority.Value + 10;
         // ActionFSM/MovementFSM에 록온 상태 플래그 전달 (전략 이동 등으로 전환)
@@ -53,9 +56,16 @@ public class PlayerLockOn : MonoBehaviour
     public void ReleaseLockOn()
     {
         CurrentTarget = null;
+        CurrentLockOnPoint = null;
         lockOnCamera.Priority.Value = freeLookCamera.Priority.Value - 10;
         SyncFreeLookToLockOnCamera();
         Player.Instance.Status.RemoveFlag(CharacterActionFlags.isLockOn);
+    }
+    private Transform ResolveLockOnPoint(Transform target)
+    {
+        LockOnTarget lockOnTarget = target.GetComponentInParent<LockOnTarget>();
+        Transform point = lockOnTarget != null ? lockOnTarget.GetPrimaryPoint() : null;
+        return point != null ? point : target;
     }
     private void SyncFreeLookToLockOnCamera()
     {

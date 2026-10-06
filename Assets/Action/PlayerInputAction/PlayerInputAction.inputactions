@@ -87,9 +87,39 @@
                     "priority": 0
                 },
                 {
-                    "name": "Magic",
+                    "name": "Spell1",
                     "type": "Button",
                     "id": "82283064-c8b2-444d-9916-f3c0932fd124",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false,
+                    "priority": 0
+                },
+                {
+                    "name": "Spell2",
+                    "type": "Button",
+                    "id": "1d752bd5-de86-4934-a113-9135fac95a5b",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false,
+                    "priority": 0
+                },
+                {
+                    "name": "Spell3",
+                    "type": "Button",
+                    "id": "e41555ad-b11f-4fd3-9652-41ae485198d9",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false,
+                    "priority": 0
+                },
+                {
+                    "name": "Spell4",
+                    "type": "Button",
+                    "id": "b2b549c7-55b3-47f7-b900-6db2ec8a07f7",
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
@@ -259,40 +289,40 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Magic",
+                    "action": "Spell1",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
                 {
                     "name": "",
-                    "id": "68c93194-007d-4cee-989b-1f90f5d08611",
+                    "id": "456e3ceb-b0e9-4b19-a5bc-0efd8a8940a7",
                     "path": "<Keyboard>/2",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Magic",
+                    "action": "Spell2",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
                 {
                     "name": "",
-                    "id": "0f245a8d-5513-4c6c-9924-7fb799914ea1",
+                    "id": "a17a3a67-a883-435b-a258-d96045b45243",
                     "path": "<Keyboard>/3",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Magic",
+                    "action": "Spell3",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
                 {
                     "name": "",
-                    "id": "77b43a8f-6547-496f-a6ad-9246572661d2",
+                    "id": "16c6a68b-a92c-471c-a358-56bc6620e884",
                     "path": "<Keyboard>/4",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Magic",
+                    "action": "Spell4",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

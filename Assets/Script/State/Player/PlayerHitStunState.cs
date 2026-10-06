@@ -18,6 +18,7 @@ public class PlayerHitStunState : PlayerState
         player.Status.RemoveFlag(CharacterActionFlags.CanGuard);
         player.Status.RemoveFlag(CharacterActionFlags.CanAttack);
         player.Status.RemoveFlag(CharacterActionFlags.CanRotate);
+        player.Status.RemoveFlag(CharacterActionFlags.CanCastSpell);
         
         animator.CrossFade(HitStunHash, 0f);
     }
@@ -38,6 +39,7 @@ public class PlayerHitStunState : PlayerState
         player.Status.RemoveFlag(CharacterActionFlags.CanGuard);
         player.Status.RemoveFlag(CharacterActionFlags.CanAttack);
         player.Status.RemoveFlag(CharacterActionFlags.CanRotate);
+        player.Status.RemoveFlag(CharacterActionFlags.CanCastSpell);
     }
 
 }

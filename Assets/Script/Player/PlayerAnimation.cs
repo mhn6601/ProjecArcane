@@ -23,8 +23,8 @@ public class PlayerAnimation : MonoBehaviour
         else
         {
            // Debug.Log(weaponData.itemId);
-            animator.runtimeAnimatorController =
-           weaponData.weaponOverrideController;
+           weaponOverride = weaponData.weaponOverrideController;
+            animator.runtimeAnimatorController = weaponOverride;
         }
        
     }

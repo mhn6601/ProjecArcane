@@ -18,6 +18,7 @@ MonoBehaviour:
     \uD53C\uD574\uB97C \uC90D\uB2C8\uB2E4.\\n\uC0AC\uC6A9\uC2DC MP{mp}\uB97C \uC18C\uBAA8\uD569\uB2C8\uB2E4\\n\uC7AC\uC0AC\uC6A9\uB300\uAE30\uC2DC\uAC04:
     {cooldown}\uCD08"
   VideoClip: {fileID: 32900000, guid: 8839e96f99150334d96a628d4c3f5037, type: 3}
+  animationClip: {fileID: 7400000, guid: 71e26415711686947a48bf522ffe7b92, type: 2}
   Icon: {fileID: 21300000, guid: df5153fca31c9bf47b2d36359b5dd373, type: 3}
   baseDamage: 20
   spellPowerRatio: 1

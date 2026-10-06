@@ -11,9 +11,11 @@ public enum CharacterActionFlags
     CanJump = 1 << 4, // 점프 가능 여부
     CanGuard = 1 << 5, //  가드 가능 여부
     CanParry = 1 << 6, // 패링 가능 여부
-    
-    isRunning = 1 << 7, // 달리기 상태
-    isLockOn = 1 << 8, // 락온 상태
-    IsInvincible = 1 << 9, // 피격 시 무적 판정
-    IsSuperArmor = 1 << 10  //  경직 무시 판정
+    CanCastSpell=1<<7,
+
+
+    isRunning = 1 << 8, // 달리기 상태
+    isLockOn = 1 << 9, // 락온 상태
+    IsInvincible = 1 << 10, // 피격 시 무적 판정
+    IsSuperArmor = 1 << 11  //  경직 무시 판정
 }
