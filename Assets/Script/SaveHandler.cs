@@ -56,6 +56,8 @@ public class SaveHandler : Singleton<SaveHandler>
         // 4. 자원 저장
         saveData.currentHealth =
             player.ResourceSystem.CurrentHealth;
+        saveData.currentMana =
+            player.ResourceSystem.CurrentMana;
 
         saveData.currentStamina =
             player.ResourceSystem.CurrentStamina;
