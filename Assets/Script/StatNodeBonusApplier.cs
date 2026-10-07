@@ -4,7 +4,7 @@ using UnityEngine;
 [DefaultExecutionOrder(-50)]
 public class StatNodeBonusApplier : MonoBehaviour
 {
-    [SerializeField] private PlayerStats playerStats;
+    private PlayerStats playerStats;
     [SerializeField] private List<StatNodeData> allStatNodes = new List<StatNodeData>();
 
     private Dictionary<string, StatNodeData> map;
@@ -20,6 +20,8 @@ public class StatNodeBonusApplier : MonoBehaviour
 
     private void Start()
     {
+        if(Player.Instance == null) return;
+        playerStats = Player.Instance.Stats;
         var progress = SpellProgressManager.Instance;
 
         // 로드된 세이브 기준으로 이미 해금된 노드 적용

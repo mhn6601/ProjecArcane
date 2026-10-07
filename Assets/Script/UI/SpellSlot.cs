@@ -1,6 +1,5 @@
 using System;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -8,26 +7,32 @@ using UnityEngine.UI;
 public class SpellSlot : MonoBehaviour, IPointerClickHandler
 {
     [Header("슬롯 설정")]
-    [SerializeField] private int slotIndex;           // 0~3 (키 1~4)
+    [SerializeField] private int slotIndex;
 
     [Header("UI 참조")]
-    [SerializeField] private Image iconImage;         // 스펠 아이콘
-    [SerializeField] private Image cooldownFill;      // Image Type = Filled (선택)
-    [SerializeField] private TextMeshProUGUI keyText; // "1"~"4" (선택)
-    [SerializeField] private TextMeshProUGUI nameText;  // 스펠 이름
-    [SerializeField] private GameObject emptyVisual;  // 빈 슬롯 표시 (선택)
-    [SerializeField] private GameObject highlight;    // 선택 중인 스펠이 이미 이 슬롯에 있음 표시 (선택)
+    [SerializeField] private Image iconImage;
+    [SerializeField] private Image cooldownFill;
+    [SerializeField] private TextMeshProUGUI cooldownText;
+    [SerializeField] private TextMeshProUGUI keyText;
+    [SerializeField] private TextMeshProUGUI nameText;
+    [SerializeField] private GameObject emptyVisual;
+    [SerializeField] private GameObject highlight;
 
     public int SlotIndex => slotIndex;
     public SpellData CurrentSpell { get; private set; }
-
-    // 팝업에서 슬롯 클릭을 받기 위한 이벤트
     public event Action<SpellSlot> OnClicked;
+
+    // 쿨타임 진행 상태
+    private float cooldownDuration;   // 총 쿨타임(초)
+    private float cooldownRemaining;  // 남은 시간(초)
 
     private void OnEnable()
     {
         var progress = SpellProgressManager.Instance;
         if (progress != null) progress.OnSlotChanged += HandleSlotChanged;
+
+        if (Player.Instance != null)
+            Player.Instance.CastSpell.OnSpellCast += HandleSpellCast;
 
         RefreshSlot();
     }
@@ -36,11 +41,45 @@ public class SpellSlot : MonoBehaviour, IPointerClickHandler
     {
         if (SpellProgressManager.Instance != null)
             SpellProgressManager.Instance.OnSlotChanged -= HandleSlotChanged;
+
+        if (Player.Instance != null)
+            Player.Instance.CastSpell.OnSpellCast -= HandleSpellCast;
     }
 
     private void HandleSlotChanged(int changedIndex, SpellData spell)
     {
         if (changedIndex == slotIndex) RefreshSlot();
+    }
+
+    private void HandleSpellCast(int spell, float normalized)
+    {
+        if (spell != slotIndex) return;
+
+        // normalized(보통 1) 기준으로 남은 시간 시작
+        cooldownDuration = CurrentSpell != null ? CurrentSpell.cooldown : 0f; // ← SpellData의 쿨타임 필드명에 맞게 수정
+        cooldownRemaining = cooldownDuration * Mathf.Clamp01(normalized);
+        UpdateCooldownUI();
+    }
+
+    private void Update()
+    {
+        if (cooldownRemaining <= 0f) return;
+
+        cooldownRemaining = Mathf.Max(0f, cooldownRemaining - Time.deltaTime);
+        UpdateCooldownUI();
+    }
+
+    private void UpdateCooldownUI()
+    {
+        float normalized = cooldownDuration > 0f ? cooldownRemaining / cooldownDuration : 0f;
+
+        if (cooldownFill != null)
+            cooldownFill.fillAmount = normalized;
+
+        if (cooldownText != null)
+            cooldownText.text = cooldownRemaining > 0f
+                ? Mathf.CeilToInt(cooldownRemaining).ToString()
+                : string.Empty;
     }
 
     public void RefreshSlot()
@@ -53,16 +92,11 @@ public class SpellSlot : MonoBehaviour, IPointerClickHandler
         iconImage.enabled = hasSpell;
         if (hasSpell) iconImage.sprite = CurrentSpell.Icon;
 
-        if (nameText != null) nameText.text = CurrentSpell != null ? CurrentSpell.spellName : string.Empty;
+        if (nameText != null) nameText.text = hasSpell ? CurrentSpell.spellName : string.Empty;
         if (emptyVisual != null) emptyVisual.SetActive(!hasSpell);
-        SetCooldown(0f);
-    }
 
-    // 쿨타임 표시: 1 = 막 사용함, 0 = 사용 가능
-    public void SetCooldown(float normalized)
-    {
-        if (cooldownFill != null)
-            cooldownFill.fillAmount = Mathf.Clamp01(normalized);
+        cooldownRemaining = 0f;
+        UpdateCooldownUI();
     }
 
     public void SetHighlight(bool on)

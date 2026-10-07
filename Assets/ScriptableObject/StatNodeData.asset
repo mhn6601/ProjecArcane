@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: StatNodeData
   m_EditorClassIdentifier: Assembly-CSharp::StatNodeData
   nodeId: 000000
-  nodeName: Int
-  description: "\uC9C0\uB2A5\uC774 {spellPower}\uB9CC\uD07C \uC99D\uAC00\uD569\uB2C8\uB2E4"
+  nodeName: SpellPower
+  description: "SpellPower\uC774(\uAC00) {spellPower}\uB9CC\uD07C \uC99D\uAC00\uD569\uB2C8\uB2E4"
   icon: {fileID: 0}
   bonuses:
   - stat: 4

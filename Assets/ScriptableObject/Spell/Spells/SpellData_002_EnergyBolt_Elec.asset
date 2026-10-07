@@ -23,7 +23,6 @@ MonoBehaviour:
   baseDamage: 20
   spellPowerRatio: 1
   baseMpCost: 2
-  cooldown: 2
-  animName: EnergyBolt
+  cooldown: 10
   elementType: 3
   VfxPrefab: {fileID: 1819793614438822389, guid: e3b82e39501f61d46952cb20f2eff8aa, type: 3}
