@@ -56,4 +56,5 @@ public class PlayerStatus : MonoBehaviour
     public void AddFlag(CharacterActionFlags flag) => CurrentFlags |= flag;
     public void RemoveFlag(CharacterActionFlags flag) => CurrentFlags &= ~flag;
     public bool HasFlag(CharacterActionFlags flag) => (CurrentFlags & flag) == flag;
+
 }

@@ -4,12 +4,12 @@ using UnityEngine;
 
 public class PlayerResourceSystem : MonoBehaviour
 {
-    private PlayerStats playerStats;
+    private Player player;
 
-    public float MaxHealth => playerStats.MaxHealth;
-    public float MaxMana => playerStats.MaxMana;
-    public float MaxStamina => playerStats.MaxStamina;
-    public float StaminaRecoveryThreshold => playerStats.staminaRecoveryThreshold;
+    public float MaxHealth => player.Stats.MaxHealth;
+    public float MaxMana => player.Stats.MaxMana;
+    public float MaxStamina => player.Stats.MaxStamina;
+    public float StaminaRecoveryThreshold => player.Stats.staminaRecoveryThreshold;
 
     public float CurrentHealth { get; private set; }
     public float CurrentMana { get; private set; }
@@ -26,11 +26,18 @@ public class PlayerResourceSystem : MonoBehaviour
 
     private void Awake()
     {
-        playerStats = Player.Instance.Stats;
+        player = Player.Instance;
 
         InitResources();
     }
-
+    private void OnEnable()
+    {
+        player.Combat.OnParrySuccess += AddManaOnParry;
+    }
+    private void OnDisable()
+    {
+        player.Combat.OnParrySuccess -= AddManaOnParry;
+    }
     // Update is called once per frame
     void Update()
     {
@@ -38,9 +45,9 @@ public class PlayerResourceSystem : MonoBehaviour
     }
     public void InitResources()
     {
-        CurrentHealth = playerStats.MaxHealth;
-        CurrentMana = playerStats.MaxMana;
-        CurrentStamina = playerStats.MaxStamina;
+        CurrentHealth = player.Stats.MaxHealth;
+        CurrentMana = player.Stats.MaxMana;
+        CurrentStamina = player.Stats.MaxStamina;
 
         NotifyAllUI();
     }
@@ -60,7 +67,7 @@ public class PlayerResourceSystem : MonoBehaviour
         if (CurrentHealth <= 0) return;
 
         CurrentHealth = Mathf.Max(0f, CurrentHealth - damageAmount);
-        OnHealthChanged?.Invoke(CurrentHealth, playerStats.MaxHealth);
+        OnHealthChanged?.Invoke(CurrentHealth, player.Stats.MaxHealth);
 
         if (CurrentHealth <= 0)
         {
@@ -70,8 +77,8 @@ public class PlayerResourceSystem : MonoBehaviour
 
     public void HealHP(float amount)
     {
-        CurrentHealth = Mathf.Min(playerStats.MaxHealth, CurrentHealth + amount);
-        OnHealthChanged?.Invoke(CurrentHealth, playerStats.MaxHealth);
+        CurrentHealth = Mathf.Min(player.Stats.MaxHealth, CurrentHealth + amount);
+        OnHealthChanged?.Invoke(CurrentHealth, player.Stats.MaxHealth);
     }
 
 
@@ -81,15 +88,20 @@ public class PlayerResourceSystem : MonoBehaviour
         if (CurrentMana < amount) return false;
 
         CurrentMana -= amount;
-        OnManaChanged?.Invoke(CurrentMana, playerStats.MaxMana);
+        OnManaChanged?.Invoke(CurrentMana, player.Stats.MaxMana);
         return true;
     }
 
     // 근접 공격, 패리, 처형 성공 시 호출하여 MP 수급
     public void AddMana(float amount)
     {
-        CurrentMana = Mathf.Min(playerStats.MaxMana, CurrentMana + amount);
-        OnManaChanged?.Invoke(CurrentMana, playerStats.MaxMana);
+        CurrentMana = Mathf.Min(player.Stats.MaxMana, CurrentMana + amount);
+        OnManaChanged?.Invoke(CurrentMana, player.Stats.MaxMana);
+    }
+    public void AddManaOnParry()
+    {
+        float parryManaGain = player.Stats.ParryManaGain * player.Stats.ParryManaGainMul;
+        AddMana(parryManaGain);
     }
 
     //스태미너
@@ -99,7 +111,7 @@ public class PlayerResourceSystem : MonoBehaviour
 
         CurrentStamina = Mathf.Max(0f, CurrentStamina - amount);
         lastStaminaUseTime = Time.time;
-        OnStaminaChanged?.Invoke(CurrentStamina, playerStats.MaxStamina);
+        OnStaminaChanged?.Invoke(CurrentStamina, player.Stats.MaxStamina);
         return true;
     }
     public bool UseStaminaEasy(float amount)
@@ -107,7 +119,7 @@ public class PlayerResourceSystem : MonoBehaviour
         if(CurrentStamina <1) return false;
         CurrentStamina = Mathf.Max(0f, CurrentStamina - amount);
         lastStaminaUseTime = Time.time;
-        OnStaminaChanged?.Invoke(CurrentStamina, playerStats.MaxStamina);
+        OnStaminaChanged?.Invoke(CurrentStamina, player.Stats.MaxStamina);
         return true;
     }
 
@@ -133,21 +145,21 @@ public class PlayerResourceSystem : MonoBehaviour
             CurrentStamina = 0f;
             SetStaminaExhausted(true);
         }
-        OnStaminaChanged?.Invoke(CurrentStamina, playerStats.MaxStamina);
+        OnStaminaChanged?.Invoke(CurrentStamina, player.Stats.MaxStamina);
         return true;
     }
     private void HandleStaminaRegeneration()
     {
         // 부스트 조건 충족 여부에 따라 대기 시간과 회복 배율 결정
-        bool isBoost = Time.time >= lastStaminaUseTime + playerStats.staminaRegenBoostDelay;
-        float currentDelay = isBoost ? playerStats.staminaRegenBoostDelay : playerStats.staminaRegenDelay;
+        bool isBoost = Time.time >= lastStaminaUseTime + player.Stats.staminaRegenBoostDelay;
+        float currentDelay = isBoost ? player.Stats.staminaRegenBoostDelay : player.Stats.staminaRegenDelay;
 
         if (Time.time >= lastStaminaUseTime + currentDelay)
         {
-            float boostMul = isBoost ? playerStats.staminaRegenBoostMul : 1.0f;
+            float boostMul = isBoost ? player.Stats.staminaRegenBoostMul : 1.0f;
 
             // 스태미너 회복 처리
-            CurrentStamina = Mathf.Min(playerStats.MaxStamina, CurrentStamina + playerStats.staminaRegenRate * boostMul * Time.deltaTime);
+            CurrentStamina = Mathf.Min(player.Stats.MaxStamina, CurrentStamina + player.Stats.staminaRegenRate * boostMul * Time.deltaTime);
 
             // 고갈 상태 해제 체크
             if (IsStaminaExhausted && CurrentStamina >= StaminaRecoveryThreshold)
@@ -180,8 +192,8 @@ public class PlayerResourceSystem : MonoBehaviour
     }
     private void NotifyAllUI()
     {
-        OnHealthChanged?.Invoke(CurrentHealth, playerStats.MaxHealth); 
-        OnManaChanged?.Invoke(CurrentMana, playerStats.MaxMana);
-        OnStaminaChanged?.Invoke(CurrentStamina, playerStats.MaxStamina);
+        OnHealthChanged?.Invoke(CurrentHealth, player.Stats.MaxHealth); 
+        OnManaChanged?.Invoke(CurrentMana, player.Stats.MaxMana);
+        OnStaminaChanged?.Invoke(CurrentStamina, player.Stats.MaxStamina);
     }
 }

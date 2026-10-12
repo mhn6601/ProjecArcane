@@ -14,14 +14,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::EnemyAttackPattern
   steps:
   - animName: Attack 2
-    damage: 5
-    damageMultiplier: 1
+    damage: 10
     element: 0
     staminaCost: 10
-    guardDamageMultiplier: 1
     knockbackForce: 10
     hitboxSize: 0
-    canBeParried: 0
+    canBeParried: 1
     activeFrameStart: 0
     activeFrameEnd: 0
     crossFade: 0

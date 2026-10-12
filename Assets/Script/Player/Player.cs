@@ -10,6 +10,7 @@ public class Player:Singleton<Player>
     [SerializeField] private PlayerRoll roll;
     [SerializeField] private PlayerAttack attack;
     [SerializeField] private PlayerStatus status;
+    [SerializeField] private PlayerCombat combat;
     [SerializeField] private PlayerInputHandler input;
     [SerializeField] private PlayerStats stats;
     [SerializeField] private PlayerResourceSystem resourceSystem;
@@ -21,6 +22,7 @@ public class Player:Singleton<Player>
     // 외부 공개용 프로퍼티 (Get)
     public PlayerAnimation Animation => animation;
     public PlayerController Controller => controller;
+    public PlayerCombat Combat => combat;
     public PlayerMove Move => move;
     public PlayerJump Jump => jump;
     public PlayerRoll Roll => roll;
@@ -59,6 +61,7 @@ public class Player:Singleton<Player>
         if (animation == null) 
         { animation = GetComponent<PlayerAnimation>();  } 
         if (controller == null) controller = GetComponent<PlayerController>();
+        if (combat == null) combat = GetComponent<PlayerCombat>();
         if (move == null) move = GetComponent<PlayerMove>();
         if (jump == null) jump = GetComponent<PlayerJump>();
         if (roll == null) roll = GetComponent<PlayerRoll>();

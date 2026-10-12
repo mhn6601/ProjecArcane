@@ -32,6 +32,8 @@ public class PlayerStats : MonoBehaviour
     public float RunStaminaCostPerSec => statData.runStaminaCostPerSec;
     public float RollStaminaCost => statData.rollStaminaCost;
     public float RollImmuneTime => statData.rollImmunetime;
+    public float ParryManaGain => statData.parryManaGain;
+    public float ParryManaGainMul => statData.parryManaGainMul;
 
     // 강화 1단계당 고정 보너스 증가율 (임시 공식, 밸런스에 맞게 조정)
     private const float EnhanceScalePerLevel = 0.1f;

@@ -6,13 +6,11 @@ public class AttackData
 {
     public string animName;
     public float damage = 1f;
-    public float damageMultiplier = 1f;
     public ElementType element ; 
     public float staminaCost = 10f;
-    public float guardDamageMultiplier = 1.0f;
     public float knockbackForce = 0f;
     public float hitboxSize = 1f;
-    public bool canBeParried = false;
+    public bool canBeParried = true;
     public int activeFrameStart = 0;
     public int activeFrameEnd = 0;
     

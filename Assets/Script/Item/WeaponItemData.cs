@@ -18,6 +18,7 @@ public class WeaponItemData : EquipmentItemData
     [Header("무기 전투 스탯")]
     public float basePhysicalDamage = 10f;
     public float baseSpellDamage = 10f;
+    public float guardDamaeMultiplier = 1f;
     public DamageType damageType = DamageType.Physical;
 
     [Header("무기별 속도/스태미너 보정")]

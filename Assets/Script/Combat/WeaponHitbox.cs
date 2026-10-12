@@ -100,6 +100,7 @@ public class WeaponHitBox : MonoBehaviour
 
         target.ResolveHit(
             currentAttackData,
+            owner.gameObject.transform,
             transform,
             hurtbox.HitPart
         );

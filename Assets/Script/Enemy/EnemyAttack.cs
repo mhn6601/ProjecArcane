@@ -88,17 +88,28 @@ public class EnemyAttack : MonoBehaviour
     }
     public void EnableHitBox()
     {
-        if (weapon.WeaponHitBox != null)
-            weapon.WeaponHitBox.EnableHitBox();
-        else
+        if (weapon == null || weapon.WeaponHitBox == null)
+        {
             Debug.Log("Weapon.WeaponHitBox==null");
+            return;
+        }
+
+        // 패턴이 끝난 뒤 늦게 도착한 애니메이션 이벤트 방어
+        if (CurrentPattern == null) return;
+
+        // 현재 스텝의 공격 데이터를 주입한 뒤 판정 활성화
+        weapon.WeaponHitBox.InitializeAttackData(CurrentStep);
+        weapon.WeaponHitBox.EnableHitBox();
     }
 
     public void DisableHitBox()
     {
-        if (weapon.WeaponHitBox != null)
-            weapon.WeaponHitBox.DisableHitBox();
-        else
+        if (weapon == null || weapon.WeaponHitBox == null)
+        {
             Debug.Log("Weapon.WeaponHitBox==null");
+            return;
+        }
+
+        weapon.WeaponHitBox.DisableHitBox();
     }
 }

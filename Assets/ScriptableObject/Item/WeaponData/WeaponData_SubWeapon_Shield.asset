@@ -21,7 +21,10 @@ MonoBehaviour:
   maxStackSize: 1
   equipSlottype: 1
   requiredLevel: 0
-  baseDamage: 0
+  statBonuses: []
+  basePhysicalDamage: 10
+  baseSpellDamage: 10
+  guardDamaeMultiplier: 0.5
   damageType: 0
   attackSpeedMultiplier: 1
   staminaCostMultiplier: 1

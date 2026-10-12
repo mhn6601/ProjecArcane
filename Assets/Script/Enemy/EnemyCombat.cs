@@ -21,7 +21,7 @@ public class EnemyCombat : CharacterCombat, ICombatTarget
         //status = enemy.Status;
         resourceSystem = enemy.ResourceSystem;
     }
-    public override void ResolveHit(AttackData attackData, Transform attacker, HitPart hitPart)
+    public override void ResolveHit(AttackData attackData, Transform attacker,Transform weapon, HitPart hitPart)
     {
         // 1. 무적 프레임
         if (enemy.Status.IsInvincible)

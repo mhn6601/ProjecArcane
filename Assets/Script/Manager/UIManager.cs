@@ -9,7 +9,9 @@ public enum UIType
     Stat,
     Spell,
     Setting,
-    Popup
+    Popup,
+    Menu,
+    Debug
 }
 public class UIManager : Singleton<UIManager>
 {
@@ -93,6 +95,23 @@ public class UIManager : Singleton<UIManager>
     }
 
 
+    // ESC 처리
+    // - 열린 UI가 없으면 퍼즈 메뉴를 연다
+    // - 열린 UI가 있으면 포커스된 UI를 닫는다 (퍼즈 메뉴가 열려 있을 때는 메뉴가 닫혀 토글이 됨)
+    public void HandleEscape()
+    {
+        if (!IsAnyUIOpen())
+        {
+            OpenUI(UIType.Menu);
+            return;
+        }
+
+        UIBase target = focusedUI != null
+            ? focusedUI
+            : openedUIs[openedUIs.Count - 1];   // 포커스가 비어 있어도 가장 위의 UI를 닫음
+
+        CloseUI(target);
+    }
     // -------------------------
     // UI 열기
     // -------------------------

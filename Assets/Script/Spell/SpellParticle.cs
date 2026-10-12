@@ -82,7 +82,7 @@ public class SpellParticle : MonoBehaviour
             };
 
             // 3. ICombatTarget.ResolveHit 호출
-            target.ResolveHit(attackData, context.Caster.transform, HitPart.Body);
+            target.ResolveHit(attackData,context.Caster.transform,transform, HitPart.Body);
 
             // 4. 경직(Stagger) 수치가 정의되어 있다면 함께 전달
             target.ApplyStagger(10f); // 예시 경직 수치

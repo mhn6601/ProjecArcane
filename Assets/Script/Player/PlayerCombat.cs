@@ -26,19 +26,22 @@ public class PlayerCombat : CharacterCombat,ICombatTarget
         resourceSystem = player.ResourceSystem;
 
     }
-    public override void ResolveHit(AttackData attackData, Transform attacker, HitPart hitPart)
+    public override void ResolveHit(AttackData attackData, Transform attacker, Transform weapon, HitPart hitPart)
     {
+
         // 1. 무적 프레임 (구르기 등)
         if (status.IsInvincible)
             return;
 
+        Debug.Log("패링 가능?" + attackData.canBeParried);
+        Debug.Log(controller.ActionFSM.CurrentState);
         // 2. 현재 상태가 PlayerParryState이고 패링 윈도우 안인지 체크
         if (controller.ActionFSM.CurrentState is PlayerParryState parryState
             && parryState.IsInParryWindow)
         {
             if (attackData.canBeParried)
             {
-                HandleParrySuccess(parryState, attacker, attackData);
+                HandleParrySuccess(parryState, attacker, weapon, attackData);
             }
             else
             {
@@ -59,7 +62,7 @@ public class PlayerCombat : CharacterCombat,ICombatTarget
         ApplyDamage(attackData, hitPart);
     }
 
-    private void HandleParrySuccess(PlayerParryState parryState, Transform attacker, AttackData attackData)
+    private void HandleParrySuccess(PlayerParryState parryState, Transform attacker, Transform weapon, AttackData attackData)
     {
         parryState.OnParrySuccess();
         OnParrySuccess?.Invoke();
@@ -73,16 +76,22 @@ public class PlayerCombat : CharacterCombat,ICombatTarget
 
     private void HandleGuardedHit(AttackData attackData)
     {
-        float guardDamage =  attackData.guardDamageMultiplier; // 가드 관통 데미지 비율
-        resourceSystem.TakeDamage(guardDamage);
+        float finalDamage;
+        if (player.EquipmentManager.SubWeapon!=null) {
+            finalDamage = attackData.damage * player.EquipmentManager.SubWeapon.WeaponItemData.guardDamaeMultiplier; // 가드 관통 데미지 비율
+            resourceSystem.TakeDamage(finalDamage);
+        }
+        else
+        {
+            finalDamage = attackData.damage;
+            resourceSystem.TakeDamage(finalDamage); // 가드 관통 데미지 비율이 없는 경우 원래 데미지 적용
+        }
 
         // 가드 브레이크 체크 (자세/스태미나 게이지 있다면 여기서 처리)
     }
 
     private void ApplyDamage(AttackData attackData, HitPart hitPart)
     {
-        Debug.Log(attackData);
-        Debug.Log(hitPart);
         float finalDamage = attackData.damage * GetBodyPartMultiplier(hitPart);
         resourceSystem.TakeDamage(finalDamage);
         OnHitTaken?.Invoke(attackData);
@@ -107,7 +116,7 @@ public class PlayerCombat : CharacterCombat,ICombatTarget
     private float GetBodyPartMultiplier(HitPart hitpart) =>
         hitpart switch
         {
-            HitPart.Head => 1.5f,
+            HitPart.Head => 1.0f,
             HitPart.Body => 1.0f,
             _ => 1.0f
         };

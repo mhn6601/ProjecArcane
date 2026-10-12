@@ -41,6 +41,9 @@ public class PlayerStatData : ScriptableObject
     [Header("구르기 ")]
     public float rollStaminaCost = 10f;
     public float rollImmunetime = 0.2f;
+    [Header("패리 마나 회복")]
+    public float parryManaGain = 5f;
+    public float parryManaGainMul = 1f;
 
     // 특정 레벨의 필요 경험치 계산
     public int GetRequiredExpForLevel(int level)
