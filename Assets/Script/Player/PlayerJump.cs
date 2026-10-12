@@ -8,13 +8,14 @@ public class PlayerJump : MonoBehaviour
     [Header("GroundCheck")]
     [SerializeField]
     private LayerMask groundLayer;
-    [SerializeField]
-    private float rayDistance=0.2f;
     private float gravity =-9.81f;
     private float groundedGravity =-8f;
     public float GroundedGravity => groundedGravity;
     [SerializeField]private Vector3 jumpVelocity;
-
+    [SerializeField] private float groundCheckRadius = 0.25f;   // 컨트롤러 radius보다 약간 작게
+    [SerializeField] private float groundCheckExtraDistance = 0.3f; // 계단 한 칸 높이 이상으로
+    [SerializeField] private float groundedGraceTime = 0.12f;   // 지면을 놓쳐도 이 시간 동안은 접지로 유지
+    private float lastGroundedTime = -999f;
 
     private PlayerController controller;
 
@@ -66,7 +67,7 @@ public class PlayerJump : MonoBehaviour
     }
     public void ExecuteJump(Vector3 rawInput, bool isRun)
     {
-
+        NotifyLeftGround();
         // 1. 수평 이동 벡터 계산 (X, Z) - 속도 적용
         float currentSpeed = isRun ? player.Stats.MoveSpeed*player.Stats.RunSpeedMultiply : player.Stats.MoveSpeed;
         Vector3 horizontalMove = rawInput * currentSpeed;
@@ -78,15 +79,37 @@ public class PlayerJump : MonoBehaviour
         Vector3 finalVelocity = horizontalMove + verticalMove;
         controller.CC.Move(finalVelocity * Time.deltaTime);
     }
+    private bool CheckGroundHit()
+    {
+        // 구체가 지면에 파묻혀 시작하지 않도록 반지름만큼 위에서 시작
+        Vector3 origin = GetRayOrigin() + Vector3.up * groundCheckRadius;
+        float distance = groundCheckExtraDistance + 0.1f; // 0.1f = skinWidth 등 시작점 여유분
+
+        return Physics.SphereCast(
+            origin, groundCheckRadius, Vector3.down,
+            out _, distance, groundLayer,
+            QueryTriggerInteraction.Ignore);
+    }
     public bool IsGround()
     {
-        Vector3 ray = GetRayOrigin();        
-        return Physics.Raycast(ray, Vector3.down, rayDistance, groundLayer);
+        if (CheckGroundHit())
+        {
+            lastGroundedTime = Time.time;
+            return true;
+        }
+
+        // 한두 프레임 지면을 놓친 경우 접지로 간주 (계단 오를 때 컨트롤 뺏기는 현상 방지)
+        return Time.time - lastGroundedTime <= groundedGraceTime;
+    }
+
+    // 점프/넉백 등으로 의도적으로 공중에 뜰 때 호출해서 유예가 적용되지 않게 한다
+    public void NotifyLeftGround()
+    {
+        lastGroundedTime = -999f;
     }
     private void IsGroundedInitialize()
     {
-        Vector3 ray = GetRayOrigin();
-        if(Physics.Raycast(ray, Vector3.down, rayDistance, groundLayer))
+        if (CheckGroundHit())
         {
             player.Status.RemoveFlag(CharacterActionFlags.CanJump);
             player.Status.RemoveFlag(CharacterActionFlags.CanRoll);
@@ -131,15 +154,11 @@ public class PlayerJump : MonoBehaviour
     }
     private void OnDrawGizmos()
     {
-        Vector3 rayOrigin = GetRayOrigin();
+        Vector3 start = GetRayOrigin() + Vector3.up * groundCheckRadius;
+        float distance = groundCheckExtraDistance + 0.1f;
 
-        // 지면에 닿았을 때는 초록색, 공중에 있을 때는 빨간색 표시
-        Gizmos.color = IsGround() ? Color.green : Color.red;
-
-        // 시작점에서 아래 방향으로 rayDistance만큼 선 그리기
-        Gizmos.DrawRay(rayOrigin, Vector3.down * rayDistance);
-
-        // Ray의 끝 지점에 작은 구체 표시
-        Gizmos.DrawSphere(rayOrigin + (Vector3.down * rayDistance), 0.02f);
+        Gizmos.color = CheckGroundHit() ? Color.green : Color.red;
+        Gizmos.DrawWireSphere(start, groundCheckRadius);
+        Gizmos.DrawWireSphere(start + Vector3.down * distance, groundCheckRadius);
     }
 }

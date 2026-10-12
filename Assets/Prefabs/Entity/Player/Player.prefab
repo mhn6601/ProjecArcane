@@ -361,6 +361,7 @@ MonoBehaviour:
   roll: {fileID: 0}
   attack: {fileID: 0}
   status: {fileID: 0}
+  combat: {fileID: 0}
   input: {fileID: 0}
   stats: {fileID: 0}
   resourceSystem: {fileID: 0}
@@ -368,8 +369,6 @@ MonoBehaviour:
   lockOn: {fileID: 0}
   castSpell: {fileID: 0}
   magicSocketHandler: {fileID: 0}
-  animator: {fileID: 0}
-  animEvents: {fileID: 0}
 --- !u!114 &7812721037624248209
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -444,8 +443,10 @@ MonoBehaviour:
   groundLayer:
     serializedVersion: 2
     m_Bits: 8
-  rayDistance: 0.2
   jumpVelocity: {x: 0, y: 0, z: 0}
+  groundCheckRadius: 0.25
+  groundCheckExtraDistance: 0.3
+  groundedGraceTime: 0.12
   playerFollowCamera: {fileID: 0}
 --- !u!114 &8242585309201791336
 MonoBehaviour:
@@ -646,7 +647,7 @@ CharacterController:
   m_Height: 1.8
   m_Radius: 0.25
   m_SlopeLimit: 45
-  m_StepOffset: 0.3
+  m_StepOffset: 0.5
   m_SkinWidth: 0.01
   m_MinMoveDistance: 0.001
   m_Center: {x: 0, y: 0.9, z: 0}
