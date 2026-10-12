@@ -64,20 +64,19 @@ public class InventoryUI : UIBase
     {
         var equippedItems = InventoryManager.Instance.EquippedItems;
 
-        // 모든 장비 슬롯 초기화
         for (int i = 0; i < equipmentSlots.Count; i++)
         {
             equipmentSlots[i].Clear();
         }
 
-        // 장착된 아이템 표시
         foreach (var equipmentSlot in equipmentSlots)
         {
             EquipmentSlotType slotType = equipmentSlot.ItemType;
 
-            if (equippedItems.TryGetValue(slotType, out EquipmentItemData item))
+            if (equippedItems.TryGetValue(slotType, out EquipmentInstance item))
             {
-                equipmentSlot.SetItem(item);
+                // EquipmentSlot은 아직 정의(EquipmentItemData)를 받는 상태로 유지
+                equipmentSlot.SetItem(item.EquipData);
             }
         }
     }

@@ -42,34 +42,22 @@ public class SaveHandler : Singleton<SaveHandler>
         saveData.level = player.Stats.Level;
 
 
-        // 2. 장착 상태 저장
-        // 장착 상태는 InventoryManager가 관리한다.
-        saveData.equippedItems =
-            inventoryManager.GetEquippedItemSaveData();
+        // 2. 아이템 + 장착 상태 저장
+        saveData.items = inventoryManager.GetItemSaveData();
+        saveData.equipped = inventoryManager.GetEquippedSlotSaveData();
 
 
-        // 3. 인벤토리 저장
-        saveData.inventoryItemIDs =
-            inventoryManager.GetInventoryItemIDs();
-
-
-        // 4. 자원 저장
+        // 3. 자원 저장
         saveData.currentHealth =
             player.ResourceSystem.CurrentHealth;
         saveData.currentMana =
             player.ResourceSystem.CurrentMana;
-
         saveData.currentStamina =
             player.ResourceSystem.CurrentStamina;
 
 
-        //Debug.Log($"inventory count: {saveData.inventoryItemIDs.Count}");
-        //Debug.Log($"equipment count: {saveData.equippedItems.Count}");
-
         SpellProgressManager.Instance.Save();
         SaveDataManager.SaveData(saveData);
-
-        //Debug.Log("===== SaveDataManager.SaveData =====");
     }
 
 
@@ -126,28 +114,9 @@ public class SaveHandler : Singleton<SaveHandler>
 
 
         // =====================================================
-        // 3. 인벤토리 복원
+        // 3. 인벤토리 + 장착 상태 복원 (한 번에)
         // =====================================================
 
-        if (saveData.inventoryItemIDs != null)
-        {
-            //Debug.Log("LoadInventory");
-
-            inventoryManager.LoadInventory(saveData);
-        }
-
-
-        // =====================================================
-        // 4. 장착 상태 복원
-        // =====================================================
-
-        if (saveData.equippedItems != null)
-        {
-            //Debug.Log("LoadEquipment");
-
-            inventoryManager.LoadEquippedItems(
-                saveData.equippedItems
-            );
-        }
+        inventoryManager.LoadInventory(saveData);
     }
 }

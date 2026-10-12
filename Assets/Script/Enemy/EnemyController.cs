@@ -12,11 +12,14 @@ public class EnemyController : CharacterControllerBase
     #region State
     public EnemyLocomotionState LocomotionState { get; private set; }
     public EnemyEmptyActionState EmptyActionState { get; private set; }
+    public EnemyAttackState AttackState { get; private set; }
     public EnemyHitStunState HitStunState { get; private set; }
     #endregion
-
+    /// <summary>액션 FSM이 대기(Empty) 상태일 때만 true. 새 행동을 시작해도 되는지 판단하는 용도.</summary>
+    public bool IsActionIdle => actionFSM.CurrentState == EmptyActionState;
     protected override void Awake()
     {
+        base.Awake();
         enemy = GetComponent<Enemy>();
         
 
@@ -52,6 +55,7 @@ public class EnemyController : CharacterControllerBase
 
         #region ActionState
         EmptyActionState = new EnemyEmptyActionState(enemy,animator);
+        AttackState = new EnemyAttackState(enemy, animator);
         HitStunState = new EnemyHitStunState(enemy,animator);
         #endregion 
 

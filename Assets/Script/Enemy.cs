@@ -1,3 +1,5 @@
+using System;
+using System.Text.Json.Serialization;
 using UnityEngine;
 
 public  class Enemy : MonoBehaviour
@@ -8,14 +10,16 @@ public  class Enemy : MonoBehaviour
     [SerializeField] private EnemyStatus status;
     [SerializeField] private EnemyStats stats;
     [SerializeField] private EnemyResourceSystem resourceSystem;
+    [SerializeField] private EnemyAttack attack;
+    [SerializeField] private EnemyBrain brain;
 
-    [SerializeField] private Animator animator;
 
     public EnemyAnimation Animation => animation;
     public EnemyController Controller=> controller;
     public EnemyStatus Status => status;
     public EnemyStats Stats=> stats;
     public EnemyResourceSystem ResourceSystem=> resourceSystem;
+    public EnemyAttack Attack => attack;
     public bool isDead { get; private set; }
 
     private void Awake()
@@ -25,11 +29,12 @@ public  class Enemy : MonoBehaviour
     private void InitComponents()
     {
         if (animation == null)
-        { animation = GetComponent<EnemyAnimation>(); animator = Animation.Animator; }
+        { animation = GetComponent<EnemyAnimation>();  }
         controller = GetComponent<EnemyController>();
         if (status == null) status = GetComponent<EnemyStatus>();
         if (stats == null) stats = GetComponent<EnemyStats>();
         if (resourceSystem == null) resourceSystem = GetComponent<EnemyResourceSystem>();
+        if(attack == null) attack = GetComponent<EnemyAttack>();
     }
     //public bool isWalking = false;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -47,9 +52,9 @@ public  class Enemy : MonoBehaviour
         controller.enabled = false;
 
         // 사망 애니메이션 실행
-        if (animator != null)
+        if (animation.Animator != null)
         {
-            animator.SetTrigger("isDead");
+            animation.Animator.SetTrigger("isDead");
         }
     }
 }

@@ -10,25 +10,23 @@ public class PlayerSaveData
     public float currentMana = 100f;
     public float currentStamina = 100f;
 
-    // 장착 중인 아이템 데이터 (슬롯 - 아이템 ID 매핑용 리스트)
-    public List<EquippedItemSaveData> equippedItems = new List<EquippedItemSaveData>();
-
-    // 인벤토리 데이터 (아이템 ID 목록)
-    public List<string> inventoryItemIDs = new List<string>();
+    public List<ItemSaveData> items = new List<ItemSaveData>();
+    public List<EquippedSlotSaveData> equipped = new List<EquippedSlotSaveData>(); // 장비 instanceID만 참조
 }
 
-// Dictionary 대신 JsonUtility에서 직렬화 가능한 1:1 매핑용 구조체/클래스
 [Serializable]
-public class EquippedItemSaveData
+public class ItemSaveData
 {
-    public EquipmentSlotType slot; // 예: "MainWeapon", "Armor" 등 (EquipmentSlot Enum.ToString())
-    public string itemID;   // 예: "EQ_SWORD_01"
-    public string itemType;
+    public string instanceID;   // Guid.NewGuid().ToString(), 개별 구분용
+    public string itemID;       // 정의(ScriptableObject) 참조
+    public int count=1;          // 스택 수량
+    public int enhanceLevel;    // 강화 등 인스턴스 상태는 여기에 추가
+    public int durability;
 }
-[Serializable]
-public class InventoryItemSaveData
-{
-    public string itemID;  
-    public string itemType;
 
+[Serializable]
+public class EquippedSlotSaveData
+{
+    public EquipmentSlotType slot;
+    public string instanceID;   // 아이템 본체는 복사하지 않고 참조만
 }

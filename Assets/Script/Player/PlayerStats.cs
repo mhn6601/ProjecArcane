@@ -33,6 +33,8 @@ public class PlayerStats : MonoBehaviour
     public float RollStaminaCost => statData.rollStaminaCost;
     public float RollImmuneTime => statData.rollImmunetime;
 
+    // 강화 1단계당 고정 보너스 증가율 (임시 공식, 밸런스에 맞게 조정)
+    private const float EnhanceScalePerLevel = 0.1f;
     public event Action OnStatsChanged;
 
     public void SetStats(int level)
@@ -60,9 +62,45 @@ public class PlayerStats : MonoBehaviour
 
     public void SetEquipmentBonus()
     {
-        // 장비 보너스도 SetBonuses("equip:" + 장비ID, bonuses)로 연결하면 됨
+        var inventory = InventoryManager.Instance;
+        if (inventory == null) return;
+
+        foreach (EquipmentSlotType slot in Enum.GetValues(typeof(EquipmentSlotType)))
+        {
+            string source = "equip:" + slot;
+            EquipmentInstance equipped = inventory.GetEquippedItem(slot);
+
+            if (equipped == null || equipped.EquipData.statBonuses == null)
+            {
+                RemoveBonuses(source);
+                continue;
+            }
+
+            SetBonuses(source, BuildEquipmentBonuses(equipped));
+        }
     }
 
+    private StatBonus[] BuildEquipmentBonuses(EquipmentInstance equip)
+    {
+        StatBonus[] baseBonuses = equip.EquipData.statBonuses;
+        StatBonus[] result = new StatBonus[baseBonuses.Length];
+        float scale = 1f + equip.enhanceLevel * EnhanceScalePerLevel;
+
+        for (int i = 0; i < baseBonuses.Length; i++)
+        {
+            StatBonus b = baseBonuses[i];
+
+            result[i] = new StatBonus
+            {
+                stat = b.stat,
+                modifierType = b.modifierType,
+                // 고정 보너스만 강화로 증가, 퍼센트 보너스는 그대로
+                value = b.modifierType == ModifierType.Flat ? b.value * scale : b.value
+            };
+        }
+
+        return result;
+    }
     private float ApplyBonus(StatType stat, float baseValue)
     {
         float flat = 0f;
