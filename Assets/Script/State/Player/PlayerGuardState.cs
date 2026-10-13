@@ -11,7 +11,7 @@ public class PlayerGuardState : PlayerState
     public override void OnEnter()
     {
         animator.SetLayerWeight(GuardLayerIndex, 1f); // Guard Layer 활성화
-        animator.CrossFade(GuardUpHash, 0.1f, GuardLayerIndex);
+        animator.CrossFade(GuardUpHash, 0f, GuardLayerIndex);
         player.Status.IsGuarding = true; // Guard 상태 플래그 설정[cite: 2]
     }
 
@@ -24,7 +24,7 @@ public class PlayerGuardState : PlayerState
 
         if (releasedGuardButton || runInterrupt|| jumpInterrupt)
         {
-            animator.CrossFade(GuardDownHash, 0.1f, GuardLayerIndex);
+            animator.CrossFade(GuardDownHash, 0f, GuardLayerIndex);
             player.Controller.ActionFSM.ChangeState(player.Controller.EmptyActionState);
         }
     }

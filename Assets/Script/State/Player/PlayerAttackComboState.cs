@@ -103,7 +103,7 @@ public class PlayerAttackComboState : PlayerState
         LightAttackStepData stepData = comboSteps[currentComboIndex];
         string anim = stepData.animName;
 
-        animator.CrossFade(anim, 0.1f);
+        animator.CrossFade(anim, 0f);
     }
     public void SetComboIndex(int index)
     {

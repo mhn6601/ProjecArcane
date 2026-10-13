@@ -31,7 +31,7 @@ public class PlayerHitStunState : PlayerState
         float speed = clipLength > 0f ? clipLength / hitStunDuration : 1f;
         animator.SetFloat(HitStunSpeedHash, speed);
 
-        animator.CrossFade(HitStunHash, 0.1f);
+        animator.CrossFade(HitStunHash, 0f);
     }
 
     public override void Update()
