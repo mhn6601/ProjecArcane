@@ -38,7 +38,7 @@ public class PlayerSpellCastState : PlayerState
         player.Status.RemoveFlag(CharacterActionFlags.CanAttack);   // 공격  차단
 
 
-        animator.CrossFade(spell.animationClip.name, 0.1f, AnimLayer);
+        animator.CrossFade(spell.animationClip.name, 0f, AnimLayer);
     }
 
     public override void Update()

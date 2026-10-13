@@ -96,7 +96,7 @@ public class PlayerAirborneState : PlayerState
         initialJumpDirection = Vector3.zero;
         initialIsRun = false;
 
-        animator.CrossFade(LandingHash, 0.1f);
+        animator.CrossFade(LandingHash, 0f);
     }
 
     private void UpdateLanding()
@@ -155,7 +155,7 @@ public class PlayerAirborneState : PlayerState
     }
     public override void OnExit()
     {
-        animator.CrossFade(LandingHash, 0.1f);
+        animator.CrossFade(LandingHash, 0f);
         // 착지 시 상태 및 플래그 복구
         player.Status.AddFlag(CharacterActionFlags.CanMove);
         player.Status.AddFlag(CharacterActionFlags.CanRotate);
