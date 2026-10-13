@@ -41,11 +41,11 @@ public class PlayerRollState : PlayerState
        
         if (player.Input.RollWhileRunning)
         {
-            animator.CrossFade(RunRoll, 0f);
+            animator.CrossFade(RunRoll, 0.1f);
         }
         else
         {
-            animator.CrossFade(BaseRoll, 0f);
+            animator.CrossFade(BaseRoll, 0.1f);
         }
     }
     public override void Update()

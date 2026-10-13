@@ -23,7 +23,7 @@ public class EnemyHitStunState : EnemyState
         float speed = clipLength > 0f ? clipLength / hitStunDuration : 1f;
         animator.SetFloat(HitStunSpeedHash, speed);
 
-        animator.CrossFade(HitStunHash, 0f);
+        animator.CrossFade(HitStunHash, 0.1f);
     }
 
     public override void Update()

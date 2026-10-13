@@ -32,7 +32,7 @@ public class PlayerHeavyAttackState : PlayerState
         HeavyAttackStepData currentData = heavySteps[stepIndex];
 
         // 애니메이션 재생 및 스태미너 소모 등의 로직 실행
-        animator.CrossFade(currentData.animName, 0f);
+        animator.CrossFade(currentData.animName, 0.1f);
     }
 
     public override void Update()
