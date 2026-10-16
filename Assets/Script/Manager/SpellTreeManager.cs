@@ -240,7 +240,7 @@ public class SpellTreeManager : Singleton<SpellTreeManager>
 
     private void HandleEquipClicked()
     {
-        Debug.Log($"[Equip] 2. 매니저 수신 / currentSpell={(currentSpell != null ? currentSpell.spellName : "null")} / equipPopup={(equipPopup != null ? "연결됨" : "NULL")}");
+       
 
         if (currentSpell != null) equipPopup.Open(currentSpell);
     }

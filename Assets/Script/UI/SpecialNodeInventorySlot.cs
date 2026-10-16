@@ -39,7 +39,6 @@ public class SpecialNodeInventorySlot : MonoBehaviour
 
     public void OnClick()
     {
-        Debug.Log(specialNode.Data.description);
         SpecialNodeInventoryManager.Instance.ShowInfo(specialNode);
     }
 }
