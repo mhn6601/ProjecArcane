@@ -47,8 +47,10 @@ public class PlayerCastSpell : MonoBehaviour
     /// </summary>
     public bool TryCast(int slotIndex)
     {
-        SpellData spell = SpellProgressManager.Instance.GetEquipped(slotIndex);
-        if (spell == null) return false;                        // 빈 슬롯
+        // 기존: SpellData spell = SpellProgressManager.Instance.GetEquipped(slotIndex);
+        RuntimeSpellInstance instance = SpellProgressManager.Instance.GetRuntimeInstance(slotIndex);
+        if (instance == null) return false;                     // 빈 슬롯
+        SpellData spell = instance.baseData;
 
         if (GetRemainingCooldown(spell) > 0f) return false;     // 쿨타임 중
 
@@ -57,7 +59,8 @@ public class PlayerCastSpell : MonoBehaviour
 
         cooldownReadyTime[spell.spellId] = Time.time + spell.cooldown;
 
-        player.Controller.ActionFSM.ChangeState(new PlayerSpellCastState(player, player.Animation.Animator, spell));
+        player.Controller.ActionFSM.ChangeState(
+        new PlayerSpellCastState(player, player.Animation.Animator, instance));
 
         OnSpellCast?.Invoke(slotIndex, spell.cooldown);
         return true;

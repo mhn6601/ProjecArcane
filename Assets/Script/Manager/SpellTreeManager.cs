@@ -6,9 +6,10 @@ public class SpellTreeManager : Singleton<SpellTreeManager>
     Player player;
     [SerializeField] private Transform contentParent;            // ScrollView의 Content
     [SerializeField] private SpellNodeLineRenderer lineRenderer; // 연결선 렌더러
-    [SerializeField] private NodeInfoUI nodeInfoUI;              // 노드 정보 UI
-    [SerializeField] private SpellEquipPopup equipPopup;
-
+    [SerializeField] private SpellTreeUI spellTreeUI;              // 노드 정보 UI
+    [SerializeField] private SpellEquipPopup equipPopup; 
+    [SerializeField] private SpellTreeFocus focus;
+    [SerializeField] private SpecialNodeUIController specialNodeUIController;
     private SpellData currentSpell;
     private StatNodeData currentStat;
     private SpellNodeBase currentNode;                           // 현재 정보 패널에 표시 중인 노드
@@ -17,8 +18,8 @@ public class SpellTreeManager : Singleton<SpellTreeManager>
     private void Start()
     {
         RefreshSkillTreeLines();
-        nodeInfoUI.OnEquipClicked += HandleEquipClicked;
-        nodeInfoUI.OnUnlockClicked += HandleUnlockClicked;
+        spellTreeUI.OnEquipClicked += HandleEquipClicked;
+        spellTreeUI.OnUnlockClicked += HandleUnlockClicked;
 
         var progress = SpellProgressManager.Instance;
         if (progress != null)
@@ -43,10 +44,10 @@ public class SpellTreeManager : Singleton<SpellTreeManager>
     {
         base.OnDestroy();
 
-        if (nodeInfoUI != null)
+        if (spellTreeUI != null)
         {
-            nodeInfoUI.OnEquipClicked -= HandleEquipClicked;
-            nodeInfoUI.OnUnlockClicked -= HandleUnlockClicked;
+            spellTreeUI.OnEquipClicked -= HandleEquipClicked;
+            spellTreeUI.OnUnlockClicked -= HandleUnlockClicked;
         }
 
         if (SpellProgressManager.Instance != null)
@@ -98,6 +99,7 @@ public class SpellTreeManager : Singleton<SpellTreeManager>
     // -------------------------
     public void ToggleNodeInfoUI(SpellData spellData, SpellNodeBase node)
     {
+        specialNodeUIController.CloseAll();
         currentStat = null;
         currentSpell = spellData;
         currentNode = node;
@@ -108,19 +110,20 @@ public class SpellTreeManager : Singleton<SpellTreeManager>
             return;
         }
 
-        if (!nodeInfoUI.isPanelActive())
-            nodeInfoUI.ToggleNodeInfoPanel(true);
+        if (!spellTreeUI.isPanelActive())
+            spellTreeUI.ToggleNodeInfoPanel(true);
 
-        nodeInfoUI.SetNodeInfo(
+        spellTreeUI.SetNodeInfo(
             spellData.spellName,
             SpellTooltipFormatter.Format(spellData, Player.Instance.Stats),
             spellData.VideoClip);
 
         RefreshActionButtons();
     }
-
+    
     public void ToggleNodeInfoUI(StatNodeData statData, SpellNodeBase node)
     {
+        specialNodeUIController.CloseAll();
         currentSpell = null;
         currentStat = statData;
         currentNode = node;
@@ -130,18 +133,20 @@ public class SpellTreeManager : Singleton<SpellTreeManager>
             CloseNodeInfoUI();
             return;
         }
+        if (!spellTreeUI.isPanelActive())
+            spellTreeUI.ToggleNodeInfoPanel(true);
 
-        if (!nodeInfoUI.isPanelActive())
-            nodeInfoUI.ToggleNodeInfoPanel(true);
-
-        nodeInfoUI.SetNodeInfo(
+        spellTreeUI.SetNodeInfo(
             statData.nodeName,
             StatTooltipFormatter.Format(statData, Player.Instance.Stats),
             null);
 
         RefreshActionButtons();
     }
-
+    public void FocusNode(RectTransform transform)
+    {
+        focus.FocusOn(transform);
+    }
     public void CloseNodeInfoUI()
     {
         currentSpell = null;
@@ -149,9 +154,18 @@ public class SpellTreeManager : Singleton<SpellTreeManager>
         currentNode = null;
 
         equipPopup.Close();
-        nodeInfoUI.ToggleNodeInfoPanel(false);
-    }
+        spellTreeUI.ToggleNodeInfoPanel(false);
 
+    }
+    public void CloseSpecialNodeInfoUI()
+    {
+        specialNodeUIController.CloseAll();
+    }
+    public void OnSpecialSlotClicked(SpecialNode slot) 
+    { 
+        CloseNodeInfoUI();
+        specialNodeUIController.OnSlotClicked(slot);
+    } 
     // -------------------------
     // 해금/장착 버튼 상태 갱신 (노드의 실제 상태 기준)
     // -------------------------
@@ -160,8 +174,8 @@ public class SpellTreeManager : Singleton<SpellTreeManager>
         //Debug.Log($"[RefreshActionButtons] node={currentNode?.name}, state={currentNode?.State}, canUnlock={currentNode?.CanUnlock}");
         if (currentNode == null)
         {
-            nodeInfoUI.SetUnlockButton(false);
-            nodeInfoUI.SetEquipButton(false);
+            spellTreeUI.SetUnlockButton(false);
+            spellTreeUI.SetEquipButton(false);
             return;
         }
 
@@ -170,26 +184,26 @@ public class SpellTreeManager : Singleton<SpellTreeManager>
         // 해금 버튼: 해금 완료면 숨김 / 부모 해금됨이면 활성 / 아니면 비활성 + 안내 문구
         if (unlocked)
         {
-            nodeInfoUI.SetUnlockButton(false);
+            spellTreeUI.SetUnlockButton(false);
         }
         else if (currentNode.CanUnlock)
         {
-            nodeInfoUI.SetUnlockButton(true, true, "해금");
+            spellTreeUI.SetUnlockButton(true, true, "해금");
         }
         else
         {
-            nodeInfoUI.SetUnlockButton(true, false, "상위 노드를 먼저 해금하세요");
+            spellTreeUI.SetUnlockButton(true, false, "상위 노드를 먼저 해금하세요");
         }
 
         // 장착 버튼: 해금된 스펠만. 이미 장착 중이면 "슬롯 변경"
         if (currentSpell != null && unlocked)
         {
             bool equipped = SpellProgressManager.Instance.FindSlot(currentSpell.spellId) >= 0;
-            nodeInfoUI.SetEquipButton(true, equipped ? "슬롯 변경" : "장착");
+            spellTreeUI.SetEquipButton(true, equipped ? "슬롯 변경" : "장착");
         }
         else
         {
-            nodeInfoUI.SetEquipButton(false);   // 스탯 노드이거나 미해금
+            spellTreeUI.SetEquipButton(false);   // 스탯 노드이거나 미해금
         }
     }
 
@@ -198,16 +212,16 @@ public class SpellTreeManager : Singleton<SpellTreeManager>
     // -------------------------
     private void OnStatsChanged()
     {
-        if (!nodeInfoUI.isPanelActive()) return;
+        if (!spellTreeUI.isPanelActive()) return;
 
         if (currentSpell != null)
         {
-            nodeInfoUI.UpdateDescription(
+            spellTreeUI.UpdateDescription(
                 SpellTooltipFormatter.Format(currentSpell, Player.Instance.Stats));
         }
         else if (currentStat != null)
         {
-            nodeInfoUI.UpdateDescription(
+            spellTreeUI.UpdateDescription(
                 StatTooltipFormatter.Format(currentStat, Player.Instance.Stats));
         }
     }
@@ -215,13 +229,13 @@ public class SpellTreeManager : Singleton<SpellTreeManager>
     // 어떤 노드든 해금되면 패널의 버튼 상태를 다시 계산 (부모 해금 → 자식 해금 가능으로 바뀌는 경우 포함)
     private void HandleProgressChanged(string unlockedId)
     {
-        if (nodeInfoUI.isPanelActive()) RefreshActionButtons();
+        if (spellTreeUI.isPanelActive()) RefreshActionButtons();
     }
 
     // 장착 슬롯이 바뀌면 "장착"/"슬롯 변경" 문구 갱신
     private void HandleSlotChanged(int slotIndex, SpellData spell)
     {
-        if (nodeInfoUI.isPanelActive()) RefreshActionButtons();
+        if (spellTreeUI.isPanelActive()) RefreshActionButtons();
     }
 
     private void HandleEquipClicked()

@@ -1,6 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
-using TMPro; // 레거시 Text를 쓰면 UnityEngine.UI의 Text로 바꾸세요
+using TMPro; 
 
 public class InventorySlot : MonoBehaviour
 {

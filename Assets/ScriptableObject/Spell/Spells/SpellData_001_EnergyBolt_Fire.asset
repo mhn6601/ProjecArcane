@@ -17,6 +17,9 @@ MonoBehaviour:
   spellDescription: "\uD30C\uC774\uC5B4\uBCFC\uC744 \uBC1C\uC0AC\uD569\uB2C8\uB2E4.\\n\uC801\uC911\uC2DC{damage}\uC758
     \uD53C\uD574\uB97C \uC90D\uB2C8\uB2E4.\\n\uC0AC\uC6A9\uC2DC MP{mp}\uB97C \uC18C\uBAA8\uD569\uB2C8\uB2E4\\n\uC7AC\uC0AC\uC6A9\uB300\uAE30\uC2DC\uAC04:
     {cooldown}\uCD08"
+  Tags:
+  - {fileID: 11400000, guid: 1b5396b7cb4f12e4da5a4d609d2a1a3a, type: 2}
+  - {fileID: 11400000, guid: 7d4839a5c68bba74b8e08856bf6996c6, type: 2}
   VideoClip: {fileID: 32900000, guid: 05069b5c88dff644dbaf2d8eb9679bcc, type: 3}
   animationClip: {fileID: 7400000, guid: f2fff2c0466d7304a84b1de681902dd8, type: 2}
   Icon: {fileID: 21300000, guid: f85ea78a8f8f76546a8d8affdc6d19aa, type: 3}

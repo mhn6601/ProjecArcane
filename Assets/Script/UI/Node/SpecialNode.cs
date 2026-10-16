@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class SpellSpecialNode : SpellNodeBase,IPointerClickHandler
+public class SpecialNode : SpellNodeBase,IPointerClickHandler
 {
     [SerializeField] private SpellNode targetNode;
     [SerializeField] private int slotIndex;        // 이 노드가 대응하는 특수 슬롯 (0 또는 1)
@@ -38,9 +38,18 @@ public class SpellSpecialNode : SpellNodeBase,IPointerClickHandler
         // equipped가 비어 있음             → 빈 슬롯
         // equipped가 있음                  → 장착된 스페셜 아이콘 표시
     }
-
+    public string GetOwnerNodeID()
+    {
+        return targetNode.SpellId;
+    }
+    public int GetIndex()
+    {
+        return slotIndex;
+    }
     public void OnPointerClick(PointerEventData eventData)
     {
         // 클릭 이벤트 처리 로직
+        SpellTreeManager.Instance.OnSpecialSlotClicked(this);
+        SpellTreeManager.Instance.FocusNode((RectTransform)transform); 
     }
 }

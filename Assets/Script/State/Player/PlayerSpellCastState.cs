@@ -1,9 +1,10 @@
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class PlayerSpellCastState : PlayerState
 {
     private readonly SpellData spell;
-    private RuntimeSpellInstance spellInstance;   // 특수 노드 구현 전까지는 임시 인스턴스
+    private RuntimeSpellInstance spellInstance;  
 
     private const int AnimLayer = 0;
     private const float EnterTimeout = 0.5f;      // 이 시간 안에 시전 애니메이션에 진입하지 못하면 강제 종료
@@ -12,10 +13,11 @@ public class PlayerSpellCastState : PlayerState
     private bool animEntered;
     private float enterTime;
 
-    public PlayerSpellCastState(Player player, Animator animator, SpellData spell)
+    public PlayerSpellCastState(Player player, Animator animator, RuntimeSpellInstance instance)
         : base(player, animator)
     {
-        this.spell = spell;
+        this.spell = instance.baseData;
+        this.spellInstance = instance;
     }
 
     public override void OnEnter()
@@ -23,7 +25,6 @@ public class PlayerSpellCastState : PlayerState
         fired = false;
         animEntered = false;
         enterTime = Time.time;
-        spellInstance = new RuntimeSpellInstance(spell);
 
         // 발사는 애니메이션 이벤트가 담당
         player.CastSpell.OnSpellFire += HandleSpellFire;
@@ -115,6 +116,21 @@ public class PlayerSpellCastState : PlayerState
             return;
         }
 
-        player.MagicSocketHandler.CastSpell(spellPrefab, MagicSocketType.RightHand, context);
+        int count = Mathf.Max(1, context.SplitCount);
+        float damageMul = count > 1 ? context.SplitDamageMultiplier : 1f;
+
+        for (int i = 0; i < count; i++)
+        {
+            // 3발이면 -step, 0, +step
+            float offset = (i - (count - 1) * 0.5f) * context.SplitAngleStep;
+
+            SpellCastContext shot = context.Clone();
+            shot.CastDirection = Quaternion.AngleAxis(offset, Vector3.up) * context.CastDirection;
+            shot.FinalDamage = context.FinalDamage * damageMul;
+            shot.SplitCount = 1;   // 생성된 투사체가 다시 분열하지 않도록
+            shot.UseCastDirectionRotation = count > 1;
+
+            player.MagicSocketHandler.CastSpell(spellPrefab, MagicSocketType.RightHand, shot);
+        }
     }
 }

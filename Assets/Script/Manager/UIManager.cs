@@ -6,6 +6,7 @@ using UnityEngine;
 public enum UIType
 {
     Inventory,
+    SpecialNodeInventory,
     Stat,
     Spell,
     Setting,

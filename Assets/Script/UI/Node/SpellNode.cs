@@ -51,6 +51,6 @@ public class SpellNode : SpellNodeBase, IPointerClickHandler
     {
         // SpellNode.OnPointerClick
         SpellTreeManager.Instance.ToggleNodeInfoUI(spellData, this);
-
+        SpellTreeManager.Instance.FocusNode((RectTransform)transform);
     }
 }

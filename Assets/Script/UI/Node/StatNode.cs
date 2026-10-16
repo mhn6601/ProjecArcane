@@ -36,5 +36,6 @@ public class StatNode : SpellNodeBase,IPointerClickHandler
     public void OnPointerClick(PointerEventData eventData)
     {
         SpellTreeManager.Instance.ToggleNodeInfoUI(statData, this);
+        SpellTreeManager.Instance.FocusNode((RectTransform)transform);
     }
 }

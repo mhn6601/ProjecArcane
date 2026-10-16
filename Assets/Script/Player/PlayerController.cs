@@ -105,7 +105,6 @@ public class PlayerController : CharacterControllerBase
         EmptyActionState = new PlayerEmptyActionState(player, animator);
         GuardState = new PlayerGuardState(player,animator);
         HitStunState = new PlayerHitStunState(player, animator);
-        SpellCastState= new PlayerSpellCastState(player, animator,null);
         #endregion
     }
     private void FSMUpdate()

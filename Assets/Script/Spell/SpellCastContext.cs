@@ -18,9 +18,12 @@ public class SpellCastContext
     public float ProjectileSpeed { get; set; }    // 투사체 속도
     public float ScaleMultiplier { get; set; }   // 범위/크기 배율 (확장 노드 대응)
     public int SplitCount { get; set; }          // 분열 개수 (분열 노드 대응)
+    public float SplitAngleStep { get; set; }          // 갈래 사이 각도
+    public float SplitDamageMultiplier { get; set; }   // 분열 시 각 발 데미지 배율
     public bool IsInvincibleCast { get; set; }   // 시전 중 무적 여부 (무적 노드 대응)
     public bool HasHoming { get; set; }          // 유도성 여부 (추적 노드 대응)
-
+    public bool UseCastDirectionRotation { get; set; }   // true면 소켓 회전 대신 CastDirection으로 생성 회전 결정 (분열 발사용)
+    public SpellCastContext Clone() => (SpellCastContext)MemberwiseClone();
     // 생성자: 스킬 시전 시점의 기본값 설정
     public SpellCastContext(GameObject caster, Transform spawnPoint, Transform target, RuntimeSpellInstance spellInstance, float baseAttackBonus = 0f)
     {
@@ -43,7 +46,9 @@ public class SpellCastContext
         FinalDamage = 0f + baseAttackBonus; 
         ProjectileSpeed = 15f;
         ScaleMultiplier = 1f;
-        SplitCount = 1;
+        SplitCount = 1; 
+        SplitAngleStep = 15f;
+        SplitDamageMultiplier = 1f;
         IsInvincibleCast = false;
         HasHoming = false;
 
@@ -57,11 +62,10 @@ public class SpellCastContext
 
         foreach (var node in SpellInstance.equippedNodes)
         {
-            if (node != null)
-            {
-                // 특수 노드가 Context의 최종 데미지, 분열 수, 범위 등을 조작함
-                node.ApplyNodeEffect(this);
-            }
+            if (node == null) continue;
+            if (!node.CanApplyTo(SpellInstance.baseData)) continue;   // 태그 불일치면 효과 무시
+
+            node.ApplyNodeEffect(this);
         }
     }
 }

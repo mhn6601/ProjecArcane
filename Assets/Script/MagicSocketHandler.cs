@@ -70,7 +70,9 @@ public class MagicSocketHandler : MonoBehaviour
 
         Vector3 spawnPos = socket != null ? socket.Position : transform.position;
         Quaternion spawnRot = socket != null ? socket.Rotation : transform.rotation;
-
+        // 분열 발사: 소켓 회전 대신 컨텍스트의 발사 방향을 따름
+        if (context.UseCastDirectionRotation && context.CastDirection.sqrMagnitude > 0.0001f)
+            spawnRot = Quaternion.LookRotation(context.CastDirection);
         // 발사체 생성
         GameObject spellInstance = Instantiate(spellPrefab, spawnPos, spawnRot);
 

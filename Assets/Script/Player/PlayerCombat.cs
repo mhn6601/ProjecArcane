@@ -33,8 +33,6 @@ public class PlayerCombat : CharacterCombat,ICombatTarget
         if (status.IsInvincible)
             return;
 
-        Debug.Log("패링 가능?" + attackData.canBeParried);
-        Debug.Log(controller.ActionFSM.CurrentState);
         // 2. 현재 상태가 PlayerParryState이고 패링 윈도우 안인지 체크
         if (controller.ActionFSM.CurrentState is PlayerParryState parryState
             && parryState.IsInParryWindow)

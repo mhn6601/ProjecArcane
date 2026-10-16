@@ -9,9 +9,10 @@ public class PlayerSaveData
     public float currentHealth = 100f;
     public float currentMana = 100f;
     public float currentStamina = 100f;
-
+    public int specialNodeInventorySize=0;
     public List<ItemSaveData> items = new List<ItemSaveData>();
     public List<EquippedSlotSaveData> equipped = new List<EquippedSlotSaveData>(); // 장비 instanceID만 참조
+    public List<SpecialNodeSaveData> specialNodes = new List<SpecialNodeSaveData>();
 }
 
 [Serializable]
@@ -29,4 +30,12 @@ public class EquippedSlotSaveData
 {
     public EquipmentSlotType slot;
     public string instanceID;   // 아이템 본체는 복사하지 않고 참조만
+}
+[Serializable]
+public class SpecialNodeSaveData
+{
+    public string instanceID;
+    public string nodeID;
+    public int count = 1;
+
 }

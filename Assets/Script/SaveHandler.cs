@@ -33,6 +33,7 @@ public class SaveHandler : Singleton<SaveHandler>
 
         Player player = Player.Instance;
         InventoryManager inventoryManager = InventoryManager.Instance;
+        SpecialNodeInventoryManager specialNodeInventoryManager = SpecialNodeInventoryManager.Instance;
 
         if (player == null || inventoryManager == null)
             return;
@@ -45,7 +46,8 @@ public class SaveHandler : Singleton<SaveHandler>
         // 2. 아이템 + 장착 상태 저장
         saveData.items = inventoryManager.GetItemSaveData();
         saveData.equipped = inventoryManager.GetEquippedSlotSaveData();
-
+        saveData.specialNodes = specialNodeInventoryManager.GetSpecialNodeSaveData();
+        saveData.specialNodeInventorySize = specialNodeInventoryManager.GetSpecialNodeInventorySize();
 
         // 3. 자원 저장
         saveData.currentHealth =
@@ -71,6 +73,7 @@ public class SaveHandler : Singleton<SaveHandler>
 
         Player player = Player.Instance;
         InventoryManager inventoryManager = InventoryManager.Instance;
+        SpecialNodeInventoryManager specialNodeInventoryManager = SpecialNodeInventoryManager.Instance;
 
 
         // 저장 데이터가 없다면 새 게임
@@ -118,5 +121,6 @@ public class SaveHandler : Singleton<SaveHandler>
         // =====================================================
 
         inventoryManager.LoadInventory(saveData);
+        specialNodeInventoryManager.LoadSpecialNodeInventory(saveData);
     }
 }

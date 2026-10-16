@@ -45,7 +45,7 @@ public class SpellEquipPopup : MonoBehaviour
         target = spell;
         root.SetActive(true);
 
-        Debug.Log($"[Equip] 3. Popup.Open / spell={spell.spellName} / root.activeInHierarchy={root.activeInHierarchy}");
+       
 
         if (titleText != null) titleText.text = $"{spell.spellName} - 장착할 슬롯 선택";
 

@@ -9,12 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 0}
-  m_Name: SpecialNodeData
-  m_EditorClassIdentifier: Assembly-CSharp::SpecialNodeData
-  nodeId: 0
-  nodeName: 
-  description: 
-  grade: 0
-  additionalMpCost: 0
-  additionalHpCost: 0
+  m_Script: {fileID: 11500000, guid: b10f3c05c7f899f4db98db29e509a9b5, type: 3}
+  m_Name: SpellTag_006_AOE
+  m_EditorClassIdentifier: Assembly-CSharp::SpellTagSO
+  displayName: "\uBC94\uC704"
+  description: "\uBC94\uC704\uD615 \uC8FC\uBB38"

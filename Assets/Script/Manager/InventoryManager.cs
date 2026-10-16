@@ -206,50 +206,6 @@ public class InventoryManager : Singleton<InventoryManager>
     }
 
 
-    /// <summary>
-    /// 인스턴스 제거. 스택형은 count만큼 줄이고 0이 되면 제거한다.
-    /// </summary>
-    public bool RemoveItem(ItemInstance instance, int count = 1)
-    {
-        if (instance == null)
-            return false;
-
-        if (!inventory.Contains(instance))
-            return false;
-
-        if (instance is StackItemInstance stack)
-        {
-            if (count <= 0 || stack.count < count)
-                return false;
-
-            stack.count -= count;
-
-            if (stack.count <= 0)
-                inventory.Remove(stack);
-        }
-        else
-        {
-            inventory.Remove(instance);
-        }
-
-        inventoryChanged?.Invoke();
-
-        return true;
-    }
-
-
-    private StackItemInstance FindStack(string itemID)
-    {
-        foreach (ItemInstance item in inventory)
-        {
-            if (item is StackItemInstance stack && stack.Data.itemId == itemID)
-                return stack;
-        }
-
-        return null;
-    }
-
-
     // =========================================================
     // Equip
     // =========================================================
@@ -515,12 +471,4 @@ public class InventoryManager : Singleton<InventoryManager>
         }
     }
 
-    // =========================================================
-    // Database
-    // =========================================================
-
-    public ItemDatabaseSO GetItemDatabase()
-    {
-        return itemDatabase;
-    }
 }

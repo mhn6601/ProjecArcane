@@ -5,7 +5,7 @@ using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using UnityEngine.Video;
 
-public class NodeInfoUI : UIBase, IPointerClickHandler
+public class SpellTreeUI : UIBase, IPointerClickHandler
 {
     [SerializeField] private GameObject Content;
     [SerializeField] private GameObject nodeInfoPanel;
@@ -28,13 +28,8 @@ public class NodeInfoUI : UIBase, IPointerClickHandler
         {
             equipButton.onClick.AddListener(() =>
             {
-                Debug.Log("[Equip] 1. 장착 버튼 클릭");
                 OnEquipClicked?.Invoke();
             });
-        }
-        else
-        {
-            Debug.LogError("[Equip] NodeInfoUI.equipButton이 연결되지 않았습니다.");
         }
         if (unlockButton != null)
             unlockButton.onClick.AddListener(() => OnUnlockClicked?.Invoke());
@@ -126,6 +121,7 @@ public class NodeInfoUI : UIBase, IPointerClickHandler
         // 패널 내부(자식)를 눌러도 이벤트가 올라오므로, 맞은 오브젝트가 나 자신일 때만 닫기
         if (eventData.pointerCurrentRaycast.gameObject != Content) return;
         SpellTreeManager.Instance.CloseNodeInfoUI();
+        SpellTreeManager.Instance.CloseSpecialNodeInfoUI();
     }
 
     public void ToggleNodeInfoPanel(bool isActive)
@@ -141,4 +137,11 @@ public class NodeInfoUI : UIBase, IPointerClickHandler
     public void RefreshCurrentSpellSlot()
     {
     }
+    public override void Close()
+    {
+        base.Close();
+        SpellTreeManager.Instance.CloseNodeInfoUI();
+        SpellTreeManager.Instance.CloseSpecialNodeInfoUI();
+    }
+
 }
