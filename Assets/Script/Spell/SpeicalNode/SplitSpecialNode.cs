@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "SplitNode", menuName = "Magic System/Special Node/Split")]
+[CreateAssetMenu(fileName = "SplitNode", menuName = "Special Node/Split")]
 public class SplitSpecialNode : SpecialNodeData
 {
     [Min(2)] public int count = 3;

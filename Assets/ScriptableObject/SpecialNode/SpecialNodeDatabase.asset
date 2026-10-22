@@ -14,4 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::SpecialNodeDatabaseSO
   allSpecialNodes:
   - {fileID: 11400000, guid: 27262288f76a3c242ab1c0908ec51a34, type: 2}
-  - {fileID: 11400000, guid: 11537552430590d4087c1acefcd2877a, type: 2}
+  - {fileID: 11400000, guid: 7c85110773676cc4296d9d71b799492e, type: 2}
+  - {fileID: 11400000, guid: 6d936fd038b8d284aa5b3f8063fa3b8d, type: 2}

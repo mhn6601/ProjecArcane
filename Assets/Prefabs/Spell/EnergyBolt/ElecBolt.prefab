@@ -127,3 +127,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::SpellProjectile
   defaultHitVfx: {fileID: 0}
   shadowVfxPrefab: {fileID: 0}
+  ricochetTargetLayers:
+    serializedVersion: 2
+    m_Bits: 8192

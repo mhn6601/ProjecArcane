@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class SpellCastContext 
@@ -17,9 +18,17 @@ public class SpellCastContext
     public float FinalDamage { get; set; }         // 최종 데미지
     public float ProjectileSpeed { get; set; }    // 투사체 속도
     public float ScaleMultiplier { get; set; }   // 범위/크기 배율 (확장 노드 대응)
+    [Header("Split")]
     public int SplitCount { get; set; }          // 분열 개수 (분열 노드 대응)
     public float SplitAngleStep { get; set; }          // 갈래 사이 각도
     public float SplitDamageMultiplier { get; set; }   // 분열 시 각 발 데미지 배율
+    
+    [Header("Recoceht")]
+    public int RecocehtCount { get; set; }// 남은 도탄 횟수
+    public float RecocehtRange { get; set; }// 도탄 범위
+    public float RecocehtDamageMultiplier { get; set; }   // 도탄 시 각 발 데미지 배율
+    [Header("AreaStrike")]
+    public List<AreaStrikeConfig> AreaStrikes { get; private set; } = new List<AreaStrikeConfig>();
     public bool IsInvincibleCast { get; set; }   // 시전 중 무적 여부 (무적 노드 대응)
     public bool HasHoming { get; set; }          // 유도성 여부 (추적 노드 대응)
     public bool UseCastDirectionRotation { get; set; }   // true면 소켓 회전 대신 CastDirection으로 생성 회전 결정 (분열 발사용)
@@ -46,9 +55,18 @@ public class SpellCastContext
         FinalDamage = 0f + baseAttackBonus; 
         ProjectileSpeed = 15f;
         ScaleMultiplier = 1f;
+
         SplitCount = 1; 
         SplitAngleStep = 15f;
         SplitDamageMultiplier = 1f;
+
+        RecocehtCount = 0;
+        RecocehtRange = 0;
+        RecocehtDamageMultiplier = 1;
+
+        var baseStrike = spellInstance?.baseData?.areaStrike;
+        if (baseStrike != null && baseStrike.prefab != null) AreaStrikes.Add(baseStrike);
+
         IsInvincibleCast = false;
         HasHoming = false;
 

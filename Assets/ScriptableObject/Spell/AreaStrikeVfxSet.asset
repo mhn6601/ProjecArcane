@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1ee4fe11f39cc864eb12de02fd61d55a, type: 3}
+  m_Name: AreaStrikeVfxSet
+  m_EditorClassIdentifier: Assembly-CSharp::AreaStrikeVfxSet
+  defaultVfx: {fileID: 2429337684609791075, guid: 15c51250bd2682e48963b79c90910c42, type: 3}
+  entries:
+  - element: 1
+    vfxPrefab: {fileID: 2429337684609791075, guid: 15c51250bd2682e48963b79c90910c42, type: 3}
+  - element: 2
+    vfxPrefab: {fileID: 612326187836827543, guid: 21e28ea6494d02f4a81f46d94adf7814, type: 3}
+  - element: 3
+    vfxPrefab: {fileID: 1819793614438822389, guid: 94626da9b489a3b47bcf40422999d60f, type: 3}
+  - element: 4
+    vfxPrefab: {fileID: 4305610899760117973, guid: 91a9e04d366e5cd4099061ab222a77e3, type: 3}

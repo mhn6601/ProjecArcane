@@ -26,7 +26,8 @@ public class SpellData : ScriptableObject
 
     // 속성별 비주얼/이펙트 프리팹 맵
     public GameObject VfxPrefab;
-
+    [Header("AreaStrike")]
+    public AreaStrikeConfig areaStrike;
 }
 
 // 플레이어가 세팅한 런타임 스킬 인스턴스

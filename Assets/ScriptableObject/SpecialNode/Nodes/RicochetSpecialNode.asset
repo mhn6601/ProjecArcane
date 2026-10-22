@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 84d58a94dbd8e8942a0de02fc9868e24, type: 3}
+  m_Name: RicochetSpecialNode
+  m_EditorClassIdentifier: Assembly-CSharp::RicochetSpecialNode
+  instanceID: 1
+  nodeId: 1
+  nodeName: Ricochet
+  description: Ricochet the spell
+  icon: {fileID: 0}
+  grade: 0
+  requiredTags:
+  - {fileID: 11400000, guid: 7d4839a5c68bba74b8e08856bf6996c6, type: 2}
+  matchMode: 1
+  excludedTags: []
+  bounceCount: 2
+  range: 8
+  damageMultiplierPerBounce: 0.7

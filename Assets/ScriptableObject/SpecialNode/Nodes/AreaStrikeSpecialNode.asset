@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1b0d0197e22a06c4baa410816e22350e, type: 3}
+  m_Name: AreaStrikeSpecialNode
+  m_EditorClassIdentifier: Assembly-CSharp::AreaStrikeSpecialNode
+  instanceID: 2
+  nodeId: 2
+  nodeName: AreaStrike
+  description: AreaStrike When Hit Spell
+  icon: {fileID: 0}
+  grade: 0
+  requiredTags: []
+  matchMode: 1
+  excludedTags: []
+  radius: 1
+  damageMultiplier: 0.5
+  areaStrikePrefab: {fileID: 2429337684609791075, guid: 15c51250bd2682e48963b79c90910c42, type: 3}
