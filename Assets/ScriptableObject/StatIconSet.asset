@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cfdb9d174abdb16489c61b5fcedb020d, type: 3}
+  m_Name: StatIconSet
+  m_EditorClassIdentifier: Assembly-CSharp::StatIconSetSO
+  entries:
+  - type: 0
+    icon: {fileID: 21300000, guid: d98747556741e0146aecaf525e333c49, type: 3}
+  - type: 1
+    icon: {fileID: 21300000, guid: 468f254cc4c0f294ea14f00d4912d37e, type: 3}
+  - type: 2
+    icon: {fileID: 21300000, guid: cabbece51b1f44c489dab2b3a886992b, type: 3}
+  fallbackIcon: {fileID: 21300000, guid: dbe176dde83ef584789bb89b7cf60556, type: 3}

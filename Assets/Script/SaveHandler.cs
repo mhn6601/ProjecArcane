@@ -1,3 +1,4 @@
+using Mono.Cecil;
 using UnityEngine;
 
 public class SaveHandler : Singleton<SaveHandler>
@@ -50,12 +51,10 @@ public class SaveHandler : Singleton<SaveHandler>
         saveData.specialNodeInventorySize = specialNodeInventoryManager.GetSpecialNodeInventorySize();
 
         // 3. 자원 저장
-        saveData.currentHealth =
-            player.ResourceSystem.CurrentHealth;
-        saveData.currentMana =
-            player.ResourceSystem.CurrentMana;
-        saveData.currentStamina =
-            player.ResourceSystem.CurrentStamina;
+        var resource = player.ResourceSystem;
+        saveData.currentHealth = resource.IsDead ? resource.MaxHealth : resource.CurrentHealth;
+        saveData.currentMana = resource.IsDead ? resource.MaxMana : resource.CurrentMana;
+        saveData.currentStamina = resource.IsDead ? resource.MaxStamina : resource.CurrentStamina;
 
 
         SpellProgressManager.Instance.Save();

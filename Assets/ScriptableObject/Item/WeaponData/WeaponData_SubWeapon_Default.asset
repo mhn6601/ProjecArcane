@@ -15,13 +15,16 @@ MonoBehaviour:
   itemId: 010000
   itemName: Hand
   description: Hand
-  icon: {fileID: 0}
+  icon: {fileID: 21300000, guid: d494611db00200a4797703dc71c77eb4, type: 3}
   type: 0
   isStackable: 0
   maxStackSize: 1
   equipSlottype: 1
   requiredLevel: 0
-  baseDamage: 1
+  statBonuses: []
+  basePhysicalDamage: 10
+  baseSpellDamage: 10
+  guardDamaeMultiplier: 1
   damageType: 0
   attackSpeedMultiplier: 1
   staminaCostMultiplier: 1

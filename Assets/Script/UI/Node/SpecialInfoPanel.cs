@@ -24,6 +24,7 @@ public class SpecialInfoPanel : MonoBehaviour
     [SerializeField] private Button equipButton;
     [SerializeField] private TMP_Text equipButtonText;
     [SerializeField] private Button unequipButton;
+    [SerializeField] private TMP_Text unequipButtonText;
 
     private SpellData spell;
     private int slotIndex = -1;
@@ -99,6 +100,7 @@ public class SpecialInfoPanel : MonoBehaviour
         SpecialNodeData equipped = progress.GetSpecialSlotData(spell.spellId, slotIndex);
 
         currentequippedNameText.text = equipped != null ? equipped.nodeName : "비어 있음";
+        currentequippedDescText.text = equipped != null ? equipped.description : "";
         equippedIcon.enabled = equipped != null;
         if (equipped != null) equippedIcon.sprite = equipped.icon;
         unequipButton.interactable = equipped != null;
@@ -108,6 +110,7 @@ public class SpecialInfoPanel : MonoBehaviour
         string candidateId = hasCandidate ? candidate.Data.nodeId : null;
 
         candidateNameText.text = hasCandidate ? candidate.Data.nodeName : "";
+        candidateDescText.text = hasCandidate ? candidate.Data.description : "";
         candidateIcon.enabled = hasCandidate;
         if (hasCandidate) candidateIcon.sprite = candidate.Data.icon;
 
@@ -129,6 +132,8 @@ public class SpecialInfoPanel : MonoBehaviour
 
         equipButtonText.text = equipped != null ? "교체" : "장착";
         equipButton.interactable = canApply && !alreadyHere;
+        unequipButtonText.text ="해제";
+        unequipButton.interactable = equipped;
     }
 
     public void OnEquipClicked()

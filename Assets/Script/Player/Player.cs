@@ -38,7 +38,7 @@ public class Player:Singleton<Player>
 
 
     [Header("Global Player State Flags")]
-    public bool isDead { get; private set; }
+    public bool isDead => resourceSystem != null && resourceSystem.IsDead;
 
     protected override void Awake()
     {
@@ -47,13 +47,17 @@ public class Player:Singleton<Player>
        
 
     }
+    private void Start()
+    {
+        if (ResourceSystem != null)
+            ResourceSystem.OnDeath += HandleDeath;
+    }
     protected override void OnDestroy()
     {
         base.OnDestroy();
-        if (stats != null)
-        {
-            //playerStats.OnDeath -= HandleDeath;
-        }
+
+        if (ResourceSystem != null)
+            ResourceSystem.OnDeath -= HandleDeath;
     }
 
     private void InitComponents()
@@ -81,17 +85,9 @@ public class Player:Singleton<Player>
     /// <summary> 플레이어 사망 시 서브시스템들의 동작을 일괄 제어 </summary>
     private void HandleDeath()
     {
-        if (isDead) return;
-        isDead = true;
+        controller.HandleDeath();
 
-        // 사망 시 컨트롤러 및 이동 연산 비활성화
-        controller.enabled = false;
-        
-        // 사망 애니메이션 실행
-        if (animation. Animator != null)
-        {
-            animation.Animator.SetTrigger("isDead");
-        }
+
     }
 
     /// <summary> 대화, 컷씬, 스턴 등 플레이어 입력을 켜고 끌 때 사용 </summary>
@@ -100,5 +96,18 @@ public class Player:Singleton<Player>
         if (controller != null) controller.enabled = isEnable;
         if (input != null) input.enabled = isEnable;
     }
+    public void Respawn(Vector3 position)
+    {
+        var cc = GetComponent<CharacterController>();  
+        cc.enabled = false;
+        transform.position = position;
+        cc.enabled = true;
 
+        resourceSystem.InitResources();                 // HP/마나/스태미너 회복 → IsDead 자동 해제
+        Input.SetInputEnabled(true);
+        SetInputEnable(true);                           // controller, input 모두 다시 켬
+        animation.Animator.Rebind();
+        controller.ResetFSMOnRespawn();                 // 잠금 해제 + Dead 플래그 제거 + 기본 상태 복귀
+
+    }
 }

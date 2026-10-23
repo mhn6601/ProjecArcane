@@ -15,8 +15,8 @@ MonoBehaviour:
   instanceID: 0
   nodeId: 0
   nodeName: Split
-  description: Split the Spell When Spell Fired
-  icon: {fileID: 0}
+  description: Splits the spell when it is fired
+  icon: {fileID: 21300000, guid: 70e92df91699f664ab5bad7bf4723022, type: 3}
   grade: 0
   requiredTags:
   - {fileID: 11400000, guid: 7d4839a5c68bba74b8e08856bf6996c6, type: 2}

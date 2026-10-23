@@ -15,13 +15,16 @@ MonoBehaviour:
   itemId: 0000001
   itemName: Sword
   description: Sword
-  icon: {fileID: 21300000, guid: 8e115b4d13a607b46a5d2068c8119278, type: 3}
+  icon: {fileID: 21300000, guid: 8f28955d92038974a9b04aafaeea79b0, type: 3}
   type: 0
   isStackable: 0
   maxStackSize: 1
   equipSlottype: 0
   requiredLevel: 0
-  baseDamage: 10
+  statBonuses: []
+  basePhysicalDamage: 10
+  baseSpellDamage: 10
+  guardDamaeMultiplier: 1
   damageType: 0
   attackSpeedMultiplier: 1
   staminaCostMultiplier: 1

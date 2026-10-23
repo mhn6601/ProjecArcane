@@ -15,8 +15,8 @@ MonoBehaviour:
   instanceID: 1
   nodeId: 1
   nodeName: Ricochet
-  description: Ricochet the spell
-  icon: {fileID: 0}
+  description: Spell ricochets off surfaces
+  icon: {fileID: 21300000, guid: 3281e91e074a48d4eb5d6a1fdd332a36, type: 3}
   grade: 0
   requiredTags:
   - {fileID: 11400000, guid: 7d4839a5c68bba74b8e08856bf6996c6, type: 2}

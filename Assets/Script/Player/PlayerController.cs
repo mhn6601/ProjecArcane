@@ -37,6 +37,8 @@ public class PlayerController : CharacterControllerBase
     public PlayerGuardState GuardState { get;private set; }
     public PlayerHitStunState HitStunState { get;private set; }
     public PlayerSpellCastState SpellCastState { get;private set; }
+    public PlayerDeadActionState DeadActionState { get; private set; }
+    public PlayerDeadMovementState DeadMovementState { get; private set; }
     #endregion
 
 
@@ -56,6 +58,10 @@ public class PlayerController : CharacterControllerBase
         PlayerStateInitialize();
         movementFSM.Initialize(locomotionState);
         actionFSM.Initialize(EmptyActionState);
+       
+    }
+    private void OnDestroy()
+    {
     }
     private void  Update()
     {
@@ -105,7 +111,22 @@ public class PlayerController : CharacterControllerBase
         EmptyActionState = new PlayerEmptyActionState(player, animator);
         GuardState = new PlayerGuardState(player,animator);
         HitStunState = new PlayerHitStunState(player, animator);
+        DeadActionState = new PlayerDeadActionState(player, animator);
+        DeadMovementState = new PlayerDeadMovementState(player, animator);
         #endregion
+    }
+    public void HandleDeath()
+    {
+        player.Status.AddFlag(CharacterActionFlags.Dead);
+        movementFSM.ForceChangeState(DeadMovementState,  true);
+        actionFSM.ForceChangeState(DeadActionState,  true);
+    }
+
+    public void ResetFSMOnRespawn()
+    {
+        player.Status.RemoveFlag(CharacterActionFlags.Dead);
+        movementFSM.ForceChangeState(locomotionState,true);
+        actionFSM.ForceChangeState(EmptyActionState,true);
     }
     private void FSMUpdate()
     {

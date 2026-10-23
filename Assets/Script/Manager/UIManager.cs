@@ -101,6 +101,13 @@ public class UIManager : Singleton<UIManager>
     // - 열린 UI가 있으면 포커스된 UI를 닫는다 (퍼즈 메뉴가 열려 있을 때는 메뉴가 닫혀 토글이 됨)
     public void HandleEscape()
     {
+        if (player.ResourceSystem.IsDead) return;   // 사망 중에는 메뉴 금지
+
+        if (!IsAnyUIOpen())
+        {
+            OpenUI(UIType.Menu);
+            return;
+        }
         if (!IsAnyUIOpen())
         {
             OpenUI(UIType.Menu);
@@ -207,7 +214,16 @@ public class UIManager : Singleton<UIManager>
 
         focusedUI = null;
     }
-
+    public void CloseAllUI()
+    {
+        for (int i = openedUIs.Count - 1; i >= 0; i--)
+        {
+            UIBase ui = openedUIs[i];
+            openedUIs.RemoveAt(i);
+            ui.Close();
+        }
+        focusedUI = null;
+    }
     // -------------------------
     // Focus
     // -------------------------
@@ -284,6 +300,7 @@ public class UIManager : Singleton<UIManager>
 
     public void ToggleUI(UIType uiType)
     {
+        if (player.ResourceSystem.IsDead) return;   // 사망 중 인벤토리/스펠 금지
         if (IsUIOpen(uiType))
             CloseUI(uiType);
         else

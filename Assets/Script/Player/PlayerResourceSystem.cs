@@ -18,6 +18,7 @@ public class PlayerResourceSystem : MonoBehaviour
 
     // 스태미너 고갈(잠금) 상태 여부 외부 참조용 프로퍼티
     public bool IsStaminaExhausted { get; private set; } = false;
+    public bool IsDead => CurrentHealth <= 0f;
     public event Action<float, float> OnHealthChanged;
     public event Action<float, float> OnManaChanged;
     public event Action<float, float> OnStaminaChanged;
@@ -41,6 +42,7 @@ public class PlayerResourceSystem : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (IsDead) return;
         HandleStaminaRegeneration();
     }
     public void InitResources()
@@ -53,6 +55,12 @@ public class PlayerResourceSystem : MonoBehaviour
     }
     public void SetResources(float currentHealth,float currentMana, float currentStamina)
     {
+        if (currentHealth <= 0f)
+        {
+            // 사망 상태로 저장된 데이터 → 부활 처리
+            InitResources();
+            return;
+        }
         CurrentHealth = Mathf.Clamp(currentHealth, 0f, MaxHealth);
         CurrentMana = Mathf.Clamp(currentMana, 0f, MaxMana);
         CurrentStamina = Mathf.Clamp(currentStamina, 0f, MaxStamina);
@@ -64,6 +72,7 @@ public class PlayerResourceSystem : MonoBehaviour
     // 체력
     public void TakeDamage(float damageAmount)
     {
+        if (IsDead) return;
         if (CurrentHealth <= 0) return;
 
         CurrentHealth = Mathf.Max(0f, CurrentHealth - damageAmount);
@@ -77,6 +86,7 @@ public class PlayerResourceSystem : MonoBehaviour
 
     public void HealHP(float amount)
     {
+        if (IsDead) return;
         CurrentHealth = Mathf.Min(player.Stats.MaxHealth, CurrentHealth + amount);
         OnHealthChanged?.Invoke(CurrentHealth, player.Stats.MaxHealth);
     }

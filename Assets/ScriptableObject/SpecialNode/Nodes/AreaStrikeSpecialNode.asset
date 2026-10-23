@@ -15,8 +15,8 @@ MonoBehaviour:
   instanceID: 2
   nodeId: 2
   nodeName: AreaStrike
-  description: AreaStrike When Hit Spell
-  icon: {fileID: 0}
+  description: Triggers an Area Strike when the spell hits
+  icon: {fileID: 21300000, guid: 8f6d58fd471ba8a45a4b681953e29c26, type: 3}
   grade: 0
   requiredTags: []
   matchMode: 1
