@@ -20,11 +20,24 @@ public  class Enemy : MonoBehaviour
     public EnemyStats Stats=> stats;
     public EnemyResourceSystem ResourceSystem=> resourceSystem;
     public EnemyAttack Attack => attack;
-    public bool isDead { get; private set; }
+    public bool isDead => resourceSystem != null && resourceSystem.IsDead;
+    /// <summary>부활이 일어난 직후 호출 (UI/히트박스 복구 등 외부 구독용)</summary>
+    public event Action OnRevived;
 
     private void Awake()
     {
         InitComponents();
+    }
+    private void Start()
+    {
+        if (ResourceSystem != null)
+            ResourceSystem.OnDeath += HandleDeath;
+    }
+    protected  void OnDestroy()
+    {
+
+        if (ResourceSystem != null)
+            ResourceSystem.OnDeath -= HandleDeath;
     }
     private void InitComponents()
     {
@@ -36,25 +49,17 @@ public  class Enemy : MonoBehaviour
         if (resourceSystem == null) resourceSystem = GetComponent<EnemyResourceSystem>();
         if(attack == null) attack = GetComponent<EnemyAttack>();
     }
-    //public bool isWalking = false;
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
-    }
-    /// <summary> 플레이어 사망 시 서브시스템들의 동작을 일괄 제어 </summary>
     private void HandleDeath()
     {
-        if (isDead) return;
-        isDead = true;
+        controller.HandleDeath();
+    }
+    /// <summary>부활 허용 여부는 호출하는 쪽(EnemyRespawn)이 결정한다.</summary>
+    public void Revive()
+    {
+        if (!isDead) return;
 
-        // 사망 시 컨트롤러 및 이동 연산 비활성화
-        controller.enabled = false;
-
-        // 사망 애니메이션 실행
-        if (animation.Animator != null)
-        {
-            animation.Animator.SetTrigger("isDead");
-        }
+        resourceSystem.Revive();
+        controller.HandleRevived();
+        OnRevived?.Invoke();
     }
 }

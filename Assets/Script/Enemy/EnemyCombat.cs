@@ -23,6 +23,8 @@ public class EnemyCombat : CharacterCombat, ICombatTarget
     }
     public override void ResolveHit(AttackData attackData, Transform attacker,Transform weapon, HitPart hitPart)
     {
+        if (enemy.isDead) return;
+        Debug.Log(attackData.damage);
         // 1. 무적 프레임
         if (enemy.Status.IsInvincible)
             return;
@@ -30,16 +32,13 @@ public class EnemyCombat : CharacterCombat, ICombatTarget
     }
     private void ApplyDamage(AttackData attackData, HitPart hitPart)
     {
+        Debug.Log(attackData.damage);
         float finalDamage = attackData.damage * GetBodyPartMultiplier(hitPart);
         resourceSystem.TakeDamage(finalDamage);
         OnHitTaken?.Invoke(attackData);
 
         // 히트스턴 처리: 상태머신으로 전이
-        if (resourceSystem.CurrentHealth <= 0f)
-        {
-            OnDeath?.Invoke();
-        }
-        else
+        if (resourceSystem.CurrentHealth > 0f)
         {
             controller.ActionFSM.ChangeState(controller.HitStunState);
         }
@@ -56,4 +55,12 @@ public class EnemyCombat : CharacterCombat, ICombatTarget
             HitPart.Body => 1.0f,
             _ => 1.0f
         };
+    public override float CalculateDamage(AttackData step)
+    {
+        // 몬스터 공격은 스텝의 값을 그대로 데미지로 사용 (기존에 에셋에 입력해 둔 damage 값 유지)
+        return step.damageMultiplier;
+
+        // EnemyStats에 공격력이 생기면:
+        // return enemy.Stats.AttackPower * step.damageMultiplier;
+    }
 }

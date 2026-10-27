@@ -1,4 +1,4 @@
-using UnityEditor;
+
 using UnityEngine;
 using System;
 
@@ -118,4 +118,8 @@ public class PlayerCombat : CharacterCombat,ICombatTarget
             HitPart.Body => 1.0f,
             _ => 1.0f
         };
+    public override float CalculateDamage(AttackData step)
+    {
+        return PlayerDamageCalculator.CalculateMelee(player, step);
+    }
 }

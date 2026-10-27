@@ -19,7 +19,7 @@ public class SpellData : ScriptableObject
     public AnimationClip animationClip;
     public Sprite Icon;
     public float baseDamage;
-    public float spellPowerRatio;
+    public float damageMultiplier;
     public float baseMpCost;
     public float cooldown;
     public ElementType elementType;

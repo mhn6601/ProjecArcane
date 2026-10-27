@@ -58,6 +58,7 @@ public class EnemyAttackState : EnemyState
         // 피격(HitStun) 등으로 중간에 끊겨도 패턴 상태를 정리
         if (enemy.Attack.CurrentPattern != null)
             enemy.Attack.EndPattern();
+        enemy.Attack.DisableHitBox();
     }
 
     void PlayCurrentStep()

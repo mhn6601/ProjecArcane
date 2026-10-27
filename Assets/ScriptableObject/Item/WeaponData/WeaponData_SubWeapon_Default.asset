@@ -22,7 +22,7 @@ MonoBehaviour:
   equipSlottype: 1
   requiredLevel: 0
   statBonuses: []
-  basePhysicalDamage: 10
+  basePhysicalDamage: 1
   baseSpellDamage: 10
   guardDamaeMultiplier: 1
   damageType: 0

@@ -14,6 +14,9 @@ public class EnemyController : CharacterControllerBase
     public EnemyEmptyActionState EmptyActionState { get; private set; }
     public EnemyAttackState AttackState { get; private set; }
     public EnemyHitStunState HitStunState { get; private set; }
+
+    public EnemyDeadActionState DeadActionState { get; private set; }
+    public EnemyDeadMovementState DeadMovementState { get; private set; }
     #endregion
     /// <summary>액션 FSM이 대기(Empty) 상태일 때만 true. 새 행동을 시작해도 되는지 판단하는 용도.</summary>
     public bool IsActionIdle => actionFSM.CurrentState == EmptyActionState;
@@ -57,7 +60,19 @@ public class EnemyController : CharacterControllerBase
         EmptyActionState = new EnemyEmptyActionState(enemy,animator);
         AttackState = new EnemyAttackState(enemy, animator);
         HitStunState = new EnemyHitStunState(enemy,animator);
-        #endregion 
+        DeadActionState=new  EnemyDeadActionState (enemy, animator);
+        DeadMovementState =new EnemyDeadMovementState (enemy, animator);
+        #endregion
 
+}
+    public void HandleDeath()
+    {
+        movementFSM.ForceChangeState(DeadMovementState, true);
+        actionFSM.ForceChangeState(DeadActionState, true);
+    }
+    public void HandleRevived()
+    {
+        movementFSM.ForceChangeState(LocomotionState, false);
+        actionFSM.ForceChangeState(EmptyActionState,false);
     }
 }

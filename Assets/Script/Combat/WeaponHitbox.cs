@@ -98,8 +98,11 @@ public class WeaponHitBox : MonoBehaviour
 
         alreadyHit.Add(target);
 
+        // 공격자(소유자)가 자기 공식으로 최종 데미지를 계산, 에셋 데이터는 건드리지 않고 복사본을 전달
+        AttackData hit = currentAttackData.CreateHit(owner.CalculateDamage(currentAttackData));
+
         target.ResolveHit(
-            currentAttackData,
+            hit,
             owner.gameObject.transform,
             transform,
             hurtbox.HitPart

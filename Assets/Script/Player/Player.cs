@@ -1,3 +1,4 @@
+using System.Linq;
 using UnityEngine;
 public class Player:Singleton<Player>
 {
@@ -98,16 +99,15 @@ public class Player:Singleton<Player>
     }
     public void Respawn(Vector3 position)
     {
-        var cc = GetComponent<CharacterController>();  
-        cc.enabled = false;
+        controller.enabled = false;
         transform.position = position;
-        cc.enabled = true;
+        controller.enabled = true;
 
         resourceSystem.InitResources();                 // HP/마나/스태미너 회복 → IsDead 자동 해제
         Input.SetInputEnabled(true);
         SetInputEnable(true);                           // controller, input 모두 다시 켬
         animation.Animator.Rebind();
         controller.ResetFSMOnRespawn();                 // 잠금 해제 + Dead 플래그 제거 + 기본 상태 복귀
-
+        
     }
 }

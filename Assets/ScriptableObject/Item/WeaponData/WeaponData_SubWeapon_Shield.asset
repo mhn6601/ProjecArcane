@@ -23,7 +23,7 @@ MonoBehaviour:
   requiredLevel: 0
   statBonuses: []
   basePhysicalDamage: 10
-  baseSpellDamage: 10
+  baseSpellDamage: 20
   guardDamaeMultiplier: 0.5
   damageType: 0
   attackSpeedMultiplier: 1

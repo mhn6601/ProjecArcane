@@ -14,8 +14,7 @@ public class PlayerAttackComboState : PlayerState
     }
     override public void OnEnter()
     {
-        
-        
+
         player.Status.RemoveFlag(CharacterActionFlags.CanMove);
         player.Status.RemoveFlag(CharacterActionFlags.CanRoll);
         player.Status.RemoveFlag(CharacterActionFlags.CanRotate);

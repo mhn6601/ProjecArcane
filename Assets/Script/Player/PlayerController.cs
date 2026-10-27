@@ -125,8 +125,8 @@ public class PlayerController : CharacterControllerBase
     public void ResetFSMOnRespawn()
     {
         player.Status.RemoveFlag(CharacterActionFlags.Dead);
-        movementFSM.ForceChangeState(locomotionState,true);
-        actionFSM.ForceChangeState(EmptyActionState,true);
+        movementFSM.ForceChangeState(locomotionState,false);
+        actionFSM.ForceChangeState(EmptyActionState,false);
     }
     private void FSMUpdate()
     {

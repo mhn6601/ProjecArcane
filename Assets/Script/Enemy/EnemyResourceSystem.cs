@@ -14,6 +14,7 @@ public class EnemyResourceSystem : MonoBehaviour
     public float CurrentMana { get; private set; }
     public float CurrentStamina { get; private set; }
     private float lastStaminaUseTime;
+    public bool IsDead => CurrentHealth <= 0f;
 
     // 스태미너 고갈(잠금) 상태 여부 외부 참조용 프로퍼티
     public bool IsStaminaExhausted { get; private set; } = false;
@@ -71,7 +72,16 @@ public class EnemyResourceSystem : MonoBehaviour
         OnHealthChanged?.Invoke(CurrentHealth, enemyStats.MaxHealth);
     }
 
-
+    /// <summary>사망 후 부활용. 모든 자원을 최대치로 되돌리고 고갈 상태를 해제한다.</summary>
+    public void Revive()
+    {
+        InitResources();
+        lastStaminaUseTime = Time.time;
+        SetStaminaExhausted(false);
+        OnHealthChanged?.Invoke(CurrentHealth, MaxHealth);
+        OnManaChanged?.Invoke(CurrentMana, MaxMana);
+        OnStaminaChanged?.Invoke(CurrentStamina, MaxStamina);
+    }
     // 마나
     public bool UseMana(float amount)
     {
@@ -165,4 +175,5 @@ public class EnemyResourceSystem : MonoBehaviour
             // Debug.Log(exhausted ? "스태미너 고갈! 달리기 잠금" : "스태미너 회복! 달리기 가능");
         }
     }
+
 }
