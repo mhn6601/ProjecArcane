@@ -23,9 +23,9 @@ MonoBehaviour:
   VideoClip: {fileID: 32900000, guid: e435e56311e612245854750cff309f42, type: 3}
   animationClip: {fileID: 7400000, guid: 6900a238d1e6f2c4e9a64c59fd487c50, type: 2}
   Icon: {fileID: 21300000, guid: 7b34caca00a1514468b8d9cc005a43fc, type: 3}
-  baseDamage: 20
-  damageMultiplier: 1
-  baseMpCost: 2
+  baseDamage: 30
+  damageMultiplier: 1.1
+  baseMpCost: 4
   cooldown: 10
   elementType: 3
   VfxPrefab: {fileID: 1819793614438822389, guid: e3b82e39501f61d46952cb20f2eff8aa, type: 3}
