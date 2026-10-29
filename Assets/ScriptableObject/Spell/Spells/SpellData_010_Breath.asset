@@ -14,11 +14,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::SpellData
   spellId: 001
   spellName: Breath
-  icon: {fileID: 21300000, guid: 33470548a8c102c45bec7658b3637d33, type: 3}
+  spellDescription: 
+  Tags: []
+  VideoClip: {fileID: 0}
+  animationClip: {fileID: 0}
+  Icon: {fileID: 0}
+  baseDamage: 0
+  damageMultiplier: 1
   baseMpCost: 2
   cooldown: 2
-  animName: Breath
-  waterVfxPrefab: {fileID: 2960722823952345852, guid: d1885567f3a622a449790a851d2a687f, type: 3}
-  fireVfxPrefab: {fileID: 9065069976445029119, guid: 561f7c42d4d9c0449a5cca9b8d84d3d7, type: 3}
-  electricVfxPrefab: {fileID: 2090016075325127986, guid: db84ef70d7ee74b4293cb3be16891392, type: 3}
-  arcaneVfxPrefab: {fileID: 1980294560289433209, guid: 81edc5fa83c117c41aa133f1bfa5fa4b, type: 3}
+  elementType: 0
+  VfxPrefab: {fileID: 0}
+  areaStrike:
+    prefab: {fileID: 0}
+    radius: 3
+    damageMultiplier: 1

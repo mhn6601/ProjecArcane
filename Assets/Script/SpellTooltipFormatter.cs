@@ -22,7 +22,7 @@ public static class SpellTooltipFormatter
         float damage = player != null
             ? SpellDamageCalculator.CalculateBase(player, data)
             : data.baseDamage * stats.SpellPower * data.damageMultiplier;   // Player가 없을 때의 최소 대체
-
+        Debug.Log($"{data.baseDamage} * {stats.SpellPower }*{ data.damageMultiplier}");
         return Replace(data, damage, 1);
     }
 

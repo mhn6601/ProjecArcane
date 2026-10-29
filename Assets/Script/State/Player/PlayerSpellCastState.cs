@@ -108,7 +108,6 @@ public class PlayerSpellCastState : PlayerState
             spellInstance,
             player.Stats.SpellPower
         );
-
         GameObject spellPrefab = spell.VfxPrefab;
         if (spellPrefab == null)
         {
@@ -126,7 +125,7 @@ public class PlayerSpellCastState : PlayerState
 
             SpellCastContext shot = context.Clone();
             shot.CastDirection = Quaternion.AngleAxis(offset, Vector3.up) * context.CastDirection;
-            shot.FinalDamage = context.FinalDamage * damageMul;
+            shot.FinalDamage = SpellDamageCalculator.CalculateBase(player, spell);
             shot.SplitCount = 1;   // 생성된 투사체가 다시 분열하지 않도록
             shot.UseCastDirectionRotation = count > 1;
 

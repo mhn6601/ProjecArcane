@@ -24,7 +24,7 @@ MonoBehaviour:
   animationClip: {fileID: 7400000, guid: 71e26415711686947a48bf522ffe7b92, type: 2}
   Icon: {fileID: 21300000, guid: df5153fca31c9bf47b2d36359b5dd373, type: 3}
   baseDamage: 1000
-  damageMultiplier: 0
+  damageMultiplier: 1
   baseMpCost: 2
   cooldown: 10
   elementType: 1
