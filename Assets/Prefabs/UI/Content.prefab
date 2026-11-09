@@ -1215,21 +1215,13 @@ PrefabInstance:
       propertyPath: parentNode
       value: 
       objectReference: {fileID: 280206178713138724}
-    - target: {fileID: 4007574267220426270, guid: 4d05cada89a69b048b8ff27899e2101a, type: 3}
-      propertyPath: childNodes.Array.size
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 4007574267220426270, guid: 4d05cada89a69b048b8ff27899e2101a, type: 3}
-      propertyPath: 'childNodes.Array.data[0]'
-      value: 
-      objectReference: {fileID: 5225017278383906707}
-    - target: {fileID: 4007574267220426270, guid: 4d05cada89a69b048b8ff27899e2101a, type: 3}
-      propertyPath: 'childNodes.Array.data[1]'
-      value: 
-      objectReference: {fileID: 8154806924548792572}
     - target: {fileID: 6126554769840253336, guid: 4d05cada89a69b048b8ff27899e2101a, type: 3}
       propertyPath: m_AnchoredPosition.x
       value: 226
+      objectReference: {fileID: 0}
+    - target: {fileID: 6558254192833795067, guid: 4d05cada89a69b048b8ff27899e2101a, type: 3}
+      propertyPath: slotIndex
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6558254192833795067, guid: 4d05cada89a69b048b8ff27899e2101a, type: 3}
       propertyPath: parentNode
@@ -1241,7 +1233,7 @@ PrefabInstance:
       objectReference: {fileID: 3033978102079227925}
     - target: {fileID: 7109729475233492116, guid: 4d05cada89a69b048b8ff27899e2101a, type: 3}
       propertyPath: slotIndex
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7109729475233492116, guid: 4d05cada89a69b048b8ff27899e2101a, type: 3}
       propertyPath: parentNode
@@ -1276,16 +1268,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c698b825a68a3aa4e80445ba75a595e7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SpellNode
---- !u!224 &5225017278383906707 stripped
-RectTransform:
-  m_CorrespondingSourceObject: {fileID: 6126554769840253336, guid: 4d05cada89a69b048b8ff27899e2101a, type: 3}
-  m_PrefabInstance: {fileID: 2127696366281192971}
-  m_PrefabAsset: {fileID: 0}
---- !u!224 &8154806924548792572 stripped
-RectTransform:
-  m_CorrespondingSourceObject: {fileID: 7830819821686363895, guid: 4d05cada89a69b048b8ff27899e2101a, type: 3}
-  m_PrefabInstance: {fileID: 2127696366281192971}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &4303554912279223916
 PrefabInstance:
   m_ObjectHideFlags: 0

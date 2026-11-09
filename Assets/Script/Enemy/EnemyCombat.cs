@@ -24,7 +24,6 @@ public class EnemyCombat : CharacterCombat, ICombatTarget
     public override void ResolveHit(AttackData attackData, Transform attacker,Transform weapon, HitPart hitPart)
     {
         if (enemy.isDead) return;
-        Debug.Log(attackData.damage);
         // 1. 무적 프레임
         if (enemy.Status.IsInvincible)
             return;
@@ -32,7 +31,7 @@ public class EnemyCombat : CharacterCombat, ICombatTarget
     }
     private void ApplyDamage(AttackData attackData, HitPart hitPart)
     {
-        Debug.Log(attackData.damage);
+        //Debug.Log(attackData.damage);
         float finalDamage = attackData.damage * GetBodyPartMultiplier(hitPart);
         resourceSystem.TakeDamage(finalDamage);
         OnHitTaken?.Invoke(attackData);

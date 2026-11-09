@@ -23,4 +23,4 @@ MonoBehaviour:
   excludedTags: []
   radius: 1
   damageMultiplier: 0.5
-  areaStrikePrefab: {fileID: 2429337684609791075, guid: 15c51250bd2682e48963b79c90910c42, type: 3}
+  areaStrikePrefab: {fileID: 2429337684609791075, guid: ad8b8e6c05276e74a8dbc5a667215db4, type: 3}

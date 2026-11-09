@@ -127,7 +127,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c698b825a68a3aa4e80445ba75a595e7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SpellNode
-  childNodes: []
+  childNodes:
+  - {fileID: 6126554769840253336}
+  - {fileID: 7830819821686363895}
   nodeType: 1
   parentNode: {fileID: 0}
   spellData: {fileID: 0}

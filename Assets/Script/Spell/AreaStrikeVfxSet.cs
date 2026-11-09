@@ -24,8 +24,13 @@ public class AreaStrikeVfxSet : ScriptableObject
     {
         foreach (var e in entries)
         {
-            if (e.element == element && e.vfxPrefab != null) return e.vfxPrefab;
+            if (e.element == element && e.vfxPrefab != null)
+            {
+                //Debug.Log($"Found VFX for element: {e.element}");
+                return e.vfxPrefab;
+            }
         }
+        //Debug.Log(element);
         return defaultVfx;
     }
 }

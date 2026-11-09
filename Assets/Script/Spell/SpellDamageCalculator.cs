@@ -9,8 +9,8 @@ public static class SpellDamageCalculator
         float weaponSpellDamage = 0f;
         WeaponItemData weapon = player.EquipmentManager != null ? player.EquipmentManager.MainWeapon.WeaponItemData : null;
         if (weapon != null) weaponSpellDamage = weapon.baseSpellDamage;
-        Debug.Log($"({weaponSpellDamage} + {player.Stats.SpellPower}) * {spell.damageMultiplier}*{spell.baseDamage}\"");
-        return (weaponSpellDamage + player.Stats.SpellPower) * spell.damageMultiplier *spell.baseDamage;
+        //Debug.Log($"({weaponSpellDamage} + {player.Stats.SpellPower}) * {spell.damageMultiplier} + {spell.baseDamage}\"");
+        return (weaponSpellDamage + player.Stats.SpellPower) * spell.damageMultiplier + spell.baseDamage;
     }
 
     /// <summary>

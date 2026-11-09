@@ -71,7 +71,9 @@ public class SpellCastContext
         HasHoming = false;
 
         // 장착된 특수 노드 2개의 효과를 Context에 순차 적용
-        ApplyNodes();
+        ApplyNodes(); 
+        foreach (var s in AreaStrikes)
+            Debug.Log($"[Context] AreaStrike prefab={(s.prefab != null ? s.prefab.name : "NULL")}, radius={s.radius}");
     }
 
     private void ApplyNodes()

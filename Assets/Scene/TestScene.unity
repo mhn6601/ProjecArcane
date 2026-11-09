@@ -18536,10 +18536,6 @@ PrefabInstance:
       value: SpellNode_EnergyBolt_Elec_Special_1
       objectReference: {fileID: 0}
     - target: {fileID: 5081329089399711216, guid: 26e39e2e72a6e744cb5cb4ab7a22713c, type: 3}
-      propertyPath: slotIndex
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5081329089399711216, guid: 26e39e2e72a6e744cb5cb4ab7a22713c, type: 3}
       propertyPath: targetNode
       value: 
       objectReference: {fileID: 1068694396}

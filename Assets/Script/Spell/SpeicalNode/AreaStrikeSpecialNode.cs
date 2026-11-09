@@ -15,7 +15,7 @@ public class AreaStrikeSpecialNode : SpecialNodeData
 
     public override void ApplyNodeEffect(SpellCastContext ctx)
     {
-        Debug.Log($"[AreaStrike] {name} / prefab={(areaStrikePrefab != null ? areaStrikePrefab.name : "null")}", this);
+        //Debug.Log($"[AreaStrike] {name} / prefab={(areaStrikePrefab != null ? areaStrikePrefab.name : "null")}", this);
         if (areaStrikePrefab == null) return;
 
         // 스펠 기본 폭발이 있어도 덮어쓰지 않고 폭발을 하나 더 추가한다

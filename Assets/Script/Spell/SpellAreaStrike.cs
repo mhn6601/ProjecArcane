@@ -55,7 +55,7 @@ public class SpellAreaStrike : MonoBehaviour
         if (config == null || config.prefab == null || config.radius <= 0f) return null;
 
         GameObject obj = Instantiate(config.prefab, position, Quaternion.identity);
-
+        Debug.Log($"[AreaStrike:Spawn] prefab={config.prefab.name}, element={context.Element}", obj);
         if (!obj.TryGetComponent<SpellAreaStrike>(out var strike))
         {
             Debug.LogWarning("[AreaStrike] 프리팹에 AreaStrike 컴포넌트가 없습니다.", obj);
@@ -75,11 +75,15 @@ public class SpellAreaStrike : MonoBehaviour
         {
             root.localScale = Vector3.one * (radius * 2f);
         }
+        Debug.Log($"[AreaStrike:Init] vfxSet={(vfxSet != null ? vfxSet.name : "NULL")}, element={context.Element}", this);
 
         // 시전 속성에 맞는 연출 생성 (루트의 자식이므로 반지름 스케일이 같이 적용됨)
         if (vfxSet != null)
         {
+
             GameObject vfx = vfxSet.GetVfx(context.Element);
+            Debug.Log($"[AreaStrike:Init] selected vfx={(vfx != null ? vfx.name : "NULL")}", this);
+
             if (vfx != null) Instantiate(vfx, root, false);
         }
 

@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1ee4fe11f39cc864eb12de02fd61d55a, type: 3}
   m_Name: AreaStrikeVfxSet
   m_EditorClassIdentifier: Assembly-CSharp::AreaStrikeVfxSet
-  defaultVfx: {fileID: 2429337684609791075, guid: 15c51250bd2682e48963b79c90910c42, type: 3}
+  defaultVfx: {fileID: 2429337684609791075, guid: ad8b8e6c05276e74a8dbc5a667215db4, type: 3}
   entries:
   - element: 1
     vfxPrefab: {fileID: 2429337684609791075, guid: 15c51250bd2682e48963b79c90910c42, type: 3}

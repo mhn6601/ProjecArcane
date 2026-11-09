@@ -1,6 +1,4 @@
 using System.Collections.Generic;
-using Unity.AppUI.UI;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
 public class HurtBoxGenerator : MonoBehaviour
